@@ -9,28 +9,28 @@
           </div>
           <div class="mt-5">
             <h2>Add a post</h2>
-            <form action="/post/createPost" enctype="multipart/form-data" method="POST">   <!--Molter which is handling our image uploading wont work without enctype-->
+            <form action="/post/createPost" enctype="multipart/form-data" method="POST">
               <div class="mb-3">
                   <label for="title" class="form-label">Title</label> 
-                  <input type="text" class="form-control" id="title" name="title">  <!--This is the input for our tittle-->
+                  <input type="text" class="form-control" id="title" name="title">
               </div>
               <div class="mb-3">
-                <label for="caption" class="form-label">Caption</label> <!--This is the input for the caption-->
+                <label for="caption" class="form-label">Caption</label>
                 <textarea class="form-control" id="caption" name="caption"></textarea>
               </div>
               <div class="mb-3">
                 <label for="imgUpload" class="form-label">Image</label> 
-                <input type="file" class="form-control" id="imageUpload" name="file"> <!--This is the file upload, the file upload is just a normal input type file-->
+                <input type="file" class="form-control" id="imageUpload" name="file">
               </div>
               <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
-            </form> <!--When we submit this form, is gonna be like any other traditional post req, were just gonna need some middleware to help us handle it-->
+            </form>
           </div>
       </div>
       <div class="col-6">
         <ul class="row list-unstyled">
         <% for(var i=0; i<posts.length; i++) {%>
           <li class="col-6 justify-content-between mt-5">
-            <a href="/post/<%= posts[i]._id%>"> <!--here we have an anchor tag that takes me to /post/ID(of the post). When i click it it takes me to server.js(app.use(/post)).-->
+            <a href="/post/<%= posts[i]._id%>">
               <img class="img-fluid" src="<%= posts[i].image%>">
             </a>
           </li>
