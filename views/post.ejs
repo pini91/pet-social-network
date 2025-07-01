@@ -1,0 +1,56 @@
+<%- include('partials/header') -%>
+<div class="container">
+  <div class="row justify-content-center mt-5">
+    <div class="col-6">
+      <h2><%= post.title %></h2>
+      <img class="img-fluid" src="<%= post.image%>" />
+      <div class="row justify-content-between">
+        <form
+          class="col-1"
+          action="/post/likePost/<%= post.id %>?_method=PUT" 
+          method="POST"
+        > <!--/forms are always post yet im using a form to do a put WE JUST NEED TO OVERRIDE THE METHOD./--the form always uses the action to know what to do-->
+          <!-- (in the action after the ? theres a query parameter) and if it has that: _method is gonna override that post to be whatever the '='value is  -->
+          <!-- which means our code can load faster and we are not depending on a client(browser env) that exposes on a client API to do this we need a middleware in the server called: const methodOverride = require("method-override")-->
+          <button class="btn btn-primary fa fa-heart" type="submit"></button> <!--So this doesnt do anything unless I click the heart, the hearts and trash are coming from bootstrap which makes it a button that has that buttom primary color of blue, fa heart which is the font awesome for a heart, loaded in the header.ejs  -->
+        </form>
+        <h3 class="col-3">Likes: <%= post.likes %></h3><!--This shows me how many likes there is.(We take them from the db)-->
+        <%if(post.user == user.id){ %>  <!-- If the post.user(from the post controllers)=== to the user.id(logged in) show the trash can-->
+        <form
+          action="/post/deletePost/<%= post.id %>?_method=DELETE"
+          method="POST"
+          class="col-3"
+        >
+          <button class="btn btn-primary fa fa-trash" type="submit"></button>
+        </form>
+        <%}%>
+      </div>
+    </div>
+    <div class="col-3 mt-5">
+      <p><%= post.caption %></p>
+    </div>
+    <div class="mt-5"> 
+      <h2>Add a comment</h2>
+      <form action="/comment/createComment/<%=post._id%>" method="POST"> <!--Here we can just pass the post._id because of the controller, where we already passed all the info about the post and all the info about the comments... basically says create a comment in this post-->
+        <div class="mb-3">
+            <label for="comment" class="form-label">Comment</label> 
+            <input type="text" class="form-control" id="comment" name="comment">  <!--This is the input for our tittle-->
+        </div>
+        <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
+      </form> 
+    </div>
+    <ul>
+      <% for(let i=0; i<comments.length; i++) {%>  <!--This comments are also comming from the post controller.-->
+        <li class="col-6 justify-content-between mt-5">
+          <%= comments[i].comment%>
+        </li>
+      <% } %>
+    </ul>
+    <div class="col-6 mt-5">
+      <a class="btn btn-primary" href="/profile">Return to Profile</a>
+      <a class="btn btn-primary" href="/feed">Return to Feed</a>
+    </div>
+  </div>
+</div>
+
+<%- include('partials/footer') -%>
