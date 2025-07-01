@@ -1,5 +1,5 @@
 <%- include('partials/header') -%>
-<div class="container">
+<div class="container profileContainer">
   <div class="row mt-5">
       <div class="col-6">
           <div>
@@ -9,7 +9,7 @@
           </div>
           <div class="mt-5">
             <h2>Add a post</h2>
-            <form action="/post/createPost" enctype="multipart/form-data" method="POST">
+            <form action="/post/createPost" method="POST">
               <div class="mb-3">
                   <label for="title" class="form-label">Title</label> 
                   <input type="text" class="form-control" id="title" name="title">
