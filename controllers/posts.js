@@ -61,6 +61,23 @@ module.exports = {
       console.log(err);
     }
   },
+  unLikePost: async (req, res) => {
+    console.log("YOU MADE IT TO UnLike")
+    const user= req.user
+    try {
+      await Post.findOneAndUpdate(
+        { _id: req.params.id },
+        {
+          $pull: { likes: user.id }, //here we are gonna decrement a specific property(likes) by 1. "$pull is a built in decrement that comes with mongodb by extension mongoose"
+        }
+      );
+  
+      res.redirect(`/post/${req.params.id}`); //Then we are gonna redirect them back to the post that they were already on. 
+    } catch (err) {
+      console.log(err);
+    }
+  },
+
   deletePost: async (req, res) => {
     try {
       // Find post by id

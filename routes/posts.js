@@ -12,6 +12,8 @@ router.post("/createPost", upload.single("file"), postsController.createPost);
 
 router.post("/likePost/:id", postsController.likePost);
 
+router.post("/unlikePost/:id", postsController.unLikePost);
+
 router.delete("/deletePost/:id", postsController.deletePost);
 
 module.exports = router;

@@ -5,17 +5,28 @@
       <h2><%= post.title %></h2>
       <img class="img-fluid" src="<%= post.image%>" />
       <div class="row justify-content-between">
-
         
-        <form
-          class="col-1"
-          action="/post/likePost/<%= post.id %>" 
-          method="POST"
-        > <!--/forms are always post yet im using a form to do a put WE JUST NEED TO OVERRIDE THE METHOD./--the form always uses the action to know what to do-->
-          <!-- (in the action after the ? theres a query parameter) and if it has that: _method is gonna override that post to be whatever the '='value is  -->
-          <!-- which means our code can load faster and we are not depending on a client(browser env) that exposes on a client API to do this we need a middleware in the server called: const methodOverride = require("method-override")-->
-          <button class="btn btn-primary fa fa-heart" type="submit"></button> <!--So this doesnt do anything unless I click the heart, the hearts and trash are coming from bootstrap which makes it a button that has that buttom primary color of blue, fa heart which is the font awesome for a heart, loaded in the header.ejs  -->
-        </form>
+        <% if(!post.likes.includes(user.id)) {%> <!--If the post.likes does not include the user.id then show the like button-->
+          <form
+            class="col-1"
+            action="/post/likePost/<%= post.id %>" 
+            method="POST"
+          > <!--/forms are always post yet im using a form to do a put WE JUST NEED TO OVERRIDE THE METHOD./--the form always uses the action to know what to do-->
+            <!-- (in the action after the ? theres a query parameter) and if it has that: _method is gonna override that post to be whatever the '='value is  -->
+            <!-- which means our code can load faster and we are not depending on a client(browser env) that exposes on a client API to do this we need a middleware in the server called: const methodOverride = require("method-override")-->
+            <button class="btn btn-primary fa fa-heart" type="submit"></button> <!--So this doesnt do anything unless I click the heart, the hearts and trash are coming from bootstrap which makes it a button that has that buttom primary color of blue, fa heart which is the font awesome for a heart, loaded in the header.ejs  -->
+          </form>
+        <% } %>
+        <% if(post.likes.includes(user.id)) {%> <!--If the post.likes does include the user.id then show the unlike button-->  
+          <form
+            class="col-1"
+            action="/post/unlikePost/<%= post.id %>"
+            method="POST"
+          >
+          <button class="btn btn-primary fa fa-heart-broken" type="submit"></button>
+          </form>
+        <% } %>
+       
 
 
         <h3 class="col-3">Likes: <%= post.likes.length %></h3><!--This shows me how many likes there is.(We take them from the db)-->
