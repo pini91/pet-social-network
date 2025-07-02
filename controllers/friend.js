@@ -48,23 +48,15 @@ module.exports = {
   },
   removeFriend: async (req, res) => {
     try {
-    //     //Here will push the id of the user that is being followed into the FollowFriends array of the user who is following.
-    //     await Friend.findOneAndUpdate(
-    //     { user: req.user.id },
-    //     {
-    //       $push: { FollowFriends: req.params.id },
-    //     }
-    //   );
-    //   //Here will push the id of the user who is followed.
-    //   await Friend.findOneAndUpdate(
-    //     { user: req.params.id },
-    //     {
-    //       $push: { FollowerFriends: req.user.id },
-    //     }
-    //   );
- 
+      //Here we want to remove the id of the user that is being unfollowed from the FollowFriends array of the user who is unfollowing.
+      await Friend.findOneAndUpdate(
+        { user: req.user.id },
+        {
+          $pull: { FollowFriends: req.params.id },
+        }
+      );
       
-    // res.redirect(`/friends/${req.params.id}`); //Redirect to the friend's profile page after following.
+    res.redirect(`/friends/${req.params.id}`); //Redirect to the friend's profile page after unfollowing.
     } catch (err) {
       console.log(err);
     }

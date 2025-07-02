@@ -11,8 +11,7 @@
          <% } %>
          <% if(!isFollowing) {%>
             <form action="/friends/follow/<%= friendProfile._id %>?_method=PUT" method="POST">
-          <!-- <input type="hidden" name="_method" value="PUT"> -->
-            <div class="mt-4">
+            <div class="">
                 <button class="fa fa-plus btn btn-primary col-3" type="submit">Follow Pet Friend</button>
             </div>
             </form>
