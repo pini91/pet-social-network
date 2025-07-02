@@ -26,8 +26,6 @@
           <button class="btn btn-primary fa fa-heart-broken" type="submit"></button>
           </form>
         <% } %>
-       
-
 
         <h3 class="col-3">Likes: <%= post.likes.length %></h3><!--This shows me how many likes there is.(We take them from the db)-->
         <%if(post.user == user.id){ %>  <!-- If the post.user(from the post controllers)=== to the user.id(logged in) show the trash can-->
