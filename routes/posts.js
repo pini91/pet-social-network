@@ -10,7 +10,7 @@ router.get("/:id", ensureAuth, postsController.getPost); //Here we see the API i
 router.post("/createPost", upload.single("file"), postsController.createPost);
 // upload middleware is requireing "../middleware/multer"
 
-router.put("/likePost/:id", postsController.likePost);
+router.post("/likePost/:id", postsController.likePost);
 
 router.delete("/deletePost/:id", postsController.deletePost);
 

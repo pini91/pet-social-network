@@ -18,8 +18,8 @@ const PostSchema = new mongoose.Schema({
     required: true,
   },
   likes: {
-    type: Number,
-    required: true,
+    type: Array, // This is an array of user ids that liked the post.
+    required: false,
   },
   user: {
     type: mongoose.Schema.Types.ObjectId, // This is gonna give us the person that made the post.

@@ -47,14 +47,16 @@ module.exports = {
     }
   },
   likePost: async (req, res) => {
+    console.log("YOU MADE IT TO Like")
+    const user= req.user
     try {
       await Post.findOneAndUpdate(
         { _id: req.params.id },
         {
-          $inc: { likes: 1 }, //here we are gonna increment a specific property(likes) by 1. "$inc is a built in increment that comes with mongodb by extension mongoose"
+          $push: { likes: user.id }, //here we are gonna increment a specific property(likes) by 1. "$inc is a built in increment that comes with mongodb by extension mongoose"
         }
       );
-      console.log("Likes +1");
+  
       res.redirect(`/post/${req.params.id}`); //Then we are gonna redirect them back to the post that they were already on. 
     } catch (err) {
       console.log(err);

@@ -7,7 +7,7 @@
       <div class="row justify-content-between">
         <form
           class="col-1"
-          action="/post/likePost/<%= post.id %>?_method=PUT" 
+          action="/post/likePost/<%= post.id %>" 
           method="POST"
         > <!--/forms are always post yet im using a form to do a put WE JUST NEED TO OVERRIDE THE METHOD./--the form always uses the action to know what to do-->
           <!-- (in the action after the ? theres a query parameter) and if it has that: _method is gonna override that post to be whatever the '='value is  -->
