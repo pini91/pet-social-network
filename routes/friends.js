@@ -10,6 +10,6 @@ const { ensureAuth, ensureGuest } = require("../middleware/auth");
 //Friend Routes
 router.get("/:id", ensureAuth, friendController.getFriend);
 router.put("/follow/:id", ensureAuth, friendController.followFriend);
-//router.delete("/friend/:id/remove", ensureAuth, friendController.removeFriend);
+router.delete("/unfollow/:id", ensureAuth, friendController.removeFriend);
 
 module.exports = router;

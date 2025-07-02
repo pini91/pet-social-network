@@ -1,7 +1,12 @@
 <%- include('partials/header') -%>
 <div class="container">
+  <div class="d-flex justify-content-end">
+        <a href="/logout" class="col-1 btn btn-primary">Logout</a>
+  </div>
    <!-- //align item to the right -->
-  <a class="btn btn-primary float-end" href="/feed">Go to Feed</a>
+  <div class="d-flex justify-content-start">
+    <a class="btn btn-primary" href="/feed">Go to Feed</a>
+  </div>
   <div class="row justify-content-center mt-5">
     <div class="col-6">
       <div class="row justify-content-between">
@@ -15,7 +20,7 @@
           <h3><%= post.title %></h3>
           <h5 class="col-3">Likes: <%= post.likes.length %></h5><!--This shows me how many likes there is.(We take them from the db)-->
       </div>
-      <%if(post.user == user.id){ %>  <!-- If the post.user(from the post controllers)=== to the user.id(logged in) show the trash can-->
+      
       <img class="img-fluid" src="<%= post.image%>" />
       <div class="row justify-content-between">
         
@@ -37,7 +42,7 @@
           <button class="btn btn-primary fa fa-heart-broken" type="submit"></button>
           </form>
         <% } %>
-
+        <%if(post.user == user.id){ %>  <!-- If the post.user(from the post controllers)=== to the user.id(logged in) show the trash can-->
         <form
           action="/post/deletePost/<%= post.id %>?_method=DELETE"
           method="POST"
@@ -72,6 +77,14 @@
           <div class=" d-flex justify-content-between">
             <span><%= comments[i].comment%></span>
             <span><%= comments[i].createdAt.toLocaleString()%></span>
+            <% if(comments[i].userCommentCreator._id == user.id) {%>
+              <form
+                action="/comment/deleteComment/<%= comments[i]._id %>?_method=DELETE"
+                method="POST"
+              >
+                <button class="btn btn-primary fa fa-trash" type="submit"></button>
+              </form>
+            <%}%>
           </div>
         </li>
       <% } %>

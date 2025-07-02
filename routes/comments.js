@@ -7,5 +7,6 @@ const { ensureAuth, ensureGuest } = require("../middleware/auth");
 //The user has to be logged in to create a comment, so we use ensureAuth middleware.
 router.post("/createComment/:id", ensureAuth, commentsController.createComment);
 
+router.delete("/deleteComment/:id", ensureAuth, commentsController.deleteComment);
 
 module.exports = router;

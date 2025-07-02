@@ -13,5 +13,15 @@ module.exports = {
     } catch (err) {
       console.log(err);
     }
-  }
+  },
+   deleteComment: async (req, res) => {
+    try {
+      await Comment.findByIdAndDelete(req.params.id);
+      console.log("Deleted Comment");
+
+      res.redirect(req.get("Referrer")); //redirect back to the post page after deleting the comment.
+    } catch (err) {
+      console.log(err);
+    }
+  },
 };
