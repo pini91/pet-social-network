@@ -1,0 +1,32 @@
+<%- include('partials/header') -%>
+<div class="container profileContainer">
+  <div class="row mt-5">
+      <div class="col-6">
+        <a class="btn btn-primary col-3" href="/feed">Go to Feed</a>
+
+        <form action="/friends/follow/<%= friendProfile._id %>?_method=PUT" method="POST">
+          <input type="hidden" name="_method" value="PUT">
+        <div class="mt-4">
+            <button class="fa fa-plus btn btn-primary col-3" type="submit">Follow Friend</button>
+        </div>
+        </form>
+        <div class="mt-3">
+            <p class="text-capitalize"><strong>Pet Name</strong>: <%= friendProfile.userName %></p>
+        </div>
+      </div>
+      <div class="col-6">
+        <ul class="row list-unstyled">
+        <% for(var i=0; i<posts.length; i++) {%>
+          <li class="col-6 justify-content-between mt-5">
+            <a href="/post/<%= posts[i]._id%>">
+            <img class="img-fluid" src="<%= posts[i].image%>">
+            </a>
+          </li>
+        <% } %>
+        </ul> 
+      </div>
+    </div>
+    <a class="btn btn-primary col-2" href="/feed">Go to Feed</a>
+  </div>
+</div>
+<%- include('partials/footer') -%>

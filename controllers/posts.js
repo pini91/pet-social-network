@@ -6,7 +6,7 @@ const User = require("../models/User"); //We are gonna use this to get the user 
 module.exports = {
   getProfile: async (req, res) => {
     try {
-      const posts = await Post.find({ user: req.user.id });
+      const posts = await Post.find({ user: req.user.id }).sort({ createdAt: "desc" }).lean();
       res.render("profile.ejs", { posts: posts, user: req.user }); //posts(because of mongoose) what we are passing its an array, back in the day they had to put .toArray().
     } catch (err) {
       console.log(err);
@@ -112,6 +112,17 @@ module.exports = {
       res.redirect("/profile");
     } catch (err) {
       res.redirect("/profile");
+    }
+  },
+  getFriend: async (req, res) => {
+    try {
+      const friendProfile= await User.findById(req.params.id); //We are gonna use this to get the user who created the post, so we can show their name in the post.ejs template.
+      
+      const posts = await Post.find({ user: req.params.id }).sort({ createdAt: "desc" }).lean();
+      
+      res.render("friendsProfile.ejs", { posts: posts, friendProfile:friendProfile ,user: req.user,  }); //posts(because of mongoose) what we are passing its an array, back in the day they had to put .toArray().
+    } catch (err) {
+      console.log(err);
     }
   },
 };

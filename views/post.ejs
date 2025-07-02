@@ -10,7 +10,7 @@
           src="<%= userCreator.image %>"
           alt="User Image"
         />
-      <h1><a href="#"><%= userCreator.userName%></a></h1>
+      <h1><a href="/friends/<%= userCreator.id %>"><%= userCreator.userName%></a></h1>
       <div class="mt-4 d-flex justify-content-between">
           <h3><%= post.title %></h3>
           <h5 class="col-3">Likes: <%= post.likes.length %></h5><!--This shows me how many likes there is.(We take them from the db)-->
