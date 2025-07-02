@@ -36,7 +36,7 @@ module.exports = {
       await Friend.findOneAndUpdate(
         { user: req.params.id },
         {
-          $push: { FollowerFriends: req.user.id },
+          $push: { FollowedBy: req.user.id },
         }
       );
  
@@ -55,7 +55,14 @@ module.exports = {
           $pull: { FollowFriends: req.params.id },
         }
       );
-      
+
+      await Friend.findOneAndUpdate(
+        { user: req.params.id },
+        {
+          $pull: { FollowedBy: req.user.id },
+        }
+      );
+
     res.redirect(`/friends/${req.params.id}`); //Redirect to the friend's profile page after unfollowing.
     } catch (err) {
       console.log(err);

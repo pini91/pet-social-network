@@ -10,7 +10,7 @@ const FriendSchema = new mongoose.Schema({
     type: Array,
     default: [],
   },
-  FollowerFriends: {
+  FollowedBy: {
     type: Array,
     default: [],
   },
