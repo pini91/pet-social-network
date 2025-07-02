@@ -81,11 +81,23 @@ module.exports = {
   deletePost: async (req, res) => {
     try {
       // Find post by id
-      let post = await Post.findById({ _id: req.params.id }); //We put this line here to make sure that post exist.
+      let post = await Post.findById(req.params.id); //We put this line here to make sure that post exist.
+      
+      if (!post) {
+          console.error("Post not found");
+          return res.redirect("/profile");
+      }
+
       // Delete image from cloudinary
       await cloudinary.uploader.destroy(post.cloudinaryId);
+      
+      // Delete comments associated with the post
+      await Comment.deleteMany({ post: req.params.id });
+      // This will delete all comments that are associated with the post being deleted.
+
       // Delete post from db
-      await Post.remove({ _id: req.params.id });
+       await Post.findByIdAndDelete(req.params.id);
+
       console.log("Deleted Post");
       res.redirect("/profile");
     } catch (err) {
