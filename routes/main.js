@@ -19,6 +19,7 @@ router.post("/signup", authController.postSignup);
 
 //Settings Route
 router.get("/settings", ensureAuth, settingsController.getSettings); 
+router.put("/settings/editName", ensureAuth, settingsController.editName); // Update settings route
 
 
 module.exports = router;

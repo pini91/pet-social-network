@@ -1,5 +1,9 @@
 <%- include('partials/header') -%>
 <div class="container deleteAccount">
+     <form class="deleteAccount" action="/settings/editName?_method=PUT" method="POST">
+        <input type="text" placeholder="Change Username" name="newName">
+        <button class="deleteAccountButton" >Submit</button>
+    </form>
     <form action="/deleteAccount?_method=DELETE"
         method="POST"
         class="deleteAccount">
@@ -7,7 +11,7 @@
         <p> The changes will be permanent. If you wish to rejoin in the future just sign up again.</p>
         <button class="deleteAccountButton"><a class="deleteAccountButton">Delete Account</a></button>
     </form>
-</div>
+    
 <%- include('partials/footer') -%>
 
 

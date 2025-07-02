@@ -7,9 +7,20 @@ const Friend = require("../models/Friend"); //Were are gonna use the Friend mode
 
 
 module.exports = {
-    //This is the function that will be used to get the posts of a specific user(friend).
+//This is the function that will be used to get the posts of a specific user(friend).
     getSettings: (req, res) => {
-     res.render("settings.ejs", { user: req.user });
+    res.render("settings.ejs", { user: req.user });
   },
-
+   editName: async (req, res) => {
+   //here we are going to grab the req.body.newName which is the new name that the user wants to change to.
+     const  newName  = req.body.newName;
+     console.log(newName)
+     try {
+       await User.findByIdAndUpdate(req.user.id, { userName: newName });
+       res.redirect("/profile");
+     } catch (err) {
+       console.error(err);
+       return res.status(500).send("Internal Server Error");
+     }
+   }
 };
