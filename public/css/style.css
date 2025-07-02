@@ -97,6 +97,33 @@ header h1 a:hover {
     margin-bottom: 1rem;
 }
 
+.settings{
+    margin-bottom: 1%;
+    color: rgb(86, 85, 85);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.deleteAccount{
+    height: 300px;
+    width: 320px;
+    background-color: aliceblue;
+    border-radius:0%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.deleteAccountButton{
+    text-decoration: none;
+    color: black;
+    align-self: center;
+}
+
+.deleteAccountButton:hover{
+    color:gray;
+}
+
 /* Basic responsive adjustments */
 @media (max-width: 768px) {
     .container {
