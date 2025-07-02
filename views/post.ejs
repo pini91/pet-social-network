@@ -5,6 +5,8 @@
       <h2><%= post.title %></h2>
       <img class="img-fluid" src="<%= post.image%>" />
       <div class="row justify-content-between">
+
+        
         <form
           class="col-1"
           action="/post/likePost/<%= post.id %>" 
@@ -14,7 +16,9 @@
           <!-- which means our code can load faster and we are not depending on a client(browser env) that exposes on a client API to do this we need a middleware in the server called: const methodOverride = require("method-override")-->
           <button class="btn btn-primary fa fa-heart" type="submit"></button> <!--So this doesnt do anything unless I click the heart, the hearts and trash are coming from bootstrap which makes it a button that has that buttom primary color of blue, fa heart which is the font awesome for a heart, loaded in the header.ejs  -->
         </form>
-        <h3 class="col-3">Likes: <%= post.likes %></h3><!--This shows me how many likes there is.(We take them from the db)-->
+
+
+        <h3 class="col-3">Likes: <%= post.likes.length %></h3><!--This shows me how many likes there is.(We take them from the db)-->
         <%if(post.user == user.id){ %>  <!-- If the post.user(from the post controllers)=== to the user.id(logged in) show the trash can-->
         <form
           action="/post/deletePost/<%= post.id %>?_method=DELETE"

@@ -37,7 +37,6 @@ module.exports = {
         image: result.secure_url,
         cloudinaryId: result.public_id, // We might need this id to delete it later.
         caption: req.body.caption,
-        likes: 0,
         user: req.user.id,
       });
       console.log("Post has been added!");
