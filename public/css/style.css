@@ -69,6 +69,17 @@ header h1 a:hover {
     margin-bottom: 1rem;
 }
 
+.liComment {
+    list-style-type: none;
+    /* display: flex; */
+    /* justify-content: space-between; */
+    align-items: center;
+    padding: 0.5rem;
+    background-color: #f8f9fa;
+    border-radius: 0.25rem;
+    width: 100%;
+}
+
 /* Basic responsive adjustments */
 @media (max-width: 768px) {
     .container {
