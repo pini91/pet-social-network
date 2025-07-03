@@ -19,8 +19,8 @@ router.post("/signup", authController.postSignup);
 
 //Settings Route
 router.get("/settings", ensureAuth, settingsController.getSettings); 
-router.put("/settings/editName", ensureAuth, settingsController.editName); // Update settings route
-
+router.put("/settings/editName", ensureAuth, settingsController.editName); // Edit name route
+router.delete("/settings/deleteAccount", ensureAuth, settingsController.deleteAccount); // Delete account route
 
 //Search route
 router.post("/search", ensureAuth, friendController.searchPosts);
