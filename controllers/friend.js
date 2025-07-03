@@ -13,11 +13,14 @@ module.exports = {
         const posts = await Post.find({ user: req.params.id }).sort({ createdAt: "desc" }).lean();
 
         const following = await Friend.findOne({ user: req.user.id});
-    
+
+        const followedBy= following.FollowFriends.length; //This is the number of users that follow the user that is logged in.
+        const follows = following.FollowedBy.length; //This is the number of users that the user that is logged in is following. 
         //This will check if the user is following the friend or not.
+
         const isFollowing = following ? following.FollowFriends.includes(req.params.id) : false; //If the user is following the friend,isFollowing will be true, otherwise it will be false.
 
-        res.render("friendsProfile.ejs", { posts: posts, friendProfile:friendProfile ,user: req.user, isFollowing: isFollowing }); 
+        res.render("friendsProfile.ejs", { posts: posts, friendProfile:friendProfile ,user: req.user, isFollowing: isFollowing, followedBy: followedBy, follows: follows }); //Here we get the post(that has a post.id the id who made this post), and we get the user: req.user(the logged in user.) so that we can compare if the person who made the post is the same thats logged in and so we can put the trash can or not.
         } catch (err) {
         console.log(err);
         }
