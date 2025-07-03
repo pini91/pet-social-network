@@ -8,9 +8,8 @@ module.exports = {
     //This is the function that will be used to get the posts of a specific user(friend).
   getFriend: async (req, res) => {
     try {
-    
-        const friendProfile= await User.findById(req.params.id); //We are gonna use this to get the user who created the post, so we can show their name in the post.ejs template.
-       
+        const friendProfile= await User.findOne({_id: req.params.id}); //We are gonna use this to get the user who created the post, so we can show their name in the post.ejs template.
+
         const posts = await Post.find({ user: req.params.id }).sort({ createdAt: "desc" }).lean();
 
         const following = await Friend.findOne({ user: req.user.id});
