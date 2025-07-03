@@ -124,6 +124,12 @@ header h1 a:hover {
     color:gray;
 }
 
+.friend-name {
+    text-decoration: none;
+    color: #333;
+}
+
+
 /* Basic responsive adjustments */
 @media (max-width: 768px) {
     .container {

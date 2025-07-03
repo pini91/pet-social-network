@@ -78,10 +78,7 @@ module.exports = {
           { email: { $regex: searchFriend, $options: "i" } },
         ],
       }).sort({ createdAt: "desc" }).lean();
-
-      console.log(friends);
-
-      //res.render("feed.ejs", { posts: posts, user: req.user });
+      res.render("findFriends.ejs", { friends: friends, user: req.user });
     } catch (err) {
       console.log(err);
     }
