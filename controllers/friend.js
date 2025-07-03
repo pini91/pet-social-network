@@ -68,4 +68,22 @@ module.exports = {
       console.log(err);
     }
   },
+
+  searchPosts: async (req, res) => {
+    try {
+      const searchFriend = req.body.search;
+      const friends = await User.find({
+        $or: [
+          { userName: { $regex: searchFriend, $options: "i" } },
+          { email: { $regex: searchFriend, $options: "i" } },
+        ],
+      }).sort({ createdAt: "desc" }).lean();
+
+      console.log(friends);
+
+      //res.render("feed.ejs", { posts: posts, user: req.user });
+    } catch (err) {
+      console.log(err);
+    }
+  },
 };

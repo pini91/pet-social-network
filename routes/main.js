@@ -22,4 +22,7 @@ router.get("/settings", ensureAuth, settingsController.getSettings);
 router.put("/settings/editName", ensureAuth, settingsController.editName); // Update settings route
 
 
+//Search route
+router.post("/search", ensureAuth, friendController.searchPosts);
+
 module.exports = router;

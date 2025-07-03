@@ -3,6 +3,16 @@
     <div class="d-flex justify-content-end">
         <a href="/logout" class="col-1 btn btn-primary">Logout</a>
     </div>
+    <div>
+      <form class="" action="/search" method="POST">
+        <input type="text" placeholder="Search.." name="search">
+        <button type="submit"><i class="fa fa-search"></i></button>
+        <i style="font-size:24px" class="fa"><a class="refresh" href="../feeds">&#xf021;</a></i>
+      </form>
+    </div>
+    <div class="container feedsContainer">
+      <h2 class="New Feeds">New Feeds</h2>
+    <div>
     <div class="row justify-content-center mt-5">
       <ul class="row list-unstyled">
         <% for(var i=0; i<posts.length; i++) {%>
