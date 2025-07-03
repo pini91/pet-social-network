@@ -10,7 +10,7 @@ const CommentSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-  postCreator: {
+  postId: {
     type: mongoose.Schema.Types.ObjectId, // This is gonna give us the person that made the post.
     ref: "Post", // Here we set post, to know from which post id this comment was made.. "Post"comes from the post model.
   },
