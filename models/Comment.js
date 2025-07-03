@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 
 const CommentSchema = new mongoose.Schema({
+  //Here we are gonna create the schema for the comment model.
+  
   comment: {
     type: String,
     required: true,

@@ -14,7 +14,7 @@
           src="<%= userCreator.image %>"
           alt="User Image"
         />
-      <h1><a href="/friends/<%= userCreator.id %>"><%= userCreator.userName%></a></h1>
+      <h1><a href="/friends/<%= userCreator.id %>"><%= userCreator.userName %></a></h1>
       <div class="mt-4 d-flex justify-content-between">
           <h3><%= post.title %></h3>
           <h5 class="col-3">Likes: <%= post.likes.length %></h5><!--This shows me how many likes there is.(We take them from the db)-->
@@ -71,12 +71,12 @@
         <!--Here we are going to show the comments, the user who made the comment, and the date when it was created.-->
           <div>
             <img class="col-1 rounded-circle" src="" alt="User Image">
-            <span class="col-2"><a href="/profile/<%= comments[i].userCommentCreator._id %>"><%= comments[i].userCommentCreator.userName %></a></span>
+            <span class="col-2"><a href="/friends/<%= comments[i].userCommentCreator.id %>"><%= comments[i].userCommentCreator.userName %></a></span>
           </div>
           <div class=" d-flex justify-content-between">
             <span><%= comments[i].comment%></span>
             <span><%= comments[i].createdAt.toLocaleString()%></span>
-            <% if(comments[i].userCommentCreator._id == user.id) {%>
+            <% if(comments[i].userCommentCreator == user.id) {%>
               <form
                 action="/comment/deleteComment/<%= comments[i]._id %>?_method=DELETE"
                 method="POST"
