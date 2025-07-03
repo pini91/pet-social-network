@@ -1,6 +1,6 @@
 <%- include('partials/header') -%>   <!--we have a header and footerpartial in the view/partials so we dont have to repeat our selfs. Where we put our bootstrap -->
   <div class="container">
-    <h3>Friends</h3>
+    <a class="btn btn-primary col-2 mt-5" href="/feed">Go to Feeds</a>
     <div class="d-flex justify-content-end">
         <a href="/logout" class="col-1 btn btn-primary">Logout</a>
     </div>
@@ -10,11 +10,10 @@
         <button type="submit"><i class="fa fa-search"></i></button>
         <i style="font-size:24px" class="fa"><a class="refresh" href="../feeds">&#xf021;</a></i>
       </form>
+      <h3 class="mt-4">Friends</h3>
     </div>
-    <div class="">
-      <h2 class="New Feeds">New Feeds</h2>
     <div>
-    <div class="d-flex justify-content-center mt-5">
+    <div class="d-flex justify-content-center mt-3">
       <ul class="row list-unstyled">
         <% for(var i=0; i<friends.length; i++) {%>
           <li class="col-6 justify-content-between mt-5">

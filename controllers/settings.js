@@ -22,5 +22,49 @@ module.exports = {
        console.error(err);
        return res.status(500).send("Internal Server Error");
      }
+   },
+   deleteAccount: async (req, res) => {
+     try {
+        // Delete all posts associated with the user
+        await Post.deleteMany({ user: req.user.id });
+
+        // Remove the user from the likes of all posts
+        await Post.updateMany(
+          {},
+          {
+            $pull: { likes: req.user.id },
+          }
+        );
+
+        // Delete all comments made by the user
+        await Comment.deleteMany({ userCommentCreator: req.user.id });
+
+        // Delete all friends associated with the user(followedBy the user to be deleted)
+        await Friend.updateMany(
+          {},
+          {
+          $pull: { FollowedBy: req.user.id },
+          });
+        
+        // Delete the user id from Friend model
+        await Friend.findOneAndDelete(
+          { user: req.user.id },
+        );
+
+        // Delete the user account
+        await User.findByIdAndDelete(req.user.id);
+
+        // Destroy the session
+        req.session.destroy((err) => {
+        if (err)
+          console.log("Error : Failed to destroy the session during logout.", err);
+          req.user = null;
+          res.redirect("/");
+        });
+  
+     } catch (err) {
+       console.error(err);
+       return res.status(500).send("Internal Server Error");
+     }
    }
 };

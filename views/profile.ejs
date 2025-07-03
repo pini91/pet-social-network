@@ -1,75 +1,116 @@
 <%- include('partials/header') -%>
 <div class="container profileContainer">
-  <div class="d-flex justify-content-end ">
-    <a style="font-size:24px" class="fa settings" href="/settings">&#xf013;</a>
-  </div>  
-  <div class="d-flex justify-content-end">
-        <a href="/logout" class="col-1 btn btn-primary">Logout</a>
+    <!-- log out button-->
+  <div>
+    <div class="d-flex justify-content-end ">
+      <a style="font-size:24px" class="fa settings" href="/settings">&#xf013;</a>
+    </div>  
+    <div class="d-flex justify-content-end">
+      <a href="/logout" class="btn btn-gradient-danger">
+        <i class="fas fa-sign-out-alt me-2"></i>Logout
+      </a>
+    </div>
   </div>
-    <div>
-    <form class="" action="/search" method="POST">
-      <input type="text" placeholder="Search.." name="search">
-      <button type="submit"><i class="fa fa-search"></i></button>
-      <i style="font-size:24px" class="fa"><a class="" href="../feeds">&#xf021;</a></i>
-    </form>
-  </div>
-  <div class="row mt-5">
-      <div class="col-6 ">
-          <a class="btn btn-primary col-3" href="/feed">Go to Feeds</a>
-        <div class="mt-4">
-            <p class="text-capitalize"><strong>User Name</strong>: <%= user.userName %></p>
-            <p><strong>Email</strong>: <%= user.email %></p>
-        </div>
-        <div class="mt-5">
-          <h2>Add a post</h2>
-          <form action="/post/createPost" enctype="multipart/form-data" method="POST">
-            <div class="mb-3">
-                <label for="title" class="form-label">Title</label> 
-                <input type="text" class="form-control" id="title" name="title">
+
+ <!-- --------------------------------------- -->
+  <!-- mainlayout starts here -->
+  <div class="row g-4">  <!-- g-4 is a Bootstrap class that adds gutters (spacing) between columns This will gives us 2 columns-->
+     <!-- Left Sidebar -->
+    <div class="col-lg-4">
+      <!-- User Info Card -->
+     <div class="user-info-card">
+      <!-- <div class="d-flex flex-column align-items-center text-center"> -->
+        <form class="" action="/search" method="POST">
+          <input type="text" placeholder="Search.." name="search">
+          <button type="submit"><i class="fa fa-search"></i></button>
+          <i style="font-size:24px" class="fa"><a class="" href="../feeds">&#xf021;</a></i>
+        </form>
+        <a class="btn btn-primary col-8" href="/feed">Go to Feeds</a>
+
+        <!-- user information card -->
+        <div class="user-info-card mt-3">
+          <div class="d-flex flex-column align-items-center text-center">
+            <div class="user-avatar">
+              <%= user.userName.charAt(0).toUpperCase() %>
             </div>
-            <div class="mb-3">
-              <label for="caption" class="form-label">Caption</label>
-              <textarea class="form-control" id="caption" name="caption"></textarea>
-            </div>
-            <div class="mb-3">
-              <label for="imgUpload" class="form-label">Image</label> 
-              <input type="file" class="form-control" id="imageUpload" name="file">
-            </div>
-            <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
-          </form>
+            <h3 class="mb-2 fw-bold"><%= user.userName %></h3>
+            <p class="mb-3 opacity-75"><%= user.email %></p>
+          </div>
         </div>
       </div>
-      <div class="col-6">
-        <% if (posts.length > 0) { %>
-          <div class="posts-grid">
-             <ul class="row list-unstyled">
-              <% for(var i=0; i<posts.length; i++) {%>
-                <li class="col-6 justify-content-between mt-5">
-                  <a href="/post/<%= posts[i]._id%>">
-                    <img class="img-fluid" src="<%= posts[i].image%>">
-                  </a>
-                </li>
-              <% } %>
-              </ul>
+
+            <!-- Create Post Cool Button -->
+          <button class="btn btn-create-post" onclick="toggleCreatePost()">
+            <i class="fas fa-plus me-2"></i>What's on your mind?
+          </button>
+          <!-- me-2 generates space between icon and text -->
+          <div class="mt-5 modern-form" id="createPostForm">
+            <h4 class="mb-4 fw-bold">
+            <i class="fas fa-camera me-2 text-primary"></i>Create New Post
+            </h4>
+            <form action="/post/createPost" enctype="multipart/form-data" method="POST">
+              <div class="mb-3">
+                  <label for="title" class="form-label">Title</label> 
+                  <input type="text" class="form-control" id="title" name="title" placeholder="Give your post a catchy title...">
+              </div>
+              <div class="mb-3">
+                <label for="caption" class="form-label">Caption</label>
+                <textarea class="form-control" id="caption" name="caption" placeholder="Tell us about your pet's story..."></textarea>
+              </div>
+              <div class="mb-3">
+                <label for="imgUpload" class="form-label">Choose Image</label> 
+                <input type="file" class="form-control" id="imageUpload" name="file">
+              </div>
+              <button type="submit" class="btn btn-outline-primary" value="Upload">Share Post</button>
+                <button type="button" class="btn btn-outline-secondary" onclick="toggleCreatePost()">
+                <i class="fas fa-times me-2"></i>Cancel
+              </button>
+            </form>
           </div>
-        <% } else { %>
-          <!-- Empty state for no posts -->
-          <div class="empty-state">
-            <i class="fas fa-camera-retro"></i>
-            <h4>No posts yet</h4>
-            <p class="mb-4">Share your pet's first adorable moment with the world!</p>
-            <!-- <button class="btn btn-modern btn-lg" onclick="toggleCreatePost()">
-              <i class="fas fa-plus me-2"></i>Create Your First Post
-            </button> -->
-          </div>
-        <% } %>
-
-
-
-
        
-      </div>  
-    </div>
+     
+  </div>
+   
+    <!-- ---------------------------------------------- -->
+      <!-- Posts Section -->
+      <div class="col-lg-8">
+        <div class="modern-card">
+         <!-- Header -->
+          <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="mb-0 fw-bold text-dark">
+              <i class="fas fa-images me-2 text-primary"></i>Your Gallery
+            </h2>
+            <span class="badge bg-primary rounded-pill fs-6 px-3 py-2">
+              <%= posts.length %>
+            </span>
+              <!-- Posts Grid or Empty State -->
+            <% if (posts.length > 0) { %>
+              <div class="posts-grid">
+                <ul class="row list-unstyled">
+                  <% for(var i=0; i<posts.length; i++) {%>
+                    <li class="col-6 justify-content-between mt-5">
+                      <a href="/post/<%= posts[i]._id%>">
+                        <img class="img-fluid" src="<%= posts[i].image%>">
+                      </a>
+                    </li>
+                  <% } %>
+                  </ul>
+              </div>
+            <% } else { %>
+              <!-- Empty state for no posts -->
+              <div class="empty-state">
+                <i class="fas fa-camera-retro"></i>
+                <h4>No posts yet</h4>
+                <p class="mb-4">Share your pet's first adorable moment with the world!</p>
+                <button class="btn btn-cool btn-sm" onclick="toggleCreatePost()">
+                  <i class="fas fa-plus me-2"></i>Create Your First Post
+                </button>
+              </div>
+            <% } %>
+        </div>  
+        </div>
+      </div>
+
      <!-- <div class="row justify-content-center mt-5 col-3"> -->
      <a class="btn btn-primary col-2" href="/feed">Go to Feed</a>
     <!-- </div>  -->
