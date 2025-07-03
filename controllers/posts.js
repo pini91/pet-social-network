@@ -2,12 +2,20 @@ const cloudinary = require("../middleware/cloudinary"); // cloudinary is another
 const Post = require("../models/Post");
 const Comment = require("../models/Comment");
 const User = require("../models/User"); //We are gonna use this to get the user who created the post, so we can show their name in the post.ejs template.
+const Friend = require("../models/Friend"); //Were are gonna use the Friend model to verify the connection between users.
+
 
 module.exports = {
   getProfile: async (req, res) => {
     try {
       const posts = await Post.find({ user: req.user.id }).sort({ createdAt: "desc" }).lean();
-      res.render("profile.ejs", { posts: posts, user: req.user }); //posts(because of mongoose) what we are passing its an array, back in the day they had to put .toArray().
+      
+      const follows= await Friend.findOne({ user: req.user.id })
+     
+      const followedBy= follows.FollowedBy.length //This is the number of users that follow the user that is logged in.
+      const following= follows.FollowFriends.length //This is the number of users that the user that is logged in is following.
+
+      res.render("profile.ejs", { posts: posts, user: req.user, followedBy: followedBy, following: following }); //posts(because of mongoose) what we are passing its an array, back in the day they had to put .toArray().
     } catch (err) {
       console.log(err);
     }
