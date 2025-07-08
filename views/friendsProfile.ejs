@@ -26,9 +26,25 @@
         <!-- user information card -->
         <div class="user-info-card mt-3">
           <div class="d-flex flex-column align-items-center text-center">
+
+<!-- 
             <div class="user-avatar">
               <%= friendProfile.userName.charAt(0).toUpperCase() %>
-            </div>
+            </div> -->
+
+              <% if (proPic) { %>
+               <img
+                   class="col-2 rounded-circle"
+                   src="<%= proPic.image %>"
+                   alt="User Image"
+               />
+              <% } else { %>
+                <div class="user-avatar" >
+                <%= user.userName.charAt(0).toUpperCase() %>
+                </div>
+              <% } %>
+
+
             <h3 class="mb-2 fw-bold"><%= friendProfile.userName %></h3>
             <p class="mb-3 opacity-75"><%= friendProfile.email %></p>
             <span class="badge bg-primary rounded-pill fs-6 px-3 py-2">
