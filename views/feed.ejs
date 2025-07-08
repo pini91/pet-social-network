@@ -12,17 +12,37 @@
     </div>
     <div class="container feedsContainer">
       <h2 class="New Feeds">Community Feed</h2>
-    <div>
-    <div class="row justify-content-center mt-5">
-      <ul class="row list-unstyled">
-        <% for(var i=0; i<posts.length; i++) {%>
-          <li class="col-6 justify-content-between mt-5">
-            <a href="/post/<%= posts[i]._id%>">  <!-- Leon hard coded the post in the url here. Thats the route he wanted to be, setted up in the server.js. So if you click in the image it will take you to the post with route /post/i1239hfbcvjnj(the id)-->
-              <img class="img-fluid" src="<%= posts[i].image%>">
-            </a>
-          </li>
-        <% } %>
-        </ul>
     </div>
+    <div>
+    <!-- Posts Grid  -->
+      <div class="posts-grid">
+
+          <!-- Loop through posts and display them -->
+          <% for(let i=0; i<posts.length; i++) {%>
+            <div class="post-item">
+                <a href="/post/<%= posts[i]._id%>">
+                  <img  src="<%= posts[i].image%>" alt="<%= posts[i].title %>">
+                  <div class="post-overlay">
+                    <div class="w-100">
+                       <h6 class="mb-2"><%= posts[i].title %></h6>
+                       <div class="d-flex justify-content-between align-items-center">
+                        <small>
+                          <i class="fas fa-heart me-1"></i><%= posts[i].likes %> likes
+                        </small>
+                        <small>
+                          <i class="fas fa-calendar me-1"></i>
+                          <%= new Date(posts[i].createdAt).toLocaleDateString() %>
+                        </small>
+                      </div>
+                    </div>
+                  </div>
+
+                </a>
+           
+              </div>
+            <% } %>
+       
+        </div>
+
   </div>  
 <%- include('partials/footer') -%>
