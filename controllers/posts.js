@@ -9,13 +9,15 @@ module.exports = {
   getProfile: async (req, res) => {
     try {
       const posts = await Post.find({ user: req.user.id }).sort({ createdAt: "desc" }).lean();
-      
+      //find the profile pic
+      const profilePic = posts.find(post => post.isProfilePic);
+    
       const follows= await Friend.findOne({ user: req.user.id })
      
       const followedBy= follows.FollowedBy.length //This is the number of users that follow the user that is logged in.
       const following= follows.FollowFriends.length //This is the number of users that the user that is logged in is following.
 
-      res.render("profile.ejs", { posts: posts, user: req.user, followedBy: followedBy, following: following }); //posts(because of mongoose) what we are passing its an array, back in the day they had to put .toArray().
+      res.render("profile.ejs", { posts: posts, user: req.user, followedBy: followedBy, following: following, profilePic:profilePic }); //posts(because of mongoose) what we are passing its an array, back in the day they had to put .toArray().
     } catch (err) {
       console.log(err);
     }
@@ -31,7 +33,9 @@ module.exports = {
     try {
       const post = await Post.findById(req.params.id);//The magic comes here, because in the router API we setted whatever comes after the \/:id And now in my post collection database Im gonna grab that document by doing req.params.id --We can change the query parameter .id to whatever we want, but then we would have to change it as well in the post.js route/ 
       //const comments = await Comment.find({postCreator: req.params.id}).sort({ createdAt: "desc" }).lean();
-      
+      const posts = await Post.find({ user: post.user }).sort({ createdAt: "desc" }).lean();
+      //find the profile pic
+      const profilePic = posts.find(post => post.isProfilePic);
       //grab the user name from User model
       const userCreator = await User.findById(post.user) //This is to get the user who created the post, so we can show their name in the post.ejs template.
       
@@ -46,7 +50,7 @@ module.exports = {
       //console.log(commentsWithUsernames)
      
       
-      res.render("post.ejs", { post: post, user: req.user, comments: commentsWithUsernames, userCreator:userCreator}); //Here we get the post(that has a post.id the id who made this post), and we get the user: req.user(the logged in user.) so that we can compare if the person who made the post is the same thats logged in and so we can put the trash can or not.
+      res.render("post.ejs", { post: post, user: req.user, comments: commentsWithUsernames, userCreator:userCreator, profilePic: profilePic}); //Here we get the post(that has a post.id the id who made this post), and we get the user: req.user(the logged in user.) so that we can compare if the person who made the post is the same thats logged in and so we can put the trash can or not.
     } catch (err) {
       console.log(err);
     }
@@ -126,6 +130,38 @@ module.exports = {
       res.redirect("/profile");
     } catch (err) {
       res.redirect("/profile");
+    }
+  },
+  createProfilePic: async (req, res) => {
+    try {
+       //find the profile pic
+      const picture = await Post.findOne({ user: req.user, isProfilePic: true })//.sort({ createdAt: "desc" }).lean();
+      //This is to make sure that we only have one profile picture at a time.
+      //If the user already has a profile picture, we set it to false.
+      if(picture){
+        await Post.findOneAndUpdate(
+          { _id: picture.id },
+          {
+            $set: { isProfilePic: false}, //here we are gonna set the isProfilePic property to false.
+          }
+        );
+      }
+
+      // Upload image to cloudinary
+      const result = await cloudinary.uploader.upload(req.file.path); // You dont have to know all this,you just have to read it in the cloudinaryes docs or look at some stuff that that folks were doing with cloudinary and i grabbed the pieces that I need.
+                          //.uploader sigurno je jedan method from cloudinary and . upload: uploads the image
+      await Post.create({
+        //title: req.body.title,
+        image: result.secure_url,
+        cloudinaryId: result.public_id, // We might need this id to delete it later.
+        //caption: req.body.caption,
+        user: req.user.id,
+        isProfilePic: true, // This is to check if the post is a profile picture or not.
+      });
+      console.log("Profile picture has been added!");
+      res.redirect("/profile");
+    } catch (err) {
+      console.log(err);
     }
   },
 };

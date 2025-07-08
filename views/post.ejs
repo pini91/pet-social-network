@@ -9,11 +9,17 @@
   <div class="row justify-content-center mt-5">
     <div class="col-6">
       <div class="row justify-content-between">
-        <img
-          class="col-2 rounded-circle"
-          src="#"
-          alt="User Image"
-        />
+         <% if (profilePic) { %>
+               <img 
+                   class="col-2 rounded-circle"
+                   src="<%= profilePic.image %>"
+                   alt="User Image"
+               />
+             <% } else { %>
+               <div class="user-avatar">
+                <%= user.userName.charAt(0).toUpperCase() %>
+              </div>
+             <% } %>
       <h1><a href="/friends/<%= userCreator.id %>"><%= userCreator.userName %></a></h1>
       <div class="mt-4 d-flex justify-content-between">
           <h3><%= post.title %></h3>

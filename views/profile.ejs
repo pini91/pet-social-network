@@ -28,15 +28,26 @@
 
         <!-- user information card -->
         <div class="user-info-card mt-3">
-          <div class="d-flex flex-column align-items-center text-center profilePic">
-                <img onclick="toggleCreateProfilePic()"
-                class="col-3 rounded-circle"
-                src=""
-                alt="User Image"
-              />
+          <div class="d-flex flex-column align-items-center text-center ">
+            <div onclick="toggleCreateProfilePic()" class="profilePic">
+             <% if (profilePic) { %>
+               <img
+                   class="col-2 rounded-circle"
+                   src="<%= profilePic.image %>"
+                   alt="User Image"
+               />
+             <% } else { %>
+               <div class="user-avatar" onclick="toggleCreateProfilePic()">
+                <%= user.userName.charAt(0).toUpperCase() %>
+              </div>
+             <% } %>
+            </div>
               <div id="createProfilePic" class="mb-3 modern-form" >
-                <label for="imgUpload" class="form-label">Choose Image</label> 
-                <input type="file" class="form-control" id="imageUpload" name="file">
+                <form action="/post/createProfilePic" enctype="multipart/form-data" method="POST">
+                  <label for="imgUpload" class="form-label">Choose Image</label> 
+                  <input type="file" class="form-control" id="imageUpload" name="file">
+                  <button type="submit" class="btn btn-outline-primary" value="Upload">Share</button>
+                </form>
               </div>
               <!-- <div class="user-avatar">
                 <%= user.userName.charAt(0).toUpperCase() %>

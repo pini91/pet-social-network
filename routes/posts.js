@@ -14,6 +14,8 @@ router.post("/likePost/:id", postsController.likePost);
 
 router.post("/unlikePost/:id", postsController.unLikePost);
 
+router.post("/createProfilePic", upload.single("file"), postsController.createProfilePic);
+
 router.delete("/deletePost/:id", postsController.deletePost);
 
 module.exports = router;
