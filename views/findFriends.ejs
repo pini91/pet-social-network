@@ -22,7 +22,7 @@
 
             <% const profilePic = photos.find(photo => photo.user.toString() === friends[i]._id.toString()); %>
              <img
-                class="col-3 rounded-circle"
+                class="col-lg-4 rounded-circle"
                 src="<%= profilePic ? profilePic.image : '' %>"
                 alt="User Image"
               />
