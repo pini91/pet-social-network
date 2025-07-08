@@ -1,8 +1,10 @@
 <%- include('partials/header') -%>   <!--we have a header and footerpartial in the view/partials so we dont have to repeat our selfs. Where we put our bootstrap -->
   <div class="container">
     <a class="btn btn-primary col-2 mt-5" href="/feed">Go to Feeds</a>
-    <div class="d-flex justify-content-end">
-        <a href="/logout" class="col-1 btn btn-primary">Logout</a>
+       <div class="d-flex justify-content-end">
+      <a href="/logout" class="btn btn-gradient-danger">
+        <i class="fas fa-sign-out-alt me-2"></i>Logout
+      </a>
     </div>
     <div>
       <form class="" action="/search" method="POST">
@@ -17,11 +19,15 @@
       <ul class="row list-unstyled">
         <% for(var i=0; i<friends.length; i++) {%>
           <li class="col-6 justify-content-between mt-5">
+
+            <% const profilePic = photos.find(photo => photo.user.toString() === friends[i]._id.toString()); %>
              <img
                 class="col-3 rounded-circle"
-                src=""
+                src="<%= profilePic ? profilePic.image : '' %>"
                 alt="User Image"
               />
+
+
               <a href="/friends/<%= friends[i]._id %>" class="friend-name"> 
                 <h3 class="text-capitalize"><%= friends[i].userName %></h3>
               </a>

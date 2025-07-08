@@ -39,6 +39,8 @@ UserSchema.methods.comparePassword = function comparePassword(
   });
 };
 
+
+
 module.exports = mongoose.model("User", UserSchema); 
 // Where theres "user" there goes the name of the collection, but for some reason mongodb puts a lowercase in the beginning and a s at the end. 
 //If you want mongodb to respect the name youve given you should write it like this:  mongoose.model("User", UserSchema,"Here the name(again I guess)")

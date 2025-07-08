@@ -86,7 +86,7 @@ module.exports = {
         ],
       }).sort({ createdAt: "desc" }).lean();
 // ----------------------------------------------------
-      const photos = [];
+      const photos = []; //This will hold the profile pictures of the friends that are found.
       //search for each friends profile picture
       for (let i = 0; i < friends.length; i++) {
         const posts = await Post.find({ user: friends[i]._id, isProfilePic: true })
@@ -96,7 +96,7 @@ module.exports = {
       }
       //console.log(photos)
 
-      res.render("findFriends.ejs", { friends: friends, user: req.user}); //Here we get the post(that has a post.id the id who made this post), and we get the user: req.user(the logged in user.) so that we can compare if the person who made the post is the same thats logged in and so we can put the trash can or not.
+      res.render("findFriends.ejs", { friends: friends, user: req.user, photos: photos }); //Here we get the post(that has a post.id the id who made this post), and we get the user: req.user(the logged in user.) so that we can compare if the person who made the post is the same thats logged in and so we can put the trash can or not.
     } catch (err) {
       console.log(err);
     }
