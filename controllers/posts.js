@@ -41,7 +41,6 @@ module.exports = {
       
     
       //grab the userNames from the comments
-
       const commentsWithUsernames = await Comment.find({postId: req.params.id}).sort({ createdAt: "desc" }).populate('userCommentCreator', 'userName'); //This is to get the user who created the comment, so we can show their name in the post.ejs template.
       //populate is a mongoose method that allows us to replace the specified path in the document with the actual document from another collection. In this case, we are replacing the userCommentCreator field with the actual User document, and we are only selecting the userName field from that User document.
 

@@ -3,7 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 const passport = require("passport");
 const session = require("express-session");
-const MongoStore = require("connect-mongo")(session);
+const MongoStore = require("connect-mongo"); // This is used to store the session in MongoDB
 const methodOverride = require("method-override"); // we need this middleware so that we are able to override the method to (PUT/DELETE)then we are able to use it down below.
 const flash = require("express-flash");
 const logger = require("morgan");
@@ -45,7 +45,12 @@ app.use(
     secret: "keyboard cat",
     resave: false,
     saveUninitialized: false,
-    store: new MongoStore({ mongooseConnection: mongoose.connection }),
+    cookie: {
+    maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+    },
+    store:  MongoStore.create({
+      mongoUrl: process.env.DB_STRING,}),
+      touchAfter: 24 * 3600, // lazy session update
   })
 );
 

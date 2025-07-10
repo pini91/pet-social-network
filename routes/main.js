@@ -5,6 +5,7 @@ const homeController = require("../controllers/home");
 const postsController = require("../controllers/posts");
 const friendController = require("../controllers/friend");
 const settingsController = require("../controllers/settings");
+const resetController = require("../middleware/resetController");
 const { ensureAuth, ensureGuest } = require("../middleware/auth");
 
 //Main Routes - simplified for now
@@ -24,5 +25,11 @@ router.delete("/settings/deleteAccount", ensureAuth, settingsController.deleteAc
 
 //Search route
 router.post("/search", ensureAuth, friendController.searchPosts);
+
+//Reset Password Routes
+router.get("/forgot-password", resetController.getForgotPassword); //(serve form)
+router.post("/forgot-password", resetController.forgotPassword);
+router.get("/reset-password/:token", resetController.getResetPassword); //(serve reset form)
+router.post("/reset-password/:token", resetController.postResetPassword);
 
 module.exports = router;

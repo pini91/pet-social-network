@@ -2,8 +2,18 @@
 <div class="container deleteAccount">
      <form class="deleteAccount" action="/settings/editName?_method=PUT" method="POST">
         <input type="text" placeholder="Change Username" name="newName">
-        <button class="deleteAccountButton" >Submit</button>
+        <button class="" >Submit</button>
     </form>
+    <!-- change password form -->
+    <form action="/settings/changePassword?_method=PUT"
+        method="POST"
+        class="changePassword">
+        <input type="password" placeholder="New Password" name="newPassword">
+        <input type="password" placeholder="Confirm New Password" name="confirmPassword">
+        <button class="" >Submit</button>
+    </form>
+
+    <!-- delete account form -->
     <form action="/settings/deleteAccount?_method=DELETE"
         method="POST"
         class="deleteAccount">
