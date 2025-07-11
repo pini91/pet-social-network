@@ -34,8 +34,9 @@ module.exports = {
       const post = await Post.findById(req.params.id);//The magic comes here, because in the router API we setted whatever comes after the \/:id And now in my post collection database Im gonna grab that document by doing req.params.id --We can change the query parameter .id to whatever we want, but then we would have to change it as well in the post.js route/ 
       //const comments = await Comment.find({postCreator: req.params.id}).sort({ createdAt: "desc" }).lean();
       const posts = await Post.find({ user: post.user }).sort({ createdAt: "desc" }).lean();
-      //find the profile pic
-      const profilePic = posts.find(post => post.isProfilePic);
+      //find the profile pic for the post creator
+      const postCreatorProfilePic = posts.find(post => post.isProfilePic);
+      
       //grab the user name from User model
       const userCreator = await User.findById(post.user) //This is to get the user who created the post, so we can show their name in the post.ejs template.
       
@@ -44,12 +45,35 @@ module.exports = {
       const commentsWithUsernames = await Comment.find({postId: req.params.id}).sort({ createdAt: "desc" }).populate('userCommentCreator', 'userName'); //This is to get the user who created the comment, so we can show their name in the post.ejs template.
       //populate is a mongoose method that allows us to replace the specified path in the document with the actual document from another collection. In this case, we are replacing the userCommentCreator field with the actual User document, and we are only selecting the userName field from that User document.
 
+      // Get unique user IDs from comments
+      const commentUserIds = [...new Set(commentsWithUsernames.map(comment => comment.userCommentCreator._id))];
+      
+      // Get profile pictures for all users who made comments
+      const profilePics = [];
+      for (const userId of commentUserIds) {
+        const userPosts = await Post.find({ user: userId }).sort({ createdAt: "desc" }).lean();
+        const userProfilePic = userPosts.find(post => post.isProfilePic);
+        if (userProfilePic) {
+          profilePics.push({
+            user: userId,
+            image: userProfilePic.image
+          });
+        }
+      }
+
       // console.log(post)
       //console.log(userCreator.id)
       //console.log(commentsWithUsernames)
      
       
-      res.render("post.ejs", { post: post, user: req.user, comments: commentsWithUsernames, userCreator:userCreator, profilePic: profilePic}); //Here we get the post(that has a post.id the id who made this post), and we get the user: req.user(the logged in user.) so that we can compare if the person who made the post is the same thats logged in and so we can put the trash can or not.
+      res.render("post.ejs", { 
+        post: post, 
+        user: req.user, 
+        comments: commentsWithUsernames, 
+        userCreator: userCreator, 
+        profilePic: postCreatorProfilePic,
+        profilePics: profilePics // Array of profile pictures for comment creators
+      }); //Here we get the post(that has a post.id the id who made this post), and we get the user: req.user(the logged in user.) so that we can compare if the person who made the post is the same thats logged in and so we can put the trash can or not.
     } catch (err) {
       console.log(err);
     }

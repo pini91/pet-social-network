@@ -73,16 +73,24 @@
     </div>
     <ul>
       <% for(let i=0; i<comments.length; i++) {%>  <!--This comments are also comming from the post controller.-->
-        <li class="col-6 justify-content-between mt-5 liComment">
+        <li class="col-6 d-flex mt-2 liComment">
         <!--Here we are going to show the comments, the user who made the comment, and the date when it was created.-->
-          <div>
-            <img class="col-1 rounded-circle" src="#" alt="User Image">
+          <!-- <div > -->
+
+
+          <!-- here we are going to find the images for each user that made a comment -->
+           <% const proPic = profilePics.find(photo => photo.user.toString() === comments[i].userCommentCreator.id.toString()); %>
+
+          <img class="col-2 rounded-circle userImg" src="<%= proPic ? proPic.image : '/imgs/icons8-dog-paw-32.png' %>" alt="User Image">
             <!-- <span class="col-2"><a href="/friends/<%= comments[i].userCommentCreator.id %>"><%= comments[i].userCommentCreator.userName %></a></span> -->
-          </div>
-          <div class=" d-flex justify-content-between">
-            <span class="col-2"><a href="/friends/<%= comments[i].userCommentCreator.id %>"><%= comments[i].userCommentCreator.userName %></a></span>
+          <!-- </div> -->
+      
+          <div class=" row mt-1 comment">
+            <span class="col-2"><a href="/friends/<%= comments[i].userCommentCreator.id %>" class="friend-name text-capitalize"><%= comments[i].userCommentCreator.userName%></a></span>
             <span><%= comments[i].comment%></span>
-            <span><%= comments[i].createdAt.toLocaleString()%></span>
+          </div>
+          <div class="d-flex justify-content-end " >
+            <span><%= comments[i].createdAt.toLocaleString().slice(0, 9)%></span>
             <% if(comments[i].userCommentCreator.id == user.id) {%>
               <form
                 action="/comment/deleteComment/<%= comments[i]._id %>?_method=DELETE"
@@ -92,6 +100,7 @@
               </form>
             <%}%>
           </div>
+        
         </li>
       <% } %>
     </ul>
