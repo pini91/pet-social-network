@@ -42,15 +42,16 @@ app.use(methodOverride("_method")); //Here we use the method Override and we are
 // Setup Sessions - stored in MongoDB
 app.use(
   session({
-    secret: "keyboard cat",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
-    maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
     },
-    store:  MongoStore.create({
-      mongoUrl: process.env.DB_STRING,}),
+    store: MongoStore.create({
+      mongoUrl: process.env.DB_STRING,
       touchAfter: 24 * 3600, // lazy session update
+    }),
   })
 );
 

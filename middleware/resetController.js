@@ -1,8 +1,6 @@
 const express = require('express');
-
 const app = express();
-
-const crypto = require("crypto");
+const crypto = require("crypto"); //to create the token
 const User = require("../models/User");
 const nodemailer = require("nodemailer");
 const bcrypt = require("bcrypt");
@@ -14,7 +12,6 @@ module.exports={
     getForgotPassword: (req, res) => {
     res.render("forgotPassword.ejs", { user: req.user });
    },
-
     getResetPassword : async (req, res) => {
         try {
             const user = await User.findOne({
@@ -33,7 +30,7 @@ module.exports={
             req.flash("error", "Something went wrong. Please try again.");
             res.redirect("/forgot-password");
         }
-},
+    },
 
     forgotPassword : async (req, res) => {
         try {
@@ -131,7 +128,79 @@ module.exports={
             req.flash("error", "Something went wrong. Please try again.");
             res.redirect("/forgot-password");
         }
-},
+    },
+
+    changePassword: (req, res) => {
+        res.render("changePassword.ejs", { user: req.user });
+    },
+
+    currentPassword: async (req, res) => {
+        try {
+            const user = req.user;
+            const { currentPassword } = req.body;
+            
+            // Check if the current password is correct using the User model's comparePassword method
+            user.comparePassword(currentPassword, (err, isMatch) => {
+                if (err) {
+                    console.error(err);
+                    req.flash("error", "Something went wrong. Please try again.");
+                    return res.redirect("/changePassword");
+                }
+                
+                if (!isMatch) {
+                    req.flash("error", "Current password is incorrect.");
+                    return res.redirect("/changePassword");
+                }
+                console.log("Current password verified successfully:");
+                // If password matches, you can proceed with password change logic
+                req.flash("success", "Current password verified successfully.");
+                res.redirect("/newPassword");
+            });
+        } catch (err) {
+            console.error(err);
+            req.flash("error", "Something went wrong. Please try again.");
+            res.redirect("/changePassword");
+        }
+    },
+    renderNewPassword: (req, res) => {
+        res.render("newPassword.ejs", { user: req.user });
+    },
+
+    newPassword: async (req, res) => {
+        try {
+            const user = req.user;
+            const { password, confirm } = req.body;  // Match the form field names
+           
+
+            // Validate that passwords are provided
+            if (!password || !confirm) {
+                req.flash("error", "Please provide both password fields.");
+                return res.redirect("/newPassword");
+            }
+
+            // Validate password length (optional but recommended)
+            if (password.length < 6) {
+                req.flash("error", "Password must be at least 6 characters long.");
+                return res.redirect("/newPassword");
+            }
+
+            if (password !== confirm) {
+                req.flash("error", "New passwords do not match.");
+                return res.redirect("/newPassword");
+            }
+
+            // Set the new password
+            user.password = password;
+            await user.save();
+
+            req.flash("success", "Your password has been changed successfully.");
+            res.redirect("/profile");
+        } catch (err) {
+            console.error(err);
+            req.flash("error", "Something went wrong. Please try again.");
+            res.redirect("/newPassword");
+        }
+    },
 
 
 }

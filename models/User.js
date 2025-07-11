@@ -32,11 +32,12 @@ UserSchema.pre("save", function save(next) {
 
 // Helper method for validating user's password.
 
+// .methods is a Mongoose feature that allows you to add custom instance methods to your schema
 UserSchema.methods.comparePassword = function comparePassword(
   candidatePassword,
   cb
 ) {
-  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
+  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => { //bcrypt.compare() is a function used in conjunction with bcrypt.hash() to securely verify if a provided plain-text password matches a stored hashed password without ever storing or handling the plain-text password directly
     cb(err, isMatch);
   });
 };

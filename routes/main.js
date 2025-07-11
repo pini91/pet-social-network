@@ -23,6 +23,7 @@ router.get("/settings", ensureAuth, settingsController.getSettings);
 router.put("/settings/editName", ensureAuth, settingsController.editName); // Edit name route
 router.delete("/settings/deleteAccount", ensureAuth, settingsController.deleteAccount); // Delete account route
 
+
 //Search route
 router.post("/search", ensureAuth, friendController.searchPosts);
 
@@ -31,5 +32,9 @@ router.get("/forgot-password", resetController.getForgotPassword); //(serve form
 router.post("/forgot-password", resetController.forgotPassword);
 router.get("/reset-password/:token", resetController.getResetPassword); //(serve reset form)
 router.post("/reset-password/:token", resetController.postResetPassword);
+router.get("/changePassword", ensureAuth, resetController.changePassword); // Change password route
+router.post("/currentPassword", ensureAuth, resetController.currentPassword); // Old password route
+router.get("/newPassword", ensureAuth, resetController.renderNewPassword);
+router.post("/new-password", ensureAuth, resetController.newPassword); // New password route
 
 module.exports = router;
