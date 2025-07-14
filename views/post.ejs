@@ -10,11 +10,13 @@
     <div class="col-6">
       <div class="row justify-content-between">
          <% if (profilePic) { %>
+          <div class="">
                <img 
-                   class="col-2 rounded-circle"
+                   class="profile-picture-large"
                    src="<%= profilePic.image %>"
                    alt="User Image"
                />
+          </div>
              <% } else { %>
                <div class="user-avatar">
                 <%= user.userName.charAt(0).toUpperCase() %>
@@ -81,7 +83,7 @@
           <!-- here we are going to find the images for each user that made a comment -->
            <% const proPic = profilePics.find(photo => photo.user.toString() === comments[i].userCommentCreator.id.toString()); %>
 
-          <img class="col-2 rounded-circle userImg" src="<%= proPic ? proPic.image : '/imgs/icons8-dog-paw-32.png' %>" alt="User Image">
+          <img class="profile-picture-small" src="<%= proPic ? proPic.image : '/imgs/icons8-dog-paw-32.png' %>" alt="User Image">
             <!-- <span class="col-2"><a href="/friends/<%= comments[i].userCommentCreator.id %>"><%= comments[i].userCommentCreator.userName %></a></span> -->
           <!-- </div> -->
       

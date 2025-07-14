@@ -143,9 +143,9 @@ module.exports = {
       await cloudinary.uploader.destroy(post.cloudinaryId);
       
       // Delete comments associated with the post
-      await Comment.deleteMany({ post: req.params.id });
+     await Comment.deleteMany({ postId: req.params.id });
       // This will delete all comments that are associated with the post being deleted.
-
+  
       // Delete post from db
        await Post.findByIdAndDelete(req.params.id);
 
