@@ -1,7 +1,7 @@
 {
   "name": "pets-social-network",
   "version": "1.0.0",
-  "description": "100Devs Social Network",
+  "description": "Pets Social Network",
   "main": "server.js",
   "scripts": {
     "start": "nodemon server.js",
