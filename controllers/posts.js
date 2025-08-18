@@ -7,18 +7,35 @@ const Friend = require('../models/Friend') // Were are gonna use the Friend mode
 module.exports = {
   getProfile: async (req, res) => {
     try {
+      console.log('getProfile: Starting profile request for user:', req.user.id)
       const posts = await Post.find({ user: req.user.id }).sort({ createdAt: 'desc' }).lean()
+      console.log('getProfile: Found posts:', posts.length)
+
       // find the profile pic
       const profilePic = posts.find(post => post.isProfilePic)
 
-      const follows = await Friend.findOne({ user: req.user.id })
+      let follows = await Friend.findOne({ user: req.user.id })
+      console.log('getProfile: Friend document found:', !!follows)
 
-      const followedBy = follows.FollowedBy.length // This is the number of users that follow the user that is logged in.
-      const following = follows.FollowFriends.length // This is the number of users that the user that is logged in is following.
+      // If no friend document exists, create one or use default values
+      if (!follows) {
+        console.log('getProfile: Creating new Friend document for user:', req.user.id)
+        follows = new Friend({
+          user: req.user.id,
+          FollowFriends: [],
+          FollowedBy: []
+        })
+        await follows.save()
+      }
 
+      const followedBy = follows.FollowedBy ? follows.FollowedBy.length : 0 // This is the number of users that follow the user that is logged in.
+      const following = follows.FollowFriends ? follows.FollowFriends.length : 0 // This is the number of users that the user that is logged in is following.
+
+      console.log('getProfile: Rendering profile with followedBy:', followedBy, 'following:', following)
       res.render('profile.ejs', { posts, user: req.user, followedBy, following, profilePic }) // posts(because of mongoose) what we are passing its an array, back in the day they had to put .toArray().
     } catch (err) {
-      console.log(err)
+      console.error('getProfile error:', err)
+      res.redirect('/')
     }
   },
   getFeed: async (req, res) => {
