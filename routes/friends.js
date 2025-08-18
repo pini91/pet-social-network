@@ -1,15 +1,15 @@
-const express = require("express");
-const router = express.Router();
-const authController = require("../controllers/auth");
-const homeController = require("../controllers/home");
-const postsController = require("../controllers/posts");
-const friendController = require("../controllers/friend");
-const { ensureAuth, ensureGuest } = require("../middleware/auth");
+const express = require('express')
+const router = express.Router()
+// Unused controllers commented out
+// const authController = require('../controllers/auth')
+// const homeController = require('../controllers/home')
+// const postsController = require('../controllers/posts')
+const friendController = require('../controllers/friend')
+const { ensureAuth } = require('../middleware/auth') // ensureGuest not used
 
+// Friend Routes
+router.get('/:id', ensureAuth, friendController.getFriend)
+router.put('/follow/:id', ensureAuth, friendController.followFriend)
+router.delete('/unfollow/:id', ensureAuth, friendController.removeFriend)
 
-//Friend Routes
-router.get("/:id", ensureAuth, friendController.getFriend);
-router.put("/follow/:id", ensureAuth, friendController.followFriend);
-router.delete("/unfollow/:id", ensureAuth, friendController.removeFriend);
-
-module.exports = router;
+module.exports = router

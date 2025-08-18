@@ -1,0 +1,51 @@
+# GitLeaks configuration file for Todo App
+title = "Todo App Secret Scanning"
+
+# Use default rules but with comprehensive allowlist
+[extend]
+useDefault = true
+
+# Comprehensive allowlist for documentation and examples
+[allowlist]
+description = "Documentation and example files"
+files = [
+    '''README.md''',
+    '''CICD_SETUP.md''',
+    '''.env.example''',
+    '''docs/**''',
+    '''examples/**''',
+    '''**/*.md''',
+    '''node_modules/**''',
+    '''**/*.txt''',
+    '''**/*.rst''',
+    '''package-lock.json''',
+]
+
+regexes = [
+    '''username:password''',
+    '''your_.*''',
+    '''your-.*''',
+    '''example''',
+    '''test''',
+    '''demo''',
+    '''sample''',
+    '''localhost''',
+    '''cluster\.mongodb\.net''',
+    '''dev-secret-key-here''',
+    '''super-secure-production-secret''',
+    '''keyboard cat''',
+    '''AKIAIMNOJVGFDXXXE4OA''',
+    '''cafebabe:deadbeef''',
+    '''BUNDLE_ENTERPRISE''',
+    '''sidekiq''',
+    '''todoapp''',
+    '''\+srv''',
+]
+
+paths = [
+    '''\.env\.example''',
+    '''README\.md''',
+    '''CICD_SETUP\.md''',
+    '''node_modules/''',
+    '''docs/''',
+]

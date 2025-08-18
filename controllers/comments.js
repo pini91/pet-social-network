@@ -1,4 +1,4 @@
-const Comment = require("../models/Comment");
+const Comment = require('../models/Comment')
 
 module.exports = {
   createComment: async (req, res) => {
@@ -6,22 +6,22 @@ module.exports = {
       await Comment.create({
         comment: req.body.comment, // because in the post.ejs we have an input form with the name of comment.
         userCommentCreator: req.user.id, // this is the id of the user who is logged in and making the comment.
-        postId: req.params.id, 
-      });
-      console.log("Comment has been added!");
-      res.redirect("/post/"+req.params.id);
+        postId: req.params.id
+      })
+      console.log('Comment has been added!')
+      res.redirect('/post/' + req.params.id)
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
   },
-   deleteComment: async (req, res) => {
+  deleteComment: async (req, res) => {
     try {
-      await Comment.findByIdAndDelete(req.params.id);
-      console.log("Deleted Comment");
+      await Comment.findByIdAndDelete(req.params.id)
+      console.log('Deleted Comment')
 
-      res.redirect(req.get("Referrer")); //redirect back to the post page after deleting the comment.
+      res.redirect(req.get('Referrer')) // redirect back to the post page after deleting the comment.
     } catch (err) {
-      console.log(err);
+      console.log(err)
     }
-  },
-};
+  }
+}

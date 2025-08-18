@@ -1,25 +1,25 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose')
 
 const CommentSchema = new mongoose.Schema({
-  //Here we are gonna create the schema for the comment model.
-  
+  // Here we are gonna create the schema for the comment model.
+
   comment: {
     type: String,
-    required: true,
+    required: true
   },
   userCommentCreator: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "User",
-    required: true,
+    ref: 'User',
+    required: true
   },
   postId: {
     type: mongoose.Schema.Types.ObjectId, // This is gonna give us the person that made the post.
-    ref: "Post", // Here we set post, to know from which post id this comment was made.. "Post"comes from the post model.
+    ref: 'Post' // Here we set post, to know from which post id this comment was made.. "Post"comes from the post model.
   },
   createdAt: {
     type: Date,
-    default: Date.now,
-  },
-});
+    default: Date.now
+  }
+})
 
-module.exports = mongoose.model("Comment", CommentSchema); // If you dont specify a collection name as the third argument, it will take your model name(Comment) and make it plural
+module.exports = mongoose.model('Comment', CommentSchema) // If you dont specify a collection name as the third argument, it will take your model name(Comment) and make it plural

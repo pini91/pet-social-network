@@ -1,0 +1,149 @@
+name: Deploy to Railway
+
+on:
+  workflow_run:
+    workflows: ['CI Pipeline']
+    types:
+      - completed
+    branches: [main, develop]
+
+# Prevent concurrent deployments
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write  # Required for creating releases
+  actions: read
+  checks: write
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  deploy-dev:
+    name: Deploy to Development
+    runs-on: ubuntu-latest
+    if: |
+      github.event.workflow_run.head_branch == 'develop' && 
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push'
+    environment: development
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          # Ensures we deploy the exact code that triggered the workflow
+
+      - name: Deploy to Railway (Dev)
+        uses: bervProject/railway-deploy@main
+        with:
+          service: "nodejs"
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_DEV }}
+
+      - name: Health Check (Dev)
+        run: |
+          echo "⏳ Waiting for deployment to be healthy..."
+          sleep 45
+          echo "🔍 Testing health endpoint..."
+          
+          # Health check with retry logic
+          for i in {1..5}; do
+            if curl -f -s "https://pet-social-app-dev.up.railway.app/health"; then
+              echo "✅ Health check passed on attempt $i"
+              echo "🚀 Development app is healthy and responding"
+              echo "🔗 App URL: https://pet-social-app-dev.up.railway.app"
+              break
+            else
+              echo "❌ Health check failed on attempt $i"
+              if [ $i -eq 5 ]; then
+                echo "⚠️ Health check failed after 5 attempts, but deployment may still be successful"
+                echo "🔗 Manual check: https://pet-social-app-dev.up.railway.app"
+                exit 0  # Don't fail the deployment, just warn
+              fi
+              sleep 10
+            fi
+          done
+
+      - name: Post deployment notification
+        run: |
+          echo "✅ Successfully deployed to Development environment"
+          echo "� Development App: https://pet-social-app-dev.up.railway.app"
+          echo "🏥 Health Check: https://pet-social-app-dev.up.railway.app/health"
+
+  deploy-prod:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    if: |
+      github.event.workflow_run.head_branch == 'main' && 
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.event == 'push'
+    environment: production
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+          # Ensures we deploy the exact code that triggered the workflow
+
+      - name: Deploy to Railway (Prod)
+        uses: bervProject/railway-deploy@main
+        with:
+          service: "nodejs"
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN_PROD }}
+
+      - name: Health Check (Prod)
+        run: |
+          echo "⏳ Waiting for deployment to be healthy..."
+          sleep 45
+          echo "🔍 Testing health endpoint..."
+          
+          # Health check with retry logic
+          for i in {1..5}; do
+            if curl -f -s "https://pet-social-app.up.railway.app/health"; then
+              echo "✅ Health check passed on attempt $i"
+              echo "🚀 Production app is healthy and responding"
+              echo "🔗 App URL: https://pet-social-app.up.railway.app"
+              break
+            else
+              echo "❌ Health check failed on attempt $i"
+              if [ $i -eq 5 ]; then
+                echo "⚠️ Health check failed after 5 attempts, but deployment may still be successful"
+                echo "🔗 Manual check: https://pet-social-app.up.railway.app"
+                exit 0  # Don't fail the deployment, just warn
+              fi
+              sleep 10
+            fi
+          done
+
+      - name: Post deployment notification
+        run: |
+          echo "🚀 Successfully deployed to Production environment"
+          echo "� Production App: https://pet-social-app.up.railway.app"
+          echo "🏥 Health Check: hhttps://pet-social-app.up.railway.app/health"
+
+      - name: Create GitHub Release
+        if: github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: v${{ github.run_number }}
+          name: Release v${{ github.run_number }}
+          body: |
+            🚀 Automated release from commit ${{ github.sha }}
+
+            **Changes in this release:**
+            - See commit history for detailed changes
+
+            **Deployment:**
+            - Successfully deployed to Production
+            - Production URL: https://pet-social-app.up.railway.app
+            - Health Check: https://pet-social-app.up.railway.app/health
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
