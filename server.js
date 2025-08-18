@@ -42,9 +42,15 @@ app.use(methodOverride('_method')) // Here we use the method Override and we are
 // Setup Sessions - stored in MongoDB
 const mongoUrl = process.env.MONGO_URL || process.env.DB_STRING
 
+console.log('DEBUG: Environment variables check:')
+console.log('MONGO_URL:', process.env.MONGO_URL ? 'Set' : 'Not set')
+console.log('DB_STRING:', process.env.DB_STRING ? 'Set' : 'Not set')
+console.log('Final mongoUrl:', mongoUrl ? 'Valid' : 'Invalid/Empty')
+
 if (!mongoUrl) {
   console.error('ERROR: No MongoDB connection string found!')
   console.error('Please set either MONGO_URL or DB_STRING environment variable')
+  console.error('Available environment variables:', Object.keys(process.env).filter(key => key.includes('MONGO') || key.includes('DB')))
   process.exit(1)
 }
 
@@ -57,7 +63,7 @@ app.use(
       maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
     },
     store: MongoStore.create({
-      mongoUrl,
+      mongoUrl: mongoUrl.trim(), // Trim any whitespace
       touchAfter: 24 * 3600 // lazy session update
     })
   })
