@@ -94,7 +94,9 @@ app.use(
     saveUninitialized: false,
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
-      secure: process.env.NODE_ENV === 'production' ? false : false // Set to true if using HTTPS
+      secure: process.env.NODE_ENV === 'production', // true in production (HTTPS), false in development
+      httpOnly: true, // Prevent XSS attacks
+      sameSite: 'lax' // CSRF protection
     },
     store: MongoStore.create({
       mongoUrl: mongoUrl.trim(), // Trim any whitespace
