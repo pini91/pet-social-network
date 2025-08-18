@@ -40,6 +40,14 @@ app.use(methodOverride('_method')) // Here we use the method Override and we are
 // This method Override you can change it to whatever we want.
 
 // Setup Sessions - stored in MongoDB
+const mongoUrl = process.env.MONGO_URL || process.env.DB_STRING
+
+if (!mongoUrl) {
+  console.error('ERROR: No MongoDB connection string found!')
+  console.error('Please set either MONGO_URL or DB_STRING environment variable')
+  process.exit(1)
+}
+
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
@@ -49,7 +57,7 @@ app.use(
       maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
     },
     store: MongoStore.create({
-      mongoUrl: process.env.DB_STRING,
+      mongoUrl,
       touchAfter: 24 * 3600 // lazy session update
     })
   })
