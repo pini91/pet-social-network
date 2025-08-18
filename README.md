@@ -134,6 +134,9 @@ This application is configured for deployment on Railway with automatic CI/CD:
    NODE_ENV=production
    ```
 
+   **Important**: The application will validate and require these Cloudinary variables at startup. 
+   Get your Cloudinary credentials from [https://cloudinary.com/console](https://cloudinary.com/console).
+
 3. **Railway MongoDB**: 
    - Add MongoDB service in Railway
    - Railway automatically provides `MONGO_URL` variable
