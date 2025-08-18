@@ -37,11 +37,16 @@ exports.postLogin = (req, res, next) => {
       if (err) {
         return next(err)
       }
-      // Regenerate session for security (Passport 0.7.0 best practice)
-      req.session.regenerate((regenerateErr) => {
-        if (regenerateErr) {
-          return next(regenerateErr)
+
+      // Save session before redirect to ensure persistence
+      req.session.save((saveErr) => {
+        if (saveErr) {
+          console.error('Session save error:', saveErr)
+          return next(saveErr)
         }
+
+        console.log('✅ User logged in successfully:', user.email)
+        console.log('✅ Session saved, redirecting to profile')
         req.flash('success', { msg: 'Success! You are logged in.' })
         res.redirect(req.session.returnTo || '/profile')
       })

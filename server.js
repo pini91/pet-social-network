@@ -87,21 +87,35 @@ if (!sessionSecret) {
   console.log('✅ SESSION_SECRET is properly configured')
 }
 
+// Create MongoDB session store
+const sessionStore = MongoStore.create({
+  mongoUrl: mongoUrl.trim(), // Trim any whitespace
+  touchAfter: 24 * 3600, // lazy session update
+  stringify: false // Don't stringify session data
+})
+
+// Debug session store events
+sessionStore.on('connected', () => {
+  console.log('✅ Session store connected to MongoDB')
+})
+
+sessionStore.on('error', (error) => {
+  console.error('❌ Session store error:', error)
+})
+
 app.use(
   session({
     secret: sessionSecret || 'fallback-secret-key-for-emergency',
     resave: false,
     saveUninitialized: false,
+    name: 'sessionId', // Custom session name
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
-      secure: process.env.NODE_ENV === 'production', // true in production (HTTPS), false in development
+      secure: 'auto', // Let Railway handle this automatically
       httpOnly: true, // Prevent XSS attacks
       sameSite: 'lax' // CSRF protection
     },
-    store: MongoStore.create({
-      mongoUrl: mongoUrl.trim(), // Trim any whitespace
-      touchAfter: 24 * 3600 // lazy session update
-    })
+    store: sessionStore
   })
 )
 
