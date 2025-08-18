@@ -26,6 +26,12 @@ console.log('PORT:', process.env.PORT)
 console.log('SESSION_SECRET:', process.env.SESSION_SECRET ? `Set (${process.env.SESSION_SECRET.length} chars)` : 'NOT SET')
 console.log('DB_STRING:', process.env.DB_STRING ? 'Set' : 'NOT SET')
 console.log('MONGO_URL:', process.env.MONGO_URL ? 'Set' : 'NOT SET')
+console.log('CLOUDINARY_CLOUD_NAME:', process.env.CLOUDINARY_CLOUD_NAME ? 'Set' : 'NOT SET')
+console.log('CLOUDINARY_API_KEY:', process.env.CLOUDINARY_API_KEY ? 'Set' : 'NOT SET')
+console.log('CLOUDINARY_API_SECRET:', process.env.CLOUDINARY_API_SECRET ? 'Set' : 'NOT SET')
+console.log('CLOUD_NAME (legacy):', process.env.CLOUD_NAME ? 'Set' : 'NOT SET')
+console.log('API_KEY (legacy):', process.env.API_KEY ? 'Set' : 'NOT SET')
+console.log('API_SECRET (legacy):', process.env.API_SECRET ? 'Set' : 'NOT SET')
 console.log('RAILWAY_ENVIRONMENT:', process.env.RAILWAY_ENVIRONMENT || 'Not in Railway')
 console.log('=== END DEBUG ===')
 
@@ -33,6 +39,20 @@ console.log('=== END DEBUG ===')
 if (!process.env.SESSION_SECRET) {
   console.error('CRITICAL ERROR: SESSION_SECRET is not set!')
   console.error('In Railway dashboard, add: SESSION_SECRET=your-secret-key')
+  process.exit(1)
+}
+
+// Validate Cloudinary environment variables (check both naming conventions)
+const hasCloudinaryVars = (process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_API_KEY && process.env.CLOUDINARY_API_SECRET) ||
+                          (process.env.CLOUD_NAME && process.env.API_KEY && process.env.API_SECRET)
+
+if (!hasCloudinaryVars) {
+  console.error('CRITICAL ERROR: Cloudinary environment variables are missing!')
+  console.error('In Railway dashboard, you need to add:')
+  console.error('- CLOUDINARY_CLOUD_NAME=your-cloudinary-cloud-name')
+  console.error('- CLOUDINARY_API_KEY=your-cloudinary-api-key')
+  console.error('- CLOUDINARY_API_SECRET=your-cloudinary-api-secret')
+  console.error('Get these from your Cloudinary dashboard at https://cloudinary.com/console')
   process.exit(1)
 }
 
