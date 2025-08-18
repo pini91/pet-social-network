@@ -13,8 +13,28 @@ const postRoutes = require('./routes/posts')
 const commentRoutes = require('./routes/comments')
 const friendRoutes = require('./routes/friends')
 
-// Use .env file in config folder
-require('dotenv').config({ path: './config/.env' })
+// Use .env file in config folder (for local development)
+// Railway provides environment variables directly, no .env file needed
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config({ path: './config/.env' })
+}
+
+// Debug: Log all environment variables that start with common prefixes
+console.log('=== ENVIRONMENT VARIABLES DEBUG ===')
+console.log('NODE_ENV:', process.env.NODE_ENV)
+console.log('PORT:', process.env.PORT)
+console.log('SESSION_SECRET:', process.env.SESSION_SECRET ? `Set (${process.env.SESSION_SECRET.length} chars)` : 'NOT SET')
+console.log('DB_STRING:', process.env.DB_STRING ? 'Set' : 'NOT SET')
+console.log('MONGO_URL:', process.env.MONGO_URL ? 'Set' : 'NOT SET')
+console.log('RAILWAY_ENVIRONMENT:', process.env.RAILWAY_ENVIRONMENT || 'Not in Railway')
+console.log('=== END DEBUG ===')
+
+// Early validation of critical environment variables
+if (!process.env.SESSION_SECRET) {
+  console.error('CRITICAL ERROR: SESSION_SECRET is not set!')
+  console.error('In Railway dashboard, add: SESSION_SECRET=your-secret-key')
+  process.exit(1)
+}
 
 // Passport config
 require('./config/passport')(passport)
@@ -45,6 +65,9 @@ const mongoUrl = process.env.MONGO_URL || process.env.DB_STRING
 console.log('DEBUG: Environment variables check:')
 console.log('MONGO_URL:', process.env.MONGO_URL ? 'Set' : 'Not set')
 console.log('DB_STRING:', process.env.DB_STRING ? 'Set' : 'Not set')
+console.log('SESSION_SECRET:', process.env.SESSION_SECRET ? 'Set' : 'Not set')
+console.log('NODE_ENV:', process.env.NODE_ENV || 'Not set')
+console.log('PORT:', process.env.PORT || 'Not set')
 console.log('Final mongoUrl:', mongoUrl ? 'Valid' : 'Invalid/Empty')
 
 if (!mongoUrl) {
@@ -54,13 +77,24 @@ if (!mongoUrl) {
   process.exit(1)
 }
 
+// Check for SESSION_SECRET
+const sessionSecret = process.env.SESSION_SECRET
+if (!sessionSecret) {
+  console.warn('WARNING: SESSION_SECRET not found! Using fallback (INSECURE)')
+  console.warn('Please set SESSION_SECRET in Railway environment variables ASAP')
+  console.warn('Your app will work but sessions are not secure!')
+} else {
+  console.log('✅ SESSION_SECRET is properly configured')
+}
+
 app.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: sessionSecret || 'fallback-secret-key-for-emergency',
     resave: false,
     saveUninitialized: false,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+      secure: process.env.NODE_ENV === 'production' ? false : false // Set to true if using HTTPS
     },
     store: MongoStore.create({
       mongoUrl: mongoUrl.trim(), // Trim any whitespace
