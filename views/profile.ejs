@@ -52,7 +52,7 @@
               <!-- <div class="user-avatar">
                 <%= user.userName.charAt(0).toUpperCase() %>
               </div> -->
-              <h3 class="mb-2 fw-bold"><%= user.userName %></h3>
+              <h3 class="mb-2 fw-bold"><%= user.userName.charAt(0).toUpperCase()+user.userName.slice(1)%></h3>
               <p class="mb-3 opacity-75"><%= user.email %></p>
               <span class="badge bg-primary rounded-pill fs-6 px-3 py-2">
                 <i class="fas fa-users me-2"></i>Followers: <%= followedBy %>
