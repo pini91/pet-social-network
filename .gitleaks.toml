@@ -1,5 +1,5 @@
 # GitLeaks configuration file for Todo App
-title = "Todo App Secret Scanning"
+title = "pet-social-network Secret Scanning"
 
 # Use default rules but with comprehensive allowlist
 [extend]
