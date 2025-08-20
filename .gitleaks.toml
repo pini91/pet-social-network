@@ -38,7 +38,7 @@ regexes = [
     '''cafebabe:deadbeef''',
     '''BUNDLE_ENTERPRISE''',
     '''sidekiq''',
-    '''todoapp''',
+    '''petsocialnetwork''',
     '''\+srv''',
 ]
 
