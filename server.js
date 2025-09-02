@@ -110,7 +110,7 @@ if (!sessionSecret) {
 // Create MongoDB session store
 const sessionStore = MongoStore.create({
   mongoUrl: mongoUrl.trim(), // Trim any whitespace
-  // touchAfter: 24 * 3600, // lazy session update
+  touchAfter: 24 * 3600, // lazy session update
   stringify: false // Don't stringify session data
 })
 
@@ -130,7 +130,7 @@ app.use(
     saveUninitialized: false,
     name: 'sessionId', // Custom session name
     cookie: {
-      // maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
+      maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
       secure: 'auto', // Let Railway handle this automatically
       httpOnly: true, // Prevent XSS attacks
       sameSite: 'lax' // CSRF protection
