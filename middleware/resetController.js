@@ -78,44 +78,56 @@ module.exports = {
           host: process.env.EMAIL_HOST || 'smtp-relay.brevo.com',
           port: parseInt(process.env.EMAIL_PORT) || 587,
           secure: false, // true for 465, false for other ports
-          connectionTimeout: 60000, // Increased to 60 seconds
-          greetingTimeout: 30000, // Increased to 30 seconds
-          socketTimeout: 60000, // Increased to 60 seconds
-          // Add these options to help with Railway networking
-          pool: true,
+          connectionTimeout: 120000, // Increased to 2 minutes
+          greetingTimeout: 60000, // Increased to 1 minute
+          socketTimeout: 120000, // Increased to 2 minutes
+          // Add these options to help with Railway networking and Brevo
+          pool: false, // Disable connection pooling
           maxConnections: 1,
-          maxMessages: 3,
+          maxMessages: 1,
+          requireTLS: true, // Force TLS
+          tls: {
+            // Don't fail on invalid certificates
+            rejectUnauthorized: false
+          },
           auth: {
             user: process.env.EMAIL_USER, // generated brevo user
             pass: process.env.EMAIL_PASS // generated brevo password
           }
         }
 
-        // Alternative configuration for Gmail if Brevo fails
-        const gmailConfig = {
-          service: 'gmail',
+        // Alternative Brevo configuration with different port
+        const brevoAlternativeConfig = {
+          host: 'smtp-relay.brevo.com',
+          port: 25, // Try port 25
+          secure: false,
+          connectionTimeout: 120000,
+          greetingTimeout: 60000,
+          socketTimeout: 120000,
+          pool: false,
+          requireTLS: true,
+          tls: {
+            rejectUnauthorized: false
+          },
           auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS
           }
         }
 
-        // SendGrid configuration (Railway-friendly)
-        const sendgridConfig = {
-          host: 'smtp.sendgrid.net',
-          port: 587,
+        // Third Brevo config with port 2587
+        const brevoPort2587Config = {
+          host: 'smtp-relay.brevo.com',
+          port: 2587,
           secure: false,
-          auth: {
-            user: 'apikey',
-            pass: process.env.EMAIL_PASS // SendGrid API key
-          }
-        }
-
-        // Mailgun configuration
-        const mailgunConfig = {
-          host: 'smtp.mailgun.org',
-          port: 587,
-          secure: false,
+          connectionTimeout: 120000,
+          greetingTimeout: 60000,
+          socketTimeout: 120000,
+          pool: false,
+          requireTLS: true,
+          tls: {
+            rejectUnauthorized: false
+          },
           auth: {
             user: process.env.EMAIL_USER,
             pass: process.env.EMAIL_PASS
@@ -129,67 +141,48 @@ module.exports = {
           hasAuth: !!smtpConfig.auth.user && !!smtpConfig.auth.pass
         })
 
-        // Try primary configuration (Brevo) first
+        // Try primary Brevo configuration (port 587) first
         let transporter = nodemailer.createTransport(smtpConfig)
-        let configUsed = 'Brevo'
+        let configUsed = 'Brevo (port 587)'
 
-        // Test the connection before sending
-        console.log('Testing SMTP connection with Brevo...')
+        console.log('Testing SMTP connection with Brevo on port 587...')
         try {
           await transporter.verify()
-          console.log('✅ Brevo SMTP connection verified successfully')
+          console.log('✅ Brevo SMTP connection verified successfully on port 587')
         } catch (verifyError) {
-          console.error('❌ Brevo SMTP connection failed:', verifyError.message)
+          console.error('❌ Brevo port 587 failed:', verifyError.message)
 
-          // Try SendGrid as first fallback (most Railway-compatible)
-          console.log('Trying SendGrid fallback configuration...')
-          transporter = nodemailer.createTransport(sendgridConfig)
-          configUsed = 'SendGrid'
+          // Try Brevo on port 25
+          console.log('Trying Brevo on port 25...')
+          transporter = nodemailer.createTransport(brevoAlternativeConfig)
+          configUsed = 'Brevo (port 25)'
 
           try {
             await transporter.verify()
-            console.log('✅ SendGrid SMTP connection verified successfully')
-          } catch (sendgridError) {
-            console.error('❌ SendGrid SMTP connection failed:', sendgridError.message)
+            console.log('✅ Brevo SMTP connection verified successfully on port 25')
+          } catch (port25Error) {
+            console.error('❌ Brevo port 25 failed:', port25Error.message)
 
-            // Try Gmail as second fallback if email looks like Gmail
-            if (process.env.EMAIL_USER && process.env.EMAIL_USER.includes('@gmail.com')) {
-              console.log('Trying Gmail fallback configuration...')
-              transporter = nodemailer.createTransport(gmailConfig)
-              configUsed = 'Gmail'
+            // Try Brevo on port 2587
+            console.log('Trying Brevo on port 2587...')
+            transporter = nodemailer.createTransport(brevoPort2587Config)
+            configUsed = 'Brevo (port 2587)'
 
-              try {
-                await transporter.verify()
-                console.log('✅ Gmail SMTP connection verified successfully')
-              } catch (gmailError) {
-                console.error('❌ Gmail SMTP connection also failed:', gmailError.message)
+            try {
+              await transporter.verify()
+              console.log('✅ Brevo SMTP connection verified successfully on port 2587')
+            } catch (port2587Error) {
+              console.error('❌ Brevo port 2587 failed:', port2587Error.message)
+              console.error('All Brevo connection attempts failed.')
 
-                // Try Mailgun as last resort
-                console.log('Trying Mailgun as final fallback...')
-                transporter = nodemailer.createTransport(mailgunConfig)
-                configUsed = 'Mailgun'
-
-                try {
-                  await transporter.verify()
-                  console.log('✅ Mailgun SMTP connection verified successfully')
-                } catch (mailgunError) {
-                  console.error('❌ All SMTP providers failed')
-                  throw new Error(`All SMTP configurations failed. Brevo: ${verifyError.message}, SendGrid: ${sendgridError.message}, Gmail: ${gmailError.message}, Mailgun: ${mailgunError.message}`)
-                }
-              }
-            } else {
-              // Try Mailgun directly if not Gmail
-              console.log('Trying Mailgun fallback configuration...')
-              transporter = nodemailer.createTransport(mailgunConfig)
-              configUsed = 'Mailgun'
-
-              try {
-                await transporter.verify()
-                console.log('✅ Mailgun SMTP connection verified successfully')
-              } catch (mailgunError) {
-                console.error('❌ Mailgun SMTP connection also failed:', mailgunError.message)
-                throw new Error(`All available SMTP configurations failed. Brevo: ${verifyError.message}, SendGrid: ${sendgridError.message}, Mailgun: ${mailgunError.message}`)
-              }
+              // Provide detailed error information
+              throw new Error(`All Brevo SMTP ports failed:
+                Port 587: ${verifyError.message}
+                Port 25: ${port25Error.message}  
+                Port 2587: ${port2587Error.message}
+                
+                This appears to be a Railway network restriction blocking SMTP connections.
+                You may need to contact Railway support or use a different email service.`)
             }
           }
         }
