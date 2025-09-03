@@ -67,7 +67,7 @@ module.exports = {
 
         // send mail with defined transport object
         const info = await transporter.sendMail({
-          from: 'testingmyaps@gmail.com', // sender address
+          from: 'brenda.loncaric@gmail.com', // sender address
           to: user.email, // receiver
           subject: 'Password Reset', // Subject line
           text: `You requested a password reset. Click the link below to reset your password:\n\n
