@@ -36,6 +36,7 @@ console.log('EMAIL_HOST:', process.env.EMAIL_HOST ? 'Set' : 'NOT SET')
 console.log('EMAIL_PORT:', process.env.EMAIL_PORT ? 'Set' : 'NOT SET')
 console.log('EMAIL_USER:', process.env.EMAIL_USER ? 'Set' : 'NOT SET')
 console.log('EMAIL_PASS:', process.env.EMAIL_PASS ? 'Set' : 'NOT SET')
+console.log('RESEND_API_KEY:', process.env.RESEND_API_KEY ? 'Set' : 'NOT SET')
 console.log('RAILWAY_ENVIRONMENT:', process.env.RAILWAY_ENVIRONMENT || 'Not in Railway')
 console.log('=== END DEBUG ===')
 
@@ -61,13 +62,16 @@ if (!hasCloudinaryVars) {
 }
 
 // Validate Email environment variables for password reset functionality
-if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-  console.warn('WARNING: Email environment variables are missing!')
-  console.warn('Password reset functionality will not work without:')
-  console.warn('- EMAIL_USER=your-email-username')
-  console.warn('- EMAIL_PASS=your-email-password')
-  console.warn('- EMAIL_HOST=your-smtp-host (optional, defaults to smtp-relay.brevo.com)')
-  console.warn('- EMAIL_PORT=587 (optional, defaults to 587)')
+if (!process.env.RESEND_API_KEY && (!process.env.EMAIL_USER || !process.env.EMAIL_PASS)) {
+  console.warn('WARNING: No email service configured!')
+  console.warn('Password reset functionality will not work without either:')
+  console.warn('Option 1 (Recommended for Railway): RESEND_API_KEY=your-resend-api-key')
+  console.warn('Option 2 (Local development): EMAIL_USER and EMAIL_PASS for SMTP')
+  console.warn('Get Resend API key from: https://resend.com')
+} else if (process.env.RESEND_API_KEY) {
+  console.log('✅ Resend API configured for email sending')
+} else {
+  console.log('✅ SMTP credentials configured for email sending')
 }
 
 // Passport config
