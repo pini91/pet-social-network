@@ -100,6 +100,28 @@ module.exports = {
           }
         }
 
+        // SendGrid configuration (Railway-friendly)
+        const sendgridConfig = {
+          host: 'smtp.sendgrid.net',
+          port: 587,
+          secure: false,
+          auth: {
+            user: 'apikey',
+            pass: process.env.EMAIL_PASS // SendGrid API key
+          }
+        }
+
+        // Mailgun configuration
+        const mailgunConfig = {
+          host: 'smtp.mailgun.org',
+          port: 587,
+          secure: false,
+          auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+          }
+        }
+
         console.log('SMTP Configuration:', {
           host: smtpConfig.host,
           port: smtpConfig.port,
@@ -119,21 +141,56 @@ module.exports = {
         } catch (verifyError) {
           console.error('❌ Brevo SMTP connection failed:', verifyError.message)
 
-          // Try Gmail as fallback if email looks like Gmail
-          if (process.env.EMAIL_USER && process.env.EMAIL_USER.includes('@gmail.com')) {
-            console.log('Trying Gmail fallback configuration...')
-            transporter = nodemailer.createTransport(gmailConfig)
-            configUsed = 'Gmail'
+          // Try SendGrid as first fallback (most Railway-compatible)
+          console.log('Trying SendGrid fallback configuration...')
+          transporter = nodemailer.createTransport(sendgridConfig)
+          configUsed = 'SendGrid'
 
-            try {
-              await transporter.verify()
-              console.log('✅ Gmail SMTP connection verified successfully')
-            } catch (gmailError) {
-              console.error('❌ Gmail SMTP connection also failed:', gmailError.message)
-              throw new Error(`Both SMTP configurations failed. Brevo: ${verifyError.message}, Gmail: ${gmailError.message}`)
+          try {
+            await transporter.verify()
+            console.log('✅ SendGrid SMTP connection verified successfully')
+          } catch (sendgridError) {
+            console.error('❌ SendGrid SMTP connection failed:', sendgridError.message)
+
+            // Try Gmail as second fallback if email looks like Gmail
+            if (process.env.EMAIL_USER && process.env.EMAIL_USER.includes('@gmail.com')) {
+              console.log('Trying Gmail fallback configuration...')
+              transporter = nodemailer.createTransport(gmailConfig)
+              configUsed = 'Gmail'
+
+              try {
+                await transporter.verify()
+                console.log('✅ Gmail SMTP connection verified successfully')
+              } catch (gmailError) {
+                console.error('❌ Gmail SMTP connection also failed:', gmailError.message)
+
+                // Try Mailgun as last resort
+                console.log('Trying Mailgun as final fallback...')
+                transporter = nodemailer.createTransport(mailgunConfig)
+                configUsed = 'Mailgun'
+
+                try {
+                  await transporter.verify()
+                  console.log('✅ Mailgun SMTP connection verified successfully')
+                } catch (mailgunError) {
+                  console.error('❌ All SMTP providers failed')
+                  throw new Error(`All SMTP configurations failed. Brevo: ${verifyError.message}, SendGrid: ${sendgridError.message}, Gmail: ${gmailError.message}, Mailgun: ${mailgunError.message}`)
+                }
+              }
+            } else {
+              // Try Mailgun directly if not Gmail
+              console.log('Trying Mailgun fallback configuration...')
+              transporter = nodemailer.createTransport(mailgunConfig)
+              configUsed = 'Mailgun'
+
+              try {
+                await transporter.verify()
+                console.log('✅ Mailgun SMTP connection verified successfully')
+              } catch (mailgunError) {
+                console.error('❌ Mailgun SMTP connection also failed:', mailgunError.message)
+                throw new Error(`All available SMTP configurations failed. Brevo: ${verifyError.message}, SendGrid: ${sendgridError.message}, Mailgun: ${mailgunError.message}`)
+              }
             }
-          } else {
-            throw new Error(`SMTP connection failed: ${verifyError.message}`)
           }
         }
 
