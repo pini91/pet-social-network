@@ -66,7 +66,7 @@ module.exports = {
           : 'http://localhost:2121'
 
         // create reusable transporter object using the default SMTP transport
-        const transporter = nodemailer.createTransporter({
+        const transporter = nodemailer.createTransport({
           host: process.env.EMAIL_HOST || 'smtp-relay.brevo.com',
           port: parseInt(process.env.EMAIL_PORT) || 587,
           secure: false, // true for 465, false for other ports
