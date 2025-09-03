@@ -61,7 +61,7 @@ module.exports = {
         }
 
         // Determine the base URL for the reset link
-        const baseUrl = process.env.NODE_ENV === 'production' 
+        const baseUrl = process.env.NODE_ENV === 'production'
           ? (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : 'https://your-app.railway.app')
           : 'http://localhost:2121'
 
