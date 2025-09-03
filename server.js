@@ -32,6 +32,10 @@ console.log('CLOUDINARY_API_SECRET:', process.env.CLOUDINARY_API_SECRET ? 'Set' 
 console.log('CLOUD_NAME (legacy):', process.env.CLOUD_NAME ? 'Set' : 'NOT SET')
 console.log('API_KEY (legacy):', process.env.API_KEY ? 'Set' : 'NOT SET')
 console.log('API_SECRET (legacy):', process.env.API_SECRET ? 'Set' : 'NOT SET')
+console.log('EMAIL_HOST:', process.env.EMAIL_HOST ? 'Set' : 'NOT SET')
+console.log('EMAIL_PORT:', process.env.EMAIL_PORT ? 'Set' : 'NOT SET')
+console.log('EMAIL_USER:', process.env.EMAIL_USER ? 'Set' : 'NOT SET')
+console.log('EMAIL_PASS:', process.env.EMAIL_PASS ? 'Set' : 'NOT SET')
 console.log('RAILWAY_ENVIRONMENT:', process.env.RAILWAY_ENVIRONMENT || 'Not in Railway')
 console.log('=== END DEBUG ===')
 
@@ -54,6 +58,16 @@ if (!hasCloudinaryVars) {
   console.error('- CLOUDINARY_API_SECRET=your-cloudinary-api-secret')
   console.error('Get these from your Cloudinary dashboard at https://cloudinary.com/console')
   process.exit(1)
+}
+
+// Validate Email environment variables for password reset functionality
+if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+  console.warn('WARNING: Email environment variables are missing!')
+  console.warn('Password reset functionality will not work without:')
+  console.warn('- EMAIL_USER=your-email-username')
+  console.warn('- EMAIL_PASS=your-email-password')
+  console.warn('- EMAIL_HOST=your-smtp-host (optional, defaults to smtp-relay.brevo.com)')
+  console.warn('- EMAIL_PORT=587 (optional, defaults to 587)')
 }
 
 // Passport config
