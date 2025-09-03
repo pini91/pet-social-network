@@ -60,26 +60,85 @@ module.exports = {
           throw new Error('Email configuration missing: EMAIL_USER and EMAIL_PASS are required')
         }
 
+        // Debug email configuration
+        console.log('=== EMAIL DEBUG INFO ===')
+        console.log('EMAIL_HOST:', process.env.EMAIL_HOST || 'smtp-relay.brevo.com (default)')
+        console.log('EMAIL_PORT:', process.env.EMAIL_PORT || '587 (default)')
+        console.log('EMAIL_USER:', process.env.EMAIL_USER ? 'Set' : 'NOT SET')
+        console.log('EMAIL_PASS:', process.env.EMAIL_PASS ? 'Set' : 'NOT SET')
+        console.log('NODE_ENV:', process.env.NODE_ENV)
+        console.log('========================')
+
         // Determine the base URL for the reset link
         const baseUrl = process.env.NODE_ENV === 'production'
           ? (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : 'https://pet-social-app.up.railway.app')
           : 'http://localhost:2121'
 
-        // create reusable transporter object using the default SMTP transport
-        const transporter = nodemailer.createTransport({
+        const smtpConfig = {
           host: process.env.EMAIL_HOST || 'smtp-relay.brevo.com',
           port: parseInt(process.env.EMAIL_PORT) || 587,
           secure: false, // true for 465, false for other ports
-          connectionTimeout: 10000, // 10 seconds
-          greetingTimeout: 5000, // 5 seconds
-          socketTimeout: 10000, // 10 seconds
+          connectionTimeout: 60000, // Increased to 60 seconds
+          greetingTimeout: 30000, // Increased to 30 seconds
+          socketTimeout: 60000, // Increased to 60 seconds
+          // Add these options to help with Railway networking
+          pool: true,
+          maxConnections: 1,
+          maxMessages: 3,
           auth: {
             user: process.env.EMAIL_USER, // generated brevo user
             pass: process.env.EMAIL_PASS // generated brevo password
           }
+        }
+
+        // Alternative configuration for Gmail if Brevo fails
+        const gmailConfig = {
+          service: 'gmail',
+          auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+          }
+        }
+
+        console.log('SMTP Configuration:', {
+          host: smtpConfig.host,
+          port: smtpConfig.port,
+          secure: smtpConfig.secure,
+          hasAuth: !!smtpConfig.auth.user && !!smtpConfig.auth.pass
         })
 
+        // Try primary configuration (Brevo) first
+        let transporter = nodemailer.createTransport(smtpConfig)
+        let configUsed = 'Brevo'
+
+        // Test the connection before sending
+        console.log('Testing SMTP connection with Brevo...')
+        try {
+          await transporter.verify()
+          console.log('✅ Brevo SMTP connection verified successfully')
+        } catch (verifyError) {
+          console.error('❌ Brevo SMTP connection failed:', verifyError.message)
+
+          // Try Gmail as fallback if email looks like Gmail
+          if (process.env.EMAIL_USER && process.env.EMAIL_USER.includes('@gmail.com')) {
+            console.log('Trying Gmail fallback configuration...')
+            transporter = nodemailer.createTransport(gmailConfig)
+            configUsed = 'Gmail'
+
+            try {
+              await transporter.verify()
+              console.log('✅ Gmail SMTP connection verified successfully')
+            } catch (gmailError) {
+              console.error('❌ Gmail SMTP connection also failed:', gmailError.message)
+              throw new Error(`Both SMTP configurations failed. Brevo: ${verifyError.message}, Gmail: ${gmailError.message}`)
+            }
+          } else {
+            throw new Error(`SMTP connection failed: ${verifyError.message}`)
+          }
+        }
+
         // send mail with defined transport object
+        console.log(`Sending email using ${configUsed}...`)
         const info = await transporter.sendMail({
           from: process.env.EMAIL_FROM || 'brenda.loncaric@gmail.com', // sender address
           to: user.email, // receiver
