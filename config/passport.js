@@ -33,16 +33,25 @@ module.exports = function (passport) {
   )
 
   passport.serializeUser((user, done) => {
+    console.log('🔐 Serializing user:', user.email, 'with ID:', user.id)
     done(null, user.id)
   })
 
   passport.deserializeUser((id, done) => {
+    console.log('🔓 Deserializing user with ID:', id)
     User.findById(id) // when we want the user to come out of the session, we will grab that user id that was store there and find it in the database
       .then(user => {
-        done(null, user)
+        if (user) {
+          console.log('✅ User found during deserialization:', user.email)
+          done(null, user)
+        } else {
+          console.log('❌ User not found during deserialization for ID:', id)
+          done(null, false)
+        }
       })
       .catch(function (err) {
-        console.log(err)
+        console.error('❌ Database error during deserialization:', err)
+        done(err, null)
       })
   })
 }
