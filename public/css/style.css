@@ -26,6 +26,10 @@ body {
     font-weight:bolder;
     
 }
+
+.searchButton{
+    color: #007bff;
+}
 /* .title:hover{
     color:rgb(88, 98, 73);
 } */
