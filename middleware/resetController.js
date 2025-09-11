@@ -2,9 +2,9 @@
 // const app = express() // Not used in this module
 const crypto = require('crypto') // to create the token
 const User = require('../models/User')
-// const nodemailer = require('nodemailer') // Not needed for Resend HTTP API
+const nodemailer = require('nodemailer') // Not needed for Resend HTTP API
 // For Resend HTTP API (Railway-compatible)
-const fetch = require('node-fetch')
+// const fetch = require('node-fetch')
 
 // const bcrypt = require('bcrypt') // bcrypt methods are used via User model
 
@@ -78,97 +78,63 @@ module.exports = {
 
         // Try Resend first (HTTP API - Railway compatible)
 
-        const RESEND_AUTH_KEY = process.env.RESEND_API_KEY
+        // const RESEND_AUTH_KEY = process.env.RESEND_API_KEY
 
-        const payload = {
-          from: 'onboarding@resend.dev',
-          to: user.email,
-          subject: 'Reset Password',
-          html: `<p>${emailContent}</p>`
-        }
-        const requestOptions = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${RESEND_AUTH_KEY}`
-          },
-          body: JSON.stringify(payload)
-        }
-
-        fetch('https://api.resend.com/emails', requestOptions)
-          .then(response => response.text())
-          .then(result => console.log(result))
-          .catch(error => console.log('error', error))
-
-        // if (process.env.RESEND_API_KEY) {
-        //   console.log('Attempting to send email via Resend HTTP API...')
-        //   try {
-        //     const response = await fetch('https://api.resend.com/emails', {
-        //       method: 'POST',
-        //       headers: {
-        //         Authorization: `Bearer ${process.env.RESEND_API_KEY}`,
-        //         'Content-Type': 'application/json'
-        //       },
-        //       body: JSON.stringify({
-        //         from: process.env.EMAIL_FROM || 'onboarding@resend.dev',
-        //         to: [user.email],
-        //         subject: 'Password Reset',
-        //         html: emailContent
-        //       })
-        //     })
-
-        //     if (response.ok) {
-        //       const result = await response.json()
-        //       console.log('Email sent successfully via Resend:', result.id)
-        //       return result
-        //     } else {
-        //       const error = await response.text()
-        //       console.error('Resend API failed:', response.status, error)
-        //       throw new Error(`Resend API error: ${response.status} ${error}`)
-        //     }
-        //   } catch (resendError) {
-        //     console.error('Resend failed:', resendError.message)
-        //     console.log('Falling back to SMTP...')
-        //   }
-        // } else {
-        //   console.log('No RESEND_API_KEY found, trying SMTP...')
+        // const payload = {
+        //   from: 'onboarding@resend.dev',
+        //   to: "testingmyaps@gmail.com",
+        //   subject: 'Reset Password',
+        //   html: `<p>${emailContent}</p>`
         // }
+        // const requestOptions = {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //     Authorization: `Bearer ${RESEND_AUTH_KEY}`
+        //   },
+        //   body: JSON.stringify(payload)
+        // }
+
+        // fetch('https://api.resend.com/emails', requestOptions)
+        //   .then(response => response.text())
+        //   .then(result => console.log(result))
+        //   .catch(error => console.log('error', error))
 
         // If we reach here, either Resend failed or wasn't configured
         // throw new Error('Email sending failed. Please check your email configuration (RESEND_API_KEY)')
 
         // Fallback to SMTP (will fail on Railway but kept for local development)
-        // if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-        //   throw new Error('No email configuration found. Please set either RESEND_API_KEY or EMAIL_USER/EMAIL_PASS')
-        // }
+        if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
+          throw new Error('No email configuration found. Please set either RESEND_API_KEY or EMAIL_USER/EMAIL_PASS')
+        }
 
-        // console.log('Attempting SMTP fallback (note: this will fail on Railway)...')
-        // const smtpConfig = {
-        //   host: process.env.EMAIL_HOST || 'smtp-relay.brevo.com',
-        //   port: parseInt(process.env.EMAIL_PORT) || 587,
-        //   secure: false,
-        //   auth: {
-        //     user: process.env.EMAIL_USER,
-        //     pass: process.env.EMAIL_PASS
-        //   }
-        // }
+        console.log('Attempting SMTP fallback (note: this will fail on Railway)...')
+        const smtpConfig = {
+          host: process.env.EMAIL_HOST || 'smtp-relay.brevo.com',
+          port: parseInt(process.env.EMAIL_PORT) || 587,
+          secure: false,
+          auth: {
+            user: process.env.EMAIL_USER,
+            pass: process.env.EMAIL_PASS
+          }
+        }
 
-        // const transporter = nodemailer.createTransport(smtpConfig)
+        const transporter = nodemailer.createTransport(smtpConfig)
 
-        // try {
-        //   const info = await transporter.sendMail({
-        //     from: process.env.EMAIL_FROM || 'brenda.loncaric@gmail.com',
-        //     to: user.email,
-        //     subject: 'Password Reset',
-        //     text: emailContent
-        //   })
+        try {
+          const info = await transporter.sendMail({
+            from: process.env.EMAIL_FROM || 'brenda.loncaric@gmail.com',
+            to: user.email,
+            subject: 'Password Reset',
+            text: emailContent
+          })
 
-        //   console.log('Email sent via SMTP:', info.messageId)
-        //   return info
-        // } catch (smtpError) {
-        //   console.error('SMTP also failed:', smtpError.message)
-        //   throw new Error(`Both Resend and SMTP failed. Resend not configured, SMTP error: ${smtpError.message}`)
-        // }
+          console.log('Email sent via SMTP:', info.messageId)
+          return info
+        } catch (smtpError) {
+          console.error('SMTP also failed:', smtpError.message)
+          throw new Error(`Both Resend and SMTP failed. Resend not configured, SMTP error: ${smtpError.message}`)
+        }
         // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
       }
 
