@@ -37,3 +37,76 @@ function toggleCreateProfilePic () {
     }, 100)
   }
 }
+
+// Add loading states for buttons
+const buttons = document.querySelectorAll('button[type="submit"], input[type="submit"]')
+buttons.forEach(button => {
+  button.addEventListener('click', function () {
+    if (this.form && this.form.checkValidity()) {
+      const originalText = this.textContent || this.value
+      const loadingText = 'Loading...'
+
+      if (this.tagName === 'BUTTON') {
+        this.textContent = loadingText
+      } else {
+        this.value = loadingText
+      }
+
+      this.disabled = true
+
+      // Re-enable after 10 seconds as fallback
+      setTimeout(() => {
+        if (this.tagName === 'BUTTON') {
+          this.textContent = originalText
+        } else {
+          this.value = originalText
+        }
+        this.disabled = false
+      }, 10000)
+    }
+  })
+})
+
+// Enhance image loading with lazy loading fallback
+const images = document.querySelectorAll('img[src]')
+if ('loading' in HTMLImageElement.prototype) {
+  // Native lazy loading is supported
+  images.forEach(img => {
+    if (!img.hasAttribute('loading')) {
+      img.setAttribute('loading', 'lazy')
+    }
+  })
+} else {
+  // Fallback for browsers without native lazy loading
+  const imageObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const img = entry.target
+        img.src = img.dataset.src || img.src
+        imageObserver.unobserve(img)
+      }
+    })
+  })
+
+  images.forEach(img => {
+    imageObserver.observe(img)
+  })
+}
+
+// Add smooth scrolling to anchor links
+const anchors = document.querySelectorAll('a[href^="#"]')
+anchors.forEach(anchor => {
+  anchor.addEventListener('click', function (e) {
+    const href = this.getAttribute('href')
+    if (href === '#') return
+
+    const target = document.querySelector(href)
+    if (target) {
+      e.preventDefault()
+      target.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start'
+      })
+    }
+  })
+})
