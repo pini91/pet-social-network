@@ -83,7 +83,7 @@ If you did not request this, please ignore this email.`
 
         const payload = {
           from: 'onboarding@resend.dev',
-          to: "testingmyaps@gmail.com",
+          to: 'testingmyaps@gmail.com',
           subject: 'Hello World',
           html: `<p>${emailContent}</p>`
         }
@@ -172,7 +172,7 @@ If you did not request this, please ignore this email.`
         // }
         // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
       }
-      
+
       main().catch(console.error)
 
       req.flash('info', 'An email has been sent with further instructions.')
