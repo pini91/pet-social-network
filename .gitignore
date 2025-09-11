@@ -9,6 +9,7 @@ RAILWAY_AUTH_FIX.md
 .env.development.local
 .env.test.local
 .env.production.local
+.env.example
 
 # Coverage directory used by tools like istanbul
 coverage/
