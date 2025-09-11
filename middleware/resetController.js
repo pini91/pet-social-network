@@ -83,7 +83,7 @@ If you did not request this, please ignore this email.`
 
         const payload = {
           from: 'onboarding@resend.dev',
-          to: user.email,
+          to: "testingmyaps@gmail.com",
           subject: 'Hello World',
           html: `<p>${emailContent}</p>`
         }
