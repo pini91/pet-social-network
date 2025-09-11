@@ -136,7 +136,7 @@ If you did not request this, please ignore this email.`
         // }
 
         // If we reach here, either Resend failed or wasn't configured
-        throw new Error('Email sending failed. Please check your email configuration (RESEND_API_KEY)')
+        // throw new Error('Email sending failed. Please check your email configuration (RESEND_API_KEY)')
 
         // Fallback to SMTP (will fail on Railway but kept for local development)
         // if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
