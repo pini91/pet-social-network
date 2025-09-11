@@ -106,19 +106,14 @@ console.log('DB_STRING:', process.env.DB_STRING ? 'Set' : 'Not set')
 console.log('SESSION_SECRET:', process.env.SESSION_SECRET ? 'Set' : 'Not set')
 console.log('NODE_ENV:', process.env.NODE_ENV || 'Not set')
 console.log('PORT:', process.env.PORT || 'Not set')
-console.log('RAILWAY_ENVIRONMENT:', process.env.RAILWAY_ENVIRONMENT || 'Not in Railway')
+console.log('Final mongoUrl:', mongoUrl ? 'Valid' : 'Invalid/Empty')
 
-// Railway-specific MongoDB connection handling
 if (!mongoUrl) {
   console.error('ERROR: No MongoDB connection string found!')
   console.error('Please set either MONGO_URL or DB_STRING environment variable')
   console.error('Available environment variables:', Object.keys(process.env).filter(key => key.includes('MONGO') || key.includes('DB')))
   process.exit(1)
 }
-
-// Clean and validate the MongoDB URL
-const cleanMongoUrl = mongoUrl.trim()
-console.log('Using MongoDB URL:', cleanMongoUrl.replace(/\/\/([^:]+):([^@]+)@/, '//***:***@')) // Hide credentials in logs
 
 // Check for SESSION_SECRET
 const sessionSecret = process.env.SESSION_SECRET
@@ -130,52 +125,33 @@ if (!sessionSecret) {
   console.log('✅ SESSION_SECRET is properly configured')
 }
 
-// Enhanced MongoDB session store configuration for Railway
+// Create MongoDB session store
 const sessionStore = MongoStore.create({
-  mongoUrl: cleanMongoUrl,
+  mongoUrl: mongoUrl.trim(), // Trim any whitespace
   touchAfter: 24 * 3600, // lazy session update
-  stringify: false, // Don't stringify session data
-  mongoOptions: {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    maxPoolSize: 10, // Railway connection pool limit
-    serverSelectionTimeoutMS: 5000, // Keep trying to send operations for 5 seconds
-    socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
-    family: 4 // Use IPv4, skip trying IPv6
-  },
-  ttl: 7 * 24 * 60 * 60, // 7 days session TTL
-  autoRemove: 'native', // Use MongoDB's native TTL
-  collection: 'sessions', // Explicit session collection name
-  clear_interval: 60 // Clear expired sessions every 60 seconds
+  stringify: false // Don't stringify session data
 })
 
 // Debug session store events
 sessionStore.on('connected', () => {
-  console.log('✅ Session store connected to MongoDB successfully')
+  console.log('✅ Session store connected to MongoDB')
 })
 
 sessionStore.on('error', (error) => {
   console.error('❌ Session store error:', error)
-  console.error('This might indicate MongoDB connection issues on Railway')
 })
 
-sessionStore.on('disconnected', () => {
-  console.warn('⚠️ Session store disconnected from MongoDB')
-})
-
-// Railway-optimized session configuration
 app.use(
   session({
     secret: sessionSecret || 'fallback-secret-key-for-emergency',
-    resave: false, // Don't save session if unmodified
-    saveUninitialized: false, // Don't create session until something stored
-    rolling: true, // Reset session expiration on activity
-    name: 'pet.social.sid', // Custom session name for Railway
+    resave: false,
+    saveUninitialized: false,
+    name: 'sessionId', // Custom session name
     cookie: {
       maxAge: 1000 * 60 * 60 * 24 * 7, // 1 week
-      secure: process.env.NODE_ENV === 'production', // Railway handles HTTPS
+      secure: 'auto', // Let Railway handle this automatically
       httpOnly: true, // Prevent XSS attacks
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax' // Railway CORS handling
+      sameSite: 'lax' // CSRF protection
     },
     store: sessionStore
   })

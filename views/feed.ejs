@@ -1,19 +1,14 @@
 <%- include('partials/header') -%>   <!--we have a header and footerpartial in the view/partials so we dont have to repeat our selfs. Where we put our bootstrap -->
   <div class="container">
-    <div class="d-flex justify-content-end mb-3">
-        <a href="/logout" class="btn btn-primary">
-          <i class="fas fa-sign-out-alt me-2"></i>Logout
-        </a>
+    <div class="d-flex justify-content-end">
+        <a href="/logout" class="col-1 btn btn-primary">Logout</a>
     </div>
-    <div class="row mb-4">
-      <div class="col-12 col-md-8 col-lg-6 mx-auto">
-        <form class="d-flex gap-2" action="/search" method="POST">
-          <input type="text" class="form-control" placeholder="Search posts..." name="search">
-          <button type="submit" class="btn btn-outline-primary">
-            <i class="fa fa-search"></i>
-          </button>
-        </form>
-      </div>
+    <div class="">
+      <form class="" action="/search" method="POST">
+        <input type="text" placeholder="Search.." name="search">
+        <button type="submit"><i class="fa fa-search"></i></button>
+        <!-- <i style="font-size:24px" class="fa"><a class="" href="../feeds">&#xf021;</a></i> -->
+      </form>
     </div>
     <div class="container feedsContainer">
       <h2 class="New Feeds">Community Feed</h2>

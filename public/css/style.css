@@ -1,176 +1,153 @@
-/* ===================================
-   RESPONSIVE PET SOCIAL NETWORK CSS
-   Mobile-First Design Approach
-   =================================== */
-
-/* ===================================
-   RESET & BASE STYLES
-   =================================== */
-
-* {
+*{
     box-sizing: border-box;
-    margin: 0;
-    padding: 0;
 }
 
 body {
     background: linear-gradient(135deg, #f6f7fb 0%, #d5d0da 100%);
-    min-height: 100vh;
+    min-height: 100vh;  /* to ensure that an element takes up at least the full height of the viewport. */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 14px; /* Mobile-first: smaller base font */
-    line-height: 1.6;
-    color: #333;
-    overflow-x: hidden;
 }
 
-/* ===================================
-   MOBILE-FIRST CONTAINERS
-   =================================== */
-
-.profileContainer {
+.profileContainer{
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
-    border-radius: 12px; /* Smaller radius for mobile */
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-    padding: 1rem; /* Smaller padding for mobile */
-    margin: 0.5rem; /* Smaller margin for mobile */
-    width: calc(100% - 1rem);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+    padding: 2rem;
+    margin-top: 2rem;
 }
+
+.title{
+    font-family: cursive;
+    font-size: xxx-large;
+    color: rgb(11, 95, 11);
+    display: flex;
+    justify-self: center;
+    font-weight:bolder;
+    
+}
+/* .title:hover{
+    color:rgb(88, 98, 73);
+} */
 
 .container {
-    margin-top: 1rem; /* Smaller margin for mobile */
-    padding: 0 0.5rem;
-    width: 100%;
+    margin-top: 2rem;
 }
-
-/* ===================================
-   MOBILE-FIRST TYPOGRAPHY
-   =================================== */
-
-.title {
-    font-family: cursive;
-    font-size: 1.5rem; /* Smaller for mobile */
-    color: rgb(11, 95, 11);
-    text-align: center;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    display: block; /* Changed from flex for better mobile layout */
-}
-
-/* ===================================
-   MOBILE-FIRST HEADER
-   =================================== */
 
 header {
     text-align: center;
-    margin-bottom: 1rem;
-    padding: 0.5rem;
+    margin-bottom: 2rem;
 }
 
 header h1 a {
     text-decoration: none;
     color: #333;
-    font-size: 1.2rem; /* Smaller for mobile */
-    transition: color 0.3s ease;
 }
 
 header h1 a:hover {
     color: #007bff;
 }
 
-/* ===================================
-   MOBILE-FIRST BUTTONS
-   =================================== */
-
 .btn {
     margin: 0.25rem;
-    padding: 0.5rem 0.75rem; /* Smaller padding for mobile */
-    border-radius: 8px;
-    font-size: 0.85rem; /* Smaller font for mobile */
-    transition: all 0.3s ease;
-    border: none;
-    cursor: pointer;
-    min-height: 44px; /* Touch-friendly size */
 }
 
-.btn:hover {
-    transform: translateY(-1px); /* Smaller movement for mobile */
+.mt-5 {
+    margin-top: 3rem;
 }
+/* 
+.img-fluid {
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+} */
 
-.btn-create-post {
-    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-    border: none;
-    border-radius: 12px; /* Smaller radius for mobile */
-    padding: 0.75rem 1rem; /* Adjusted for mobile */
-    color: white;
-    font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(79, 172, 254, 0.4); /* Smaller shadow for mobile */
-    width: 100%;
+.form-control {
     margin-bottom: 1rem;
-    font-size: 0.9rem; /* Smaller font for mobile */
 }
 
-.btn-create-post:hover {
-    color: white;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(79, 172, 254, 0.6);
+.list-unstyled li {
+    margin-bottom: 1rem;
 }
 
-.btn-cool {
-    height: auto; /* Flexible height for mobile */
-    min-height: 3rem; /* Minimum touch-friendly height */
-    border: none;
-    border-radius: 25px; /* Smaller radius for mobile */
-    padding: 0.75rem 1.5rem;
-    color: #666;
+.liComment {
+    list-style-type: none;
+    /* display: flex; */
+    /* justify-content: space-between; */
+    align-items: center;
+    padding: 0.5rem;
+    /* background-color: red; */
+    border-radius: 0.25rem;
+    width: 100%;
+    background-color:white;
+}
+
+.comment
+{
+    /* background-color:white; */
+    width: 100%;;
+    height: 100%;
+}
+
+
+/* Empty State */
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.empty-state i {
+    font-size: 5rem;
+    margin-bottom: 2rem;
+    opacity: 0.6;
+}
+
+.empty-state h4 {
     font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.settings{
+    margin-bottom: 1%;
+    color: rgb(86, 85, 85);
     text-decoration: none;
-    box-shadow: 0 3px 10px rgba(102, 126, 234, 0.4);
-    transition: all 0.3s ease;
-    font-size: 0.85rem;
+    cursor: pointer;
 }
 
-.btn-cool:hover {
-    color: #666;
+.deleteAccount{
+    height: 350px;
+    width: 320px;
+    background-color: aliceblue;
+    border-radius:0%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.deleteAccountButton{
     text-decoration: none;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.6);
+    color: black;
+    align-self: center;
 }
 
-.btn-gradient-danger {
-    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
-    border: none;
-    border-radius: 25px;
-    padding: 0.5rem 1rem;
-    color: white;
-    font-weight: 600;
+.deleteAccountButton:hover{
+    color:gray;
+}
+
+.friend-name {
     text-decoration: none;
-    transition: all 0.3s ease;
-    box-shadow: 0 3px 10px rgba(255, 107, 107, 0.4);
-    font-size: 0.85rem;
+    color: #333;
 }
 
-.btn-gradient-danger:hover {
-    color: white;
-    transform: translateY(-1px);
-    box-shadow: 0 6px 15px rgba(255, 107, 107, 0.6);
-}
-
-/* ===================================
-   MOBILE-FIRST FORMS
-   =================================== */
-
+/* Form Styles */
 .modern-form {
     background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    border-radius: 12px;
-    padding: 1rem; /* Smaller padding for mobile */
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px); /* applies graphical effects like blurring or color shifting to the area behind an element */
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
     display: none;
-    margin-bottom: 1rem;
-    width: 100%;
+    margin-bottom: 2rem;
 }
 
 .modern-form.show {
@@ -178,38 +155,75 @@ header h1 a:hover {
     animation: slideDown 0.4s ease;
 }
 
-.form-control {
-    margin-bottom: 1rem;
-    padding: 0.75rem;
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    font-size: 1rem;
+
+.btn-create-post {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    border: none;
+    border-radius: 15px;
+    padding: 1rem 2rem;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+    box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
     width: 100%;
-    min-height: 44px; /* Touch-friendly */
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    margin-bottom: 1.5rem;
 }
 
-.form-control:focus {
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-    outline: none;
+.btn-create-post:hover {
+    color: white;
+    transform: translateY(-3px); /* Slightly lift the button on hover in the Y axis direction */
+    box-shadow: 0 15px 35px rgba(79, 172, 254, 0.6); /* Box shadow changes when hovered */
 }
 
-/* ===================================
-   MOBILE-FIRST PROFILE COMPONENTS
-   =================================== */
+/* Cool Button */
+.btn-cool {
+    height: 6rem;
+    /* background: linear-gradient(135deg, #989db4 0%, #4e3f5e 100%); */
+    border: none;
+    border-radius: 50px;
+    padding: 12px 30px;
+    color: gray;
+    font-weight: 600;
+    text-decoration: none;
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    transition: all 0.3s ease;
+}
 
+.btn-cool:hover {
+    color: gray;
+    text-decoration: none;
+    transform: translateY(-3px);
+    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.6);
+}
+.btn-gradient-danger {
+    background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+    border: none;
+    border-radius: 50px;
+    padding: 8px 20px;
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 5px 15px rgba(255, 107, 107, 0.4);
+}
+
+.btn-gradient-danger:hover {
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(255, 107, 107, 0.6);
+}
+
+/* User Info Card */
 .user-info-card {
-    background: rgba(247, 244, 244, 0.9);
-    color: #666;
-    border-radius: 12px; /* Smaller radius for mobile */
-    padding: 1rem; /* Smaller padding for mobile */
-    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    /* background: linear-gradient(135deg, #7d7995 0%, #7f7e87 100%); */
+    color: gray;
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
     position: relative;
     overflow: hidden;
     width: 100%;
-    margin-bottom: 1rem;
-    text-align: center;
+    background-color: rgb(247, 244, 244)
 }
 
 .user-info-card::before {
@@ -224,92 +238,64 @@ header h1 a:hover {
 }
 
 .user-avatar {
-    width: 60px; /* Smaller for mobile */
-    height: 60px;
+    width: 80px;
+    height: 80px;
     background: rgba(255, 255, 255, 0.2);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.5rem; /* Smaller for mobile */
+    font-size: 2rem;
     font-weight: bold;
     border: 3px solid rgba(72, 176, 253);
-    margin: 0 auto 1rem auto;
+    margin-bottom: 1rem;
+    /* cursor: pointer; */
 }
 
-.profilePic {
-    cursor: pointer;
-    text-align: center;
-    margin: 1rem 0;
-}
-
-.profile-picture-large {
-    width: 80px; /* Smaller for mobile */
-    height: 80px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 3px solid #fff;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    transition: transform 0.3s ease;
-}
-
-.profile-picture-large:hover {
-    transform: scale(1.05);
-}
-
-.profile-picture-small {
-    width: 35px; /* Smaller for mobile */
-    height: 35px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid #fff;
-    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
-}
-
-/* ===================================
-   MOBILE-FIRST POSTS & COMMENTS
-   =================================== */
-
+/* Modern Card Styles */
 .modern-card {
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
-    border-radius: 12px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 1rem; /* Smaller padding for mobile */
-    margin-bottom: 1rem;
+    padding: 2rem;
+    margin-bottom: 2rem;
 }
 
+/* Posts Grid */
 .posts-grid {
-    display: block; /* Stack vertically on mobile */
-    margin-bottom: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
 }
 
 .post-item {
     position: relative;
-    border-radius: 12px;
+    border-radius: 20px;
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
     transition: all 0.4s ease;
     background: white;
-    margin-bottom: 1rem; /* Add spacing between posts on mobile */
 }
 
 .post-item:hover {
-    transform: translateY(-5px) scale(1.01); /* Smaller movement for mobile */
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.25);
+    transform: translateY(-10px) scale(1.02);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.25);
 }
 
 .post-item img {
     width: 100%;
-    height: 200px; /* Smaller height for mobile */
+    height: 250px;
     object-fit: cover;
     transition: all 0.4s ease;
 }
 
 .post-item:hover img {
-    transform: scale(1.05); /* Smaller scale for mobile */
+    transform: scale(1.1);
 }
+
 
 .post-overlay {
     position: absolute;
@@ -327,7 +313,7 @@ header h1 a:hover {
     transition: all 0.3s ease;
     display: flex;
     align-items: flex-end;
-    padding: 1rem; /* Smaller padding for mobile */
+    padding: 1.5rem;
     color: white;
 }
 
@@ -338,540 +324,42 @@ header h1 a:hover {
 .post-overlay h6 {
     font-weight: 600;
     margin-bottom: 0.5rem;
-    font-size: 0.9rem; /* Smaller font for mobile */
 }
 
-.liComment {
-    list-style-type: none;
-    align-items: flex-start; /* Better alignment for mobile */
-    padding: 0.75rem;
-    border-radius: 8px;
-    width: 100%;
-    background-color: white;
-    margin-bottom: 0.5rem;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    transition: transform 0.2s ease;
-}
-
-.liComment:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.comment {
-    width: 100%;
-    height: auto;
-    word-wrap: break-word;
-    line-height: 1.5;
-    font-size: 0.9rem; /* Smaller font for mobile */
-}
-
-/* ===================================
-   MOBILE-FIRST UTILITIES
-   =================================== */
-
-.mt-5 {
-    margin-top: 2rem; /* Smaller margin for mobile */
-}
-
-.list-unstyled li {
-    margin-bottom: 0.75rem;
-}
-
-.empty-state {
-    text-align: center;
-    padding: 2rem 1rem; /* Smaller padding for mobile */
-}
-
-.empty-state i {
-    font-size: 2.5rem; /* Smaller icon for mobile */
-    margin-bottom: 1rem;
-    opacity: 0.6;
-    color: #007bff;
-}
-
-.empty-state h4 {
-    font-weight: 600;
-    margin-bottom: 1rem;
-    font-size: 1.1rem; /* Smaller font for mobile */
-}
-
-.settings {
-    margin-bottom: 1rem;
-    color: rgb(86, 85, 85);
-    text-decoration: none;
+.profilePic{
     cursor: pointer;
-    font-size: 1rem; /* Smaller font for mobile */
-    padding: 0.5rem;
-    display: block;
-    transition: color 0.3s ease;
 }
 
-.settings:hover {
-    color: #007bff;
+/* Large profile pictures for main profile */
+.profile-picture-large {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit:cover;
+    border: 3px solid #fff; 
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease;
 }
 
-.deleteAccount {
-    width: 100%; /* Full width on mobile */
-    max-width: 280px; /* Smaller max-width for mobile */
-    min-height: 250px; /* Smaller height for mobile */
-    background-color: rgba(240, 248, 255, 0.9);
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 1.5rem;
-    margin: 0 auto;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+.profile-picture-large:hover {
+    transform: scale(1.05);
 }
 
-.deleteAccountButton {
-    text-decoration: none;
-    color: #dc3545;
-    text-align: center;
-    padding: 0.75rem 1rem;
-    border: 2px solid #dc3545;
-    border-radius: 8px;
-    transition: all 0.3s ease;
-    background: transparent;
-    font-size: 0.9rem;
+/* Small profile pictures for comments */
+.profile-picture-small {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
 
-.deleteAccountButton:hover {
-    background-color: #dc3545;
-    color: white;
-    transform: translateY(-1px);
-}
 
-.friend-name {
-    text-decoration: none;
-    color: #333;
-    font-weight: 500;
-    transition: color 0.3s ease;
-    font-size: 0.9rem; /* Smaller font for mobile */
-}
 
-.friend-name:hover {
-    color: #007bff;
-}
-
-/* ===================================
-   TABLET RESPONSIVE (min-width: 576px)
-   =================================== */
-
-@media (min-width: 576px) {
-    body {
-        font-size: 15px;
-    }
-
-    .profileContainer {
-        padding: 1.5rem;
-        margin: 1rem;
-        border-radius: 16px;
-    }
-
-    .title {
-        font-size: 1.8rem;
-    }
-
-    .btn {
-        font-size: 0.9rem;
-        padding: 0.6rem 1rem;
-    }
-
-    .btn-create-post {
-        padding: 1rem 1.5rem;
-        font-size: 1rem;
-    }
-
-    .user-avatar {
-        width: 70px;
-        height: 70px;
-        font-size: 1.6rem;
-    }
-
-    .profile-picture-large {
-        width: 100px;
-        height: 100px;
-    }
-
-    .post-item img {
-        height: 220px;
-    }
-
-    .posts-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
-    }
-}
-
-/* ===================================
-   DESKTOP RESPONSIVE (min-width: 768px)
-   =================================== */
-
-@media (min-width: 768px) {
-    body {
-        font-size: 16px;
-    }
-
+/* Basic responsive adjustments */
+@media (max-width: 768px) {
     .container {
-        margin-top: 2rem;
-        padding: 0 1rem;
-    }
-
-    .profileContainer {
-        padding: 2rem;
-        margin: 2rem auto;
-        border-radius: 20px;
-        max-width: 1200px;
-    }
-
-    .title {
-        font-size: 2.5rem;
-    }
-
-    header h1 a {
-        font-size: 1.5rem;
-    }
-
-    .btn-create-post {
-        padding: 1rem 2rem;
-        border-radius: 15px;
-        box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
-        margin-bottom: 1.5rem;
-    }
-
-    .btn-cool {
-        height: 4rem;
-        border-radius: 50px;
-        padding: 12px 30px;
-        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-    }
-
-    .modern-form {
-        padding: 2rem;
-        border-radius: 20px;
-        margin-bottom: 2rem;
-    }
-
-    .user-info-card {
-        padding: 2rem;
-        border-radius: 20px;
-        box-shadow: 0 15px 35px rgba(102, 126, 234, 0.3);
-    }
-
-    .user-avatar {
-        width: 80px;
-        height: 80px;
-        font-size: 2rem;
-        margin-bottom: 1rem;
-    }
-
-    .profile-picture-large {
-        width: 120px;
-        height: 120px;
-    }
-
-    .profile-picture-small {
-        width: 40px;
-        height: 40px;
-    }
-
-    .modern-card {
-        padding: 2rem;
-        border-radius: 20px;
-        margin-bottom: 2rem;
-    }
-
-    .posts-grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1.5rem;
-    }
-
-    .post-item {
-        border-radius: 20px;
-    }
-
-    .post-item img {
-        height: 250px;
-    }
-
-    .post-overlay {
-        padding: 1.5rem;
-    }
-
-    .post-overlay h6 {
-        font-size: 1rem;
-    }
-
-    .mt-5 {
-        margin-top: 3rem;
-    }
-
-    .empty-state {
-        padding: 4rem 2rem;
-    }
-
-    .empty-state i {
-        font-size: 5rem;
-        margin-bottom: 2rem;
-    }
-
-    .empty-state h4 {
-        font-size: 1.25rem;
-    }
-
-    .deleteAccount {
-        width: 320px;
-        min-height: 300px;
-        padding: 2rem;
-    }
-
-    .comment {
-        font-size: 1rem;
-    }
-}
-
-/* ===================================
-   LARGE DESKTOP (min-width: 992px)
-   =================================== */
-
-@media (min-width: 992px) {
-    .posts-grid {
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: 2rem;
-    }
-
-    .title {
-        font-size: 3rem;
-    }
-}
-
-/* ===================================
-   EXTRA LARGE DESKTOP (min-width: 1200px)
-   =================================== */
-
-@media (min-width: 1200px) {
-    .profileContainer {
-        max-width: 1400px;
-    }
-}
-
-/* ===================================
-   ANIMATIONS
-   =================================== */
-
-@keyframes slideDown {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* ===================================
-   ACCESSIBILITY & TOUCH IMPROVEMENTS
-   =================================== */
-
-/* Focus styles for keyboard navigation */
-.btn:focus,
-.form-control:focus,
-.settings:focus,
-.friend-name:focus {
-    outline: 2px solid #007bff;
-    outline-offset: 2px;
-}
-
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-    .profileContainer,
-    .modern-form,
-    .modern-card,
-    .user-info-card {
-        background: white;
-        border: 2px solid #333;
-    }
-}
-
-/* Reduced motion for users who prefer it */
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-}
-
-/* ===================================
-   RESPONSIVE SEARCH FUNCTIONALITY
-   =================================== */
-
-.search-container {
-    position: relative;
-}
-
-.search-container input[type="text"] {
-    padding-right: 3rem;
-}
-
-.search-container button {
-    position: absolute;
-    right: 0.5rem;
-    top: 50%;
-    transform: translateY(-50%);
-    background: transparent;
-    border: none;
-    color: #666;
-    padding: 0.5rem;
-}
-
-/* ===================================
-   RESPONSIVE NAVIGATION IMPROVEMENTS
-   =================================== */
-
-.main-navigation {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-}
-
-.nav-actions {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-}
-
-/* ===================================
-   MOBILE-OPTIMIZED TOUCH TARGETS
-   =================================== */
-
-@media (max-width: 767px) {
-    /* Ensure all touch targets are at least 44px */
-    .btn,
-    button,
-    .form-control,
-    .settings,
-    input[type="submit"],
-    input[type="button"] {
-        min-height: 44px;
-        min-width: 44px;
-    }
-
-    /* Improve spacing for finger navigation */
-    .list-unstyled li {
-        margin-bottom: 1rem;
-        padding: 0.75rem 0;
-        border-bottom: 1px solid #eee;
-    }
-
-    /* Stack navigation items vertically on very small screens */
-    .main-navigation {
-        flex-direction: column;
-        text-align: center;
-    }
-
-    /* Better mobile form spacing */
-    .form-control {
-        font-size: 16px; /* Prevents zoom on iOS */
-    }
-
-    /* Mobile-friendly modal-like forms */
-    .modern-form {
-        position: fixed;
-        top: 10%;
-        left: 5%;
-        right: 5%;
-        z-index: 1050;
-        max-height: 80vh;
-        overflow-y: auto;
-    }
-
-    .modern-form.show {
-        display: block;
-    }
-
-    /* Backdrop for mobile forms */
-    .modern-form::before {
-        content: '';
-        position: fixed;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: rgba(0, 0, 0, 0.5);
-        z-index: -1;
-    }
-}
-
-/* ===================================
-   PRINT STYLES
-   =================================== */
-
-@media print {
-    .btn,
-    .settings,
-    form,
-    .post-overlay {
-        display: none !important;
-    }
-
-    .profileContainer,
-    .modern-card {
-        box-shadow: none;
-        border: 1px solid #ddd;
-        page-break-inside: avoid;
-    }
-
-    body {
-        background: white;
-        color: black;
-    }
-}
-
-/* ===================================
-   DARK MODE SUPPORT (FUTURE FEATURE)
-   =================================== */
-
-@media (prefers-color-scheme: dark) {
-    :root {
-        --bg-primary: #1a1a1a;
-        --bg-secondary: #2d2d2d;
-        --text-primary: #ffffff;
-        --text-secondary: #b0b0b0;
-        --border-color: #404040;
-    }
-
-    /* Apply dark mode styles only if user hasn't set a preference */
-    body:not([data-theme]) {
-        background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-        color: var(--text-primary);
-    }
-
-    body:not([data-theme]) .profileContainer,
-    body:not([data-theme]) .modern-form,
-    body:not([data-theme]) .modern-card,
-    body:not([data-theme]) .user-info-card {
-        background: rgba(45, 45, 45, 0.95);
-        color: var(--text-primary);
-        border-color: var(--border-color);
-    }
-
-    body:not([data-theme]) .form-control {
-        background: var(--bg-secondary);
-        color: var(--text-primary);
-        border-color: var(--border-color);
-    }
-
-    body:not([data-theme]) .liComment {
-        background: var(--bg-secondary);
-        color: var(--text-primary);
+        margin: 1rem;
     }
 }
