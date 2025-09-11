@@ -66,7 +66,6 @@ buttons.forEach(button => {
     }
   })
 })
-
 // Enhance image loading with lazy loading fallback
 const images = document.querySelectorAll('img[src]')
 if ('loading' in HTMLImageElement.prototype) {
