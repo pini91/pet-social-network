@@ -32,8 +32,8 @@ module.exports = {
 
       const friendFollows = await Friend.findOne({ user: req.params.id })// finding the people that follows the friend and people the friend is following.
 
-      const followedBy = friendFollows.FollowFriends ? friendFollows.FollowFriends.length : 0 // This is the number of users that the current user is following.
-      const follows = friendFollows.FollowedBy ? friendFollows.FollowedBy.length : 0 // This is the number of users that follow the current user.
+      const followedBy = friendFollows.FollowedBy ? friendFollows.FollowedBy.length : 0 // This is the number of users that the current user is following.
+      const follows = friendFollows.FollowFriends ? friendFollows.FollowFriends.length : 0 // This is the number of users that follow the current user.
 
       // This will check if the user is following the friend or not.
       const isFollowing = following && following.FollowFriends ? following.FollowFriends.includes(req.params.id) : false // If the user is following the friend,isFollowing will be true, otherwise it will be false.
