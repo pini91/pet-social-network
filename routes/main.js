@@ -18,6 +18,15 @@ router.get('/health', (req, res) => {
   })
 })
 
+// Handle service worker requests (browsers sometimes auto-request this)
+router.get('/service-worker.js', (req, res) => {
+  res.status(404).send('// No service worker available')
+})
+
+router.get('/sw.js', (req, res) => {
+  res.status(404).send('// No service worker available')
+})
+
 // Main Routes - simplified for now
 router.get('/', homeController.getIndex)
 router.get('/profile', ensureAuth, postsController.getProfile)

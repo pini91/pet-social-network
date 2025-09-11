@@ -71,11 +71,10 @@ module.exports = {
           : 'http://localhost:2121'
 
         const resetLink = `${baseUrl}/reset-password/${token}`
-        const emailContent = `You requested a password reset. Click the link below to reset your password:
-
-${resetLink}
-
-If you did not request this, please ignore this email.`
+        const emailContent = `
+        You requested a password reset. Click the link below to reset your password:<br>
+        ${resetLink}<br>
+        If you did not request this, please ignore this email.`
 
         // Try Resend first (HTTP API - Railway compatible)
 
@@ -83,8 +82,8 @@ If you did not request this, please ignore this email.`
 
         const payload = {
           from: 'onboarding@resend.dev',
-          to: 'testingmyaps@gmail.com',
-          subject: 'Hello World',
+          to: user.email,
+          subject: 'Reset Password',
           html: `<p>${emailContent}</p>`
         }
         const requestOptions = {
