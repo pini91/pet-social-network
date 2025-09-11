@@ -121,7 +121,6 @@ header h1 a:hover {
     display: flex;
     flex-direction: column;
     align-self:center;
-    /* justify-content: start; */
 }
 
 .deleteAccountButton{

@@ -1,6 +1,6 @@
 module.exports = {
   ensureAuth: function (req, res, next) {
-    console.log('🔍 ensureAuth check:', {
+    console.log('ensureAuth check:', {
       isAuthenticated: req.isAuthenticated(),
       sessionID: req.sessionID,
       userID: req.user ? req.user._id : 'No user',
@@ -10,7 +10,7 @@ module.exports = {
     if (req.isAuthenticated()) {
       return next()
     } else {
-      console.log('❌ Authentication failed, redirecting to /')
+      console.log('Authentication failed, redirecting to /')
       res.redirect('/')
     }
   }
