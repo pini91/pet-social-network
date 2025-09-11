@@ -16,8 +16,8 @@ module.exports = {
       // grab friend profilePic
       const proPic = posts.find((post) => post.isProfilePic === true) // This will find the post that has isProfilePic set to true, which is the profile picture of the user.
 
-      let following = await Friend.findOne({ user: req.user.id })
-      console.log('getFriend: Current user Friend document found:', !!following)
+      let following = await Friend.findOne({ user: req.params.id })
+      console.log('getFriend: Current user Friend document found:',following)
 
       // If no friend document exists for current user, create one
       if (!following) {
@@ -30,8 +30,8 @@ module.exports = {
         await following.save()
       }
 
-      const followedBy = following.FollowFriends ? following.FollowFriends.length : 0 // This is the number of users that the current user is following.
-      const follows = following.FollowedBy ? following.FollowedBy.length : 0 // This is the number of users that follow the current user.
+      const followedBy = following.FollowFriends.length ? following.FollowFriends.length : 0 // This is the number of users that the current user is following.
+      const follows = following.FollowedBy.length ? following.FollowedBy.length : 0 // This is the number of users that follow the current user.
 
       // This will check if the user is following the friend or not.
       const isFollowing = following && following.FollowFriends ? following.FollowFriends.includes(req.params.id) : false // If the user is following the friend,isFollowing will be true, otherwise it will be false.
