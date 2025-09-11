@@ -17,7 +17,7 @@ module.exports = {
       const proPic = posts.find((post) => post.isProfilePic === true) // This will find the post that has isProfilePic set to true, which is the profile picture of the user.
 
       let following = await Friend.findOne({ user: req.params.id })
-      console.log('getFriend: Current user Friend document found:',following)
+      console.log('getFriend: Current user Friend document found:', following)
 
       // If no friend document exists for current user, create one
       if (!following) {
