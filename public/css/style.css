@@ -27,7 +27,7 @@ body {
     
 }
 
-.searchButton{
+/* .searchButton{
     color: #007bff;
     border-color: #007bff;
     border: radius 0.2em;
@@ -38,7 +38,7 @@ body {
     background-color: #007bff;
     transition: transform 0.3s ease;
     border: radius 0.2em;
-}
+} */
 
 /* .title:hover{
     color:rgb(88, 98, 73);
