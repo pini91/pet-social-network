@@ -11,7 +11,7 @@
           <button type="submit" class="btn btn-outline-primary"><i class="fa fa-search"></i></button>
         </form>
         <a class="btn btn-primary col-8" href="/feed">Go to Feeds</a>
-        if(req.user !== friendProfile.id){
+        <%if(req.user.id !== friendProfile.id){
           <% if(isFollowing) {%>
           <form action="/friends/unfollow/<%= friendProfile._id %>?_method=DELETE" method="POST">
             <button class="fa fa-minus btn btn-danger col-3" type="submit">Unfollow Pet Friend</button>
