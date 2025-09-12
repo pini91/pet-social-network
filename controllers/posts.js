@@ -35,7 +35,7 @@ module.exports = {
       console.log(`FROM FOLLOW FRIENDS${follows.FollowFriends}`)
 
       // const followedByFriends = User.find({ user: { $all: follows.FollowedBy } })
-      console.log(`FROM FOLLOWBY${follows.FollowedByFriends}`)
+      console.log(`FROM FOLLOWBY${follows.FollowedBy}`)
 
       console.log('getProfile: Rendering profile with followedBy:', followedBy, 'following:', following)
       res.render('profile.ejs', { posts, user: req.user, followedBy, following, profilePic }) // posts(because of mongoose) what we are passing its an array, back in the day they had to put .toArray().
