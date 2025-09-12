@@ -37,7 +37,6 @@ module.exports = {
 
       // This will check if the user is following the friend or not.
       const isFollowing = following && following.FollowFriends ? following.FollowFriends.includes(req.params.id) : false // If the user is following the friend,isFollowing will be true, otherwise it will be false.
-      console.log(`THIS IS FROM FRIENDS CONTROLLER${posts}`)
       console.log('getFriend: Rendering friend profile with followedBy:', followedBy, 'follows:', follows, 'isFollowing:', isFollowing)
       res.render('friendsProfile.ejs', { posts, friendProfile, user: req.user, isFollowing, followedBy, follows, proPic }) // Here we get the post(that has a post.id the id who made this post), and we get the user: req.user(the logged in user.) so that we can compare if the person who made the post is the same thats logged in and so we can put the trash can or not.
     } catch (err) {
