@@ -31,7 +31,7 @@ module.exports = {
       const followedBy = follows.FollowedBy ? follows.FollowedBy.length : 0 // This is the number of users that follow the user that is logged in.
       const following = follows.FollowFriends ? follows.FollowFriends.length : 0 // This is the number of users that the user that is logged in is following.
 
-      const followFriends = User.find({ id: { $all: follows.FollowFriends } })
+      const followFriends = User.find({ _id: { $all: follows.FollowFriends } })
       followFriends.forEach(el => console.log(el.userName))
       // console.log(`FROM FOLLOW FRIENDS${followFriends}`)
 
