@@ -29,7 +29,14 @@ body {
 
 .searchButton{
     color: #007bff;
+    border-color: #007bff;
 }
+
+.searchButton:hover{
+    color: white;
+    background-color: #007bff;
+}
+
 /* .title:hover{
     color:rgb(88, 98, 73);
 } */
