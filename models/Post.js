@@ -19,6 +19,7 @@ const PostSchema = new mongoose.Schema({
   },
   likes: {
     type: Array, // This is an array of user ids that liked the post.
+    default: [],
     required: true
   },
   user: {

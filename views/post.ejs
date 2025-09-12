@@ -19,7 +19,7 @@
           </div>
              <% } else { %>
                <div class="user-avatar">
-                <%= user.userName.charAt(0).toUpperCase() %>
+                <%= userCreator.userName.charAt(0).toUpperCase() %>
               </div>
              <% } %>
       <h1><a href="/friends/<%= userCreator.id %>"><%= userCreator.userName.charAt(0).toUpperCase()+userCreator.userName.slice(1)%></a></h1>
