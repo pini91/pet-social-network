@@ -17,6 +17,56 @@ body {
     color: #007bff !important; /* Bootstrap primary color */
 }
 
+/* Comments Styling */
+.comments-section {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.comment-container {
+    background-color: #ffffff;
+    border-radius: 12px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
+    transition: transform 0.2s ease;
+}
+
+.comment-container:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.08);
+}
+
+.comment-content {
+    background-color: #f8f9fa;
+    padding: 0.75rem;
+    border-radius: 8px;
+    position: relative;
+}
+
+.comment-content p {
+    margin-bottom: 0;
+    color: #212529;
+    font-size: 0.95rem;
+    line-height: 1.5;
+}
+
+.comment-actions {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.75rem;
+}
+
+.comment-actions .btn:hover {
+    color: #dc3545 !important;
+    transform: scale(1.1);
+}
+
+.profile-picture-small {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+
 .profileContainer{
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
@@ -383,7 +433,7 @@ header {
 
 }
 
-    @media (max-width: 992px) {
+    /* @media (max-width: 992px) {
         
  
-} 
+}  */
