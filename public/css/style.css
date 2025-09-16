@@ -354,6 +354,10 @@ header {
     background-color:rgb(176, 176, 179); ;
 }
 
+.fa-heart, .fa-heart-broken, .fa-trash{
+    outline: none !important;
+}
+
 
 
 /* Basic responsive adjustments */
