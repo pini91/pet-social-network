@@ -26,6 +26,10 @@ body {
     font-weight:bolder;
     
 }
+.title:hover{
+   color: #007bff;
+    
+}
 
 
 .container {
