@@ -19,18 +19,13 @@ body {
 
 .title{
     font-family:'Franklin Gothic Medium','Arial Narrow', Arial, sans-serif;
-    /* font-size: xxx-large; */
+    font-size: xxx-large;
     color: black; 
     display: flex;
     justify-self: center;
     font-weight:bolder;
     
 }
-.title:hover{
-   color: #007bff;
-    
-}
-
 
 .container {
     margin-top: 2rem;
