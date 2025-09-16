@@ -400,13 +400,9 @@ header {
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
 
-/* .ulContainer{
-    background-color:rgb(238, 238, 251); ;
-} */
-
-.fa-heart, .fa-heart-broken, .fa-trash{
+/* .fa-heart, .fa-heart-broken, .fa-trash{
     outline: none !important;
-}
+} */
 
 
 
