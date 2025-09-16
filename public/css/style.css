@@ -3,7 +3,7 @@
 }
 
 body {
-    background: linear-gradient(135deg, #f6f7fb 0%, #d5d0da 100%);
+    background-color:rgba(246, 247, 250);
     min-height: 100vh;  /* to ensure that an element takes up at least the full height of the viewport. */
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
