@@ -17,11 +17,11 @@
                    alt="User Image"
                />
           </div>
-             <% } else { %>
-               <div class="user-avatar">
-                <%= userCreator.userName.charAt(0).toUpperCase() %>
-              </div>
-             <% } %>
+        <% } else { %>
+          <div class="user-avatar">
+          <%= userCreator.userName.charAt(0).toUpperCase() %>
+        </div>
+        <% } %>
       <h1><a href="/friends/<%= userCreator.id %>" class="friend-name text-decoration-none fw-semibold text-primary"><%= userCreator.userName.charAt(0).toUpperCase()+userCreator.userName.slice(1)%></a></h1>
       <div class="mt-4 d-flex justify-content-between">
           <h3 class="h5"><%= post.title %></h3>
@@ -29,9 +29,6 @@
       </div>
       
       <img class="img-fluid" src="<%= post.image%>" />
-       <div class="col-3 mt-5">
-        <p class="h5"><%= post.caption %></p>
-      </div>
       <div class="row g-2">
         <div class="col-6">
           <% if(!post.likes.includes(user.id)) {%>
@@ -40,7 +37,7 @@
               action="/post/likePost/<%= post.id %>" 
               method="POST"
             >
-              <button class="btn btn-outline-primary w-100" type="submit">
+              <button class="btn btn-outline-primary my-no-border-button w-100" type="submit">
                 <i class="fa fa-heart"></i> Like
               </button>
             </form>
@@ -51,7 +48,7 @@
               action="/post/unlikePost/<%= post.id %>"
               method="POST"
             >
-              <button class="btn btn-outline-primary w-100" type="submit">
+              <button class="btn btn-outline-primary my-no-border-button w-100" type="submit">
                 <i class="fa fa-heart-broken"></i> Unlike
               </button>
             </form>
@@ -65,11 +62,14 @@
               method="POST"
               class="w-100"
             >
-              <button class="btn btn-outline-primary w-100" type="submit">
+              <button class="btn btn-outline-primary my-no-border-button w-100" type="submit">
                 <i class="fa fa-trash"></i> Delete
               </button>
             </form>
           <%}%>
+        </div>
+        <div class="col-12 mt-5">
+        <p class="h5"><%= post.caption %></p>
         </div>
       </div>
     </div>
