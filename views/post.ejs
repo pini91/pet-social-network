@@ -8,6 +8,9 @@
   </div>
   <div class="row justify-content-center mt-5">
     <div class="col-6">
+    <div class="col-3 mt-5">
+    <p class="h5"><%= post.caption %></p>
+    </div>
       <div class="row justify-content-between">
          <% if (profilePic) { %>
           <div class="">
@@ -60,9 +63,7 @@
         <%}%>
       </div>
     </div>
-    <div class="col-3 mt-5">
-      <p class="h5"><%= post.caption %></p>
-    </div>
+    
     <div class="mt-5"> 
       <h5>Add a comment</h5>
       <form action="/comment/createComment/<%=post._id%>" method="POST"> <!--Here we can just pass the post._id because of the controller, where we already passed all the info about the post and all the info about the comments... basically says create a comment in this post-->
