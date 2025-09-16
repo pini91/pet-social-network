@@ -37,7 +37,7 @@ body {
 }
 
 .comment-content {
-    background-color: #f8f9fa;
+    /* background-color: #f8f9fa; */
     padding: 0.75rem;
     border-radius: 8px;
     position: relative;
@@ -400,9 +400,9 @@ header {
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
 
-.ulContainer{
+/* .ulContainer{
     background-color:rgb(238, 238, 251); ;
-}
+} */
 
 .fa-heart, .fa-heart-broken, .fa-trash{
     outline: none !important;
