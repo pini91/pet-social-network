@@ -1,76 +1,81 @@
 <%- include('partials/header') -%>
-<div class="container">
-  <!-- <div class="d-flex justify-content-end">
-        <a href="/logout" class="col-1 btn btn-primary">Logout</a>
-  </div> -->
-  <div class="d-flex justify-content-start">
-    <a class="btn btn-outline-primary" href="/feed">Go to Feeds</a>
-  </div>
-  <div class="row justify-content-center mt-5">
-    <div class="col-6">
-      <div class="row justify-content-between">
-         <% if (profilePic) { %>
-          <div class="">
-               <img 
-                   class="profile-picture-large"
-                   src="<%= profilePic.image %>"
-                   alt="User Image"
-               />
+<div class="container py-3">
+  <nav class="mb-4">
+    <a class="btn btn-outline-primary" href="/feed">
+      <i class="fa fa-arrow-left me-2"></i>Back to Feed
+    </a>
+  </nav>
+  
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="modern-card">
+        <!-- User Info Section -->
+        <div class="d-flex align-items-center gap-3 mb-4">
+          <% if (profilePic) { %>
+            <img 
+              class="profile-picture-large"
+              src="<%= profilePic.image %>"
+              alt="User Image"
+            />
+          <% } else { %>
+            <div class="user-avatar">
+              <%= userCreator.userName.charAt(0).toUpperCase() %>
+            </div>
+          <% } %>
+          <div>
+            <h1 class="h4 mb-0">
+              <a href="/friends/<%= userCreator.id %>" class="friend-name text-decoration-none fw-semibold text-primary">
+                <%= userCreator.userName.charAt(0).toUpperCase()+userCreator.userName.slice(1)%>
+              </a>
+            </h1>
+            <div class="d-flex align-items-center gap-2 text-muted">
+              <small><%= post.title %></small>
+              <span>•</span>
+              <small><%= post.likes.length %> likes</small>
+            </div>
           </div>
-        <% } else { %>
-          <div class="user-avatar">
-          <%= userCreator.userName.charAt(0).toUpperCase() %>
         </div>
+        <!-- Post Image -->
+        <div class="position-relative mb-3">
+          <img class="img-fluid rounded" src="<%= post.image%>" alt="Post image" />
+        </div>
+
+        <!-- Post Actions -->
+        <div class="row g-2 mb-3">
+          <div class="col-6">
+            <% if(!post.likes.includes(user.id)) {%>
+              <form class="w-100" action="/post/likePost/<%= post.id %>" method="POST">
+                <button class="btn btn-outline-primary w-100 rounded-pill" type="submit">
+                  <i class="fa fa-heart me-2"></i>Like
+                </button>
+              </form>
+            <% } %>
+            <% if(post.likes.includes(user.id)) {%>
+              <form class="w-100" action="/post/unlikePost/<%= post.id %>" method="POST">
+                <button class="btn btn-primary w-100 rounded-pill" type="submit">
+                  <i class="fa fa-heart-broken me-2"></i>Unlike
+                </button>
+              </form>
+            <% } %>
+          </div>
+          
+          <div class="col-6">
+            <%if(post.user == user.id){ %>
+              <form action="/post/deletePost/<%= post.id %>?_method=DELETE" method="POST" class="w-100">
+                <button class="btn btn-outline-danger w-100 rounded-pill" type="submit">
+                  <i class="fa fa-trash me-2"></i>Delete
+                </button>
+              </form>
+            <%}%>
+          </div>
+        </div>
+
+        <!-- Post Caption -->
+        <% if(post.caption) { %>
+          <div class="p-3 rounded bg-light mb-3">
+            <p class="mb-0 lead"><%= post.caption %></p>
+          </div>
         <% } %>
-      <h1><a href="/friends/<%= userCreator.id %>" class="friend-name text-decoration-none fw-semibold text-primary"><%= userCreator.userName.charAt(0).toUpperCase()+userCreator.userName.slice(1)%></a></h1>
-      <div class="mt-4 d-flex justify-content-between">
-          <h3 class="h5"><%= post.title %></h3>
-          <h5 class="col-3 h5">Likes: <%= post.likes.length %></h5><!--This shows me how many likes there is.(We take them from the db)-->
-      </div>
-      
-      <img class="img-fluid" src="<%= post.image%>" />
-      <div class="row g-2">
-        <div class="col-6">
-          <% if(!post.likes.includes(user.id)) {%>
-            <form
-              class="w-100"
-              action="/post/likePost/<%= post.id %>" 
-              method="POST"
-            >
-              <button class="btn btn-outline-primary my-no-border-button w-100" type="submit">
-                <i class="fa fa-heart"></i> Like
-              </button>
-            </form>
-          <% } %>
-          <% if(post.likes.includes(user.id)) {%>
-            <form
-              class="w-100"
-              action="/post/unlikePost/<%= post.id %>"
-              method="POST"
-            >
-              <button class="btn btn-outline-primary my-no-border-button w-100" type="submit">
-                <i class="fa fa-heart-broken"></i> Unlike
-              </button>
-            </form>
-          <% } %>
-        </div>
-        
-        <div class="col-6">
-          <%if(post.user == user.id){ %>
-            <form
-              action="/post/deletePost/<%= post.id %>?_method=DELETE"
-              method="POST"
-              class="w-100"
-            >
-              <button class="btn btn-outline-primary my-no-border-button w-100" type="submit">
-                <i class="fa fa-trash"></i> Delete
-              </button>
-            </form>
-          <%}%>
-        </div>
-        <div class="col-12 mt-2"> <!-- Changed to mt-2 for better spacing -->
-          <p class="h5 mb-0"><%= post.caption %></p> <!-- Added mb-0 to remove bottom margin -->
-        </div>
       </div>
     </div>
     <!-- Soft gray line after caption -->
