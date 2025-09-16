@@ -19,8 +19,8 @@ body {
 
 .title{
     font-family:'Franklin Gothic Medium','Arial Narrow', Arial, sans-serif;
-    font-size: xxx-large;
-    color: rgb(11, 95, 11);
+    /* font-size: xxx-large;
+    color: black; */
     display: flex;
     justify-self: center;
     font-weight:bolder;
