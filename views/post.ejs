@@ -68,7 +68,7 @@
             </form>
           <%}%>
         </div>
-        <div class="col-12 mt-5">
+        <div class="col-12 pt-1">
         <p class="h5"><%= post.caption %></p>
         </div>
       </div>
@@ -84,7 +84,7 @@
         <button type="submit" class="btn btn-primary" value="Upload">Submit</button>
       </form> 
     </div>
-    <ul>
+    <ul class="ulContainer">
       <% for(let i=0; i<comments.length; i++) {%>  <!--This comments are also comming from the post controller.-->
         <li class="col-6 d-flex mt-2 liComment">
         <!--Here we are going to show the comments, the user who made the comment, and the date when it was created.-->

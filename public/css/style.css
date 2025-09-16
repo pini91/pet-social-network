@@ -350,11 +350,21 @@ header {
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
 
+.ulContainer{
+    background-color:rgb(176, 176, 179); ;
+}
+
 
 
 /* Basic responsive adjustments */
 /* Enhanced responsive styles */
     @media (max-width: 767px) {
+        .container {
+        padding: 1rem;
+      }
+      .title {
+        font-size: 2rem !important;
+      } 
      
     }
     
