@@ -37,7 +37,7 @@
             action="/post/likePost/<%= post.id %>" 
             method="POST"
           > <!--/forms are always post yet im using a form to do a put WE JUST NEED TO OVERRIDE THE METHOD./--the form always uses the action to know what to do-->
-            <button class="btn btn-primary fa fa-heart" type="submit"></button> <!--So this doesnt do anything unless I click the heart, the hearts and trash are coming from bootstrap which makes it a button that has that buttom primary color of blue, fa heart which is the font awesome for a heart, loaded in the header.ejs  -->
+            <button class="btn btn-outline-primary fa fa-heart" type="submit"></button> <!--So this doesnt do anything unless I click the heart, the hearts and trash are coming from bootstrap which makes it a button that has that buttom primary color of blue, fa heart which is the font awesome for a heart, loaded in the header.ejs  -->
           </form>
         <% } %>
         <% if(post.likes.includes(user.id)) {%> <!--If the post.likes does include the user.id then show the unlike button-->  
@@ -46,7 +46,7 @@
             action="/post/unlikePost/<%= post.id %>"
             method="POST"
           >
-          <button class="btn btn-primary fa fa-heart-broken" type="submit"></button>
+          <button class="btn btn-outline-primary fa fa-heart-broken" type="submit"></button>
           </form>
         <% } %>
         <%if(post.user == user.id){ %>  <!-- If the post.user(from the post controllers)=== to the user.id(logged in) show the trash can-->
@@ -61,7 +61,7 @@
       </div>
     </div>
     <div class="col-3 mt-5">
-      <p><%= post.caption %></p>
+      <p class="h5"><%= post.caption %></p>
     </div>
     <div class="mt-5"> 
       <h5>Add a comment</h5>
@@ -98,7 +98,7 @@
                 action="/comment/deleteComment/<%= comments[i]._id %>?_method=DELETE"
                 method="POST"
               >
-                <button class="btn btn-primary fa fa-trash" type="submit"></button>
+                <button class="btn btn-outline-primary fa fa-trash" type="submit"></button>
               </form>
             <%}%>
           </div>
