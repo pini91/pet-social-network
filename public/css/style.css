@@ -18,7 +18,7 @@ body {
 }
 
 .title{
-    font-family: cursive;
+    font-family:'Franklin Gothic Medium','Arial Narrow', Arial, sans-serif;
     font-size: xxx-large;
     color: rgb(11, 95, 11);
     display: flex;
