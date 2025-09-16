@@ -25,7 +25,7 @@
       <h1><a href="/friends/<%= userCreator.id %>" class="friend-name text-decoration-none fw-semibold text-primary"><%= userCreator.userName.charAt(0).toUpperCase()+userCreator.userName.slice(1)%></a></h1>
       <div class="mt-4 d-flex justify-content-between">
           <h3 class="h5"><%= post.title %></h3>
-          <h5 class="col-3">Likes: <%= post.likes.length %></h5><!--This shows me how many likes there is.(We take them from the db)-->
+          <h5 class="col-3 h5">Likes: <%= post.likes.length %></h5><!--This shows me how many likes there is.(We take them from the db)-->
       </div>
       
       <img class="img-fluid" src="<%= post.image%>" />
@@ -68,8 +68,8 @@
             </form>
           <%}%>
         </div>
-        <div class="col-12 pt-1">
-        <p class="h5"><%= post.caption %></p>
+        <div class="col-12 mt-2"> <!-- Changed to mt-2 for better spacing -->
+          <p class="h5 mb-0"><%= post.caption %></p> <!-- Added mb-0 to remove bottom margin -->
         </div>
       </div>
     </div>
