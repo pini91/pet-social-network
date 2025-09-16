@@ -72,8 +72,8 @@
 
         <!-- Post Caption -->
         <% if(post.caption) { %>
-          <div class="p-3 rounded bg-light mb-3">
-            <p class="mb-0 lead"><%= post.caption %></p>
+          <div class="p-3 rounded mb-3">
+            <p class="mb-0"><%= post.caption %></p>
           </div>
         <% } %>
       </div>
@@ -115,13 +115,14 @@
                         <i class="fa fa-trash"></i>
                       </button>
                     </form>
-                  </div>
+                  <!-- </div> -->
                 <%}%>
               </div>
             </div>
           </li>
         <% } %>
       </ul>
+    </div>
     </div>
     <!-- Soft gray line after comments -->
     <hr class="my-4 opacity-25 w-90 mx-auto">
