@@ -88,14 +88,14 @@
     <div class="comments-section">
       <ul class="list-unstyled">
         <% for(let i=0; i<comments.length; i++) {%>
-          <li class="comment-container mb-3">
+          <li class="comment-container mb-2">
             <div class="d-flex align-items-start gap-2">
               <!-- User Avatar -->
               <% const proPic = profilePics.find(photo => photo.user.toString() === comments[i].userCommentCreator.id.toString()); %>
               <img class="profile-picture-small rounded-circle" src="<%= proPic ? proPic.image : '/imgs/icons8-dog-paw-32.png' %>" alt="User Image">
               
               <!-- Comment Content -->
-              <div class="comment-content flex-grow-1">
+              <div class="comment-content flex-grow-1"><!-- flex-grow-1 is used to control how a flex item within a flex container expands to fill available space. -->
                 <div class="d-flex justify-content-between align-items-center mb-1">
                   <a href="/friends/<%= comments[i].userCommentCreator.id %>" class="friend-name text-capitalize text-decoration-none fw-semibold"><%= comments[i].userCommentCreator.userName%></a>
                   <small class="text-muted"><%= comments[i].createdAt.toLocaleString().slice(0, 9)%></small>
