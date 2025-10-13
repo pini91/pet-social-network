@@ -36,8 +36,7 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
           # Ensures we deploy the exact code that triggered the workflow
-
-     - name: Install Railway CLI
+      - name: Install Railway CLI
         run: |
           curl -fsSL https://railway.app/install.sh | sh
           echo "$HOME/.railway/bin" >> $GITHUB_PATH

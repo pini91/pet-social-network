@@ -53,11 +53,11 @@ jobs:
 
       # Software Composition Analysis (SCA)
       - name: Run npm audit (SCA)
-        run: npm audit --audit-level=moderate
+        run: npm audit --audit-level=high
         continue-on-error: false
 
       - name: Check for known vulnerabilities
-        run: npx audit-ci --moderate
+        run: npx audit-ci --high
         continue-on-error: false
 
   test:

@@ -45,8 +45,8 @@ exports.postLogin = (req, res, next) => {
           return next(saveErr)
         }
 
-        console.log('✅ User logged in successfully:', user.email)
-        console.log('✅ Session saved, redirecting to profile')
+        console.log('User logged in successfully:', user.email)
+        console.log('Session saved, redirecting to profile')
         req.flash('success', { msg: 'Success! You are logged in.' })
         res.redirect(req.session.returnTo || '/profile')
       })

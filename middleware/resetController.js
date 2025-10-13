@@ -1,10 +1,8 @@
-// const express = require('express') // Not used in this module
-// const app = express() // Not used in this module
+const FormData = require('form-data') // form-data v4.0.1
+const Mailgun = require('mailgun.js') // mailgun.js v11.1.0
+
 const crypto = require('crypto') // to create the token
 const User = require('../models/User')
-// const nodemailer = require('nodemailer') // Not needed for Resend HTTP API
-// For Resend HTTP API (Railway-compatible)
-const fetch = require('node-fetch')
 
 // const bcrypt = require('bcrypt') // bcrypt methods are used via User model
 
@@ -34,119 +32,65 @@ module.exports = {
   },
 
   forgotPassword: async (req, res) => {
-    try {
-      const { email } = req.body
-      const user = await User.findOne({ email })
+    // try {
+    const { email } = req.body
+    const user = await User.findOne({ email })
 
-      console.log(user)
+    console.log(user)
 
-      if (!user) {
-        req.flash('error', 'No account with that email found.')
-        return res.redirect('/forgot-password')
-      }
+    if (!user) {
+      req.flash('error', 'No account with that email found.')
+      return res.redirect('/forgot-password')
+    }
 
-      // Generate token using crypto
-      const token = crypto.randomBytes(20).toString('hex') // This is a method from Node.js's built-in crypto module. It generates 20 cryptographically strong pseudo-random bytes..toString("hex"): This converts the generated random bytes (which are in a Buffer object) into a hexadecimal string representation.
-      console.log('Generated token:', token)
+    // Generate token using crypto
+    const token = crypto.randomBytes(20).toString('hex') // This is a method from Node.js's built-in crypto module. It generates 20 cryptographically strong pseudo-random bytes..toString("hex"): This converts the generated random bytes (which are in a Buffer object) into a hexadecimal string representation.
+    console.log('Generated token:', token)
 
-      // Set token and expiry on user
-      user.resetPasswordToken = token
-      user.resetPasswordExpires = Date.now() + 3600000 // 1 hour
+    // Set token and expiry on user
+    user.resetPasswordToken = token
+    user.resetPasswordExpires = Date.now() + 3600000 // 1 hour
 
-      await user.save()
-      console.log('User saved with token')
+    await user.save()
+    console.log('User saved with token')
 
-      // FUNCTION FOR THE EMAIL RESERVATION
-      async function main () {
-        console.log('=== EMAIL DEBUG INFO ===')
-        console.log('RESEND_API_KEY:', process.env.RESEND_API_KEY ? 'Set' : 'NOT SET')
-        console.log('EMAIL_USER:', process.env.EMAIL_USER ? 'Set' : 'NOT SET')
-        console.log('EMAIL_PASS:', process.env.EMAIL_PASS ? 'Set' : 'NOT SET')
-        console.log('NODE_ENV:', process.env.NODE_ENV)
-        console.log('========================')
+    // FUNCTION FOR THE EMAIL RESERVATION
+    async function sendSimpleMessage () {
+      // Determine the base URL for the reset link
+      const baseUrl = process.env.NODE_ENV === 'production'
+        ? (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : 'https://pet-social-app.up.railway.app')
+        : 'http://localhost:2121'
 
-        // Determine the base URL for the reset link
-        const baseUrl = process.env.NODE_ENV === 'production'
-          ? (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : 'https://pet-social-app.up.railway.app')
-          : 'http://localhost:2121'
+      const resetLink = `${baseUrl}/reset-password/${token}`
 
-        const resetLink = `${baseUrl}/reset-password/${token}`
-        const emailContent = `
+      const emailContent = `
         You requested a password reset. Click the link below to reset your password:<br>
         ${resetLink}<br>
         If you did not request this, please ignore this email.`
 
-        // Try Resend first (HTTP API - Railway compatible)
+      const mailgun = new Mailgun(FormData)
+      const mg = mailgun.client({
+        username: 'api',
+        key: process.env.API_KEY || 'API_KEY'
+      })
+      try {
+        const data = await mg.messages.create('brenda-app.dev', {
+          from: 'Mailgun Sandbox <postmaster@brenda-app.dev>',
+          to: `${user.email}`,
+          subject: 'Reset Pet Social Network Password',
+          text: emailContent
+        })
 
-        const RESEND_AUTH_KEY = process.env.RESEND_API_KEY
-
-        const payload = {
-          from: 'onboarding@resend.dev',
-          to: user.email,
-          subject: 'Reset Password',
-          html: `<p>${emailContent}</p>`
-        }
-        const requestOptions = {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${RESEND_AUTH_KEY}`
-          },
-          body: JSON.stringify(payload)
-        }
-
-        fetch('https://api.resend.com/emails', requestOptions)
-          .then(response => response.text())
-          .then(result => console.log(result))
-          .catch(error => console.log('error', error))
-
-        // If we reach here, either Resend failed or wasn't configured
-        // throw new Error('Email sending failed. Please check your email configuration (RESEND_API_KEY)')
-
-        // Fallback to SMTP (will fail on Railway but kept for local development)
-        // if (!process.env.EMAIL_USER || !process.env.EMAIL_PASS) {
-        //   throw new Error('No email configuration found. Please set either RESEND_API_KEY or EMAIL_USER/EMAIL_PASS')
-        // }
-
-        // console.log('Attempting SMTP fallback (note: this will fail on Railway)...')
-        // const smtpConfig = {
-        //   host: process.env.EMAIL_HOST || 'smtp-relay.brevo.com',
-        //   port: parseInt(process.env.EMAIL_PORT) || 587,
-        //   secure: false,
-        //   auth: {
-        //     user: process.env.EMAIL_USER,
-        //     pass: process.env.EMAIL_PASS
-        //   }
-        // }
-
-        // const transporter = nodemailer.createTransport(smtpConfig)
-
-        // try {
-        //   const info = await transporter.sendMail({
-        //     from: process.env.EMAIL_FROM || 'brenda.loncaric@gmail.com',
-        //     to: user.email,
-        //     subject: 'Password Reset',
-        //     text: emailContent
-        //   })
-
-        //   console.log('Email sent via SMTP:', info.messageId)
-        //   return info
-        // } catch (smtpError) {
-        //   console.error('SMTP also failed:', smtpError.message)
-        //   throw new Error(`Both Resend and SMTP failed. Resend not configured, SMTP error: ${smtpError.message}`)
-        // }
-        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+        console.log(data)
+      } catch (error) {
+        console.log(error) // logs any error
       }
-
-      main().catch(console.error)
-
-      req.flash('info', 'An email has been sent with further instructions.')
-      res.redirect('/forgot-password')
-    } catch (err) {
-      console.error(err)
-      req.flash('error', 'Error sending reset email. Please try again.')
-      res.redirect('/forgot-password')
     }
+
+    sendSimpleMessage()
+
+    req.flash('info', 'An email has been sent with further instructions.')
+    res.redirect('/forgot-password')
   },
   postResetPassword: async (req, res) => {
     try {
