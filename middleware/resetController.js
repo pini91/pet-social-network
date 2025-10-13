@@ -92,6 +92,7 @@ module.exports = {
     req.flash('info', 'An email has been sent with further instructions.')
     res.redirect('/forgot-password')
   },
+
   postResetPassword: async (req, res) => {
     try {
       const { password, confirm } = req.body
