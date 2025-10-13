@@ -36,7 +36,9 @@ console.log('EMAIL_HOST:', process.env.EMAIL_HOST ? 'Set' : 'NOT SET')
 console.log('EMAIL_PORT:', process.env.EMAIL_PORT ? 'Set' : 'NOT SET')
 console.log('EMAIL_USER:', process.env.EMAIL_USER ? 'Set' : 'NOT SET')
 console.log('EMAIL_PASS:', process.env.EMAIL_PASS ? 'Set' : 'NOT SET')
-console.log('RESEND_API_KEY:', process.env.RESEND_API_KEY ? 'Set' : 'NOT SET')
+// console.log('RESEND_API_KEY:', process.env.RESEND_API_KEY ? 'Set' : 'NOT SET')
+console.log('MAILGUN_API_KEY:', process.env.MAILGUN_API_KEY ? 'Set' : 'NOT SET')
+console.log('MAILGUN_DOMAIN:', process.env.MAILGUN_DOMAIN ? 'Set' : 'NOT SET')
 console.log('RAILWAY_ENVIRONMENT:', process.env.RAILWAY_ENVIRONMENT || 'Not in Railway')
 console.log('=== END DEBUG ===')
 
@@ -59,19 +61,6 @@ if (!hasCloudinaryVars) {
   console.error('- CLOUDINARY_API_SECRET=your-cloudinary-api-secret')
   console.error('Get these from your Cloudinary dashboard at https://cloudinary.com/console')
   process.exit(1)
-}
-
-// Validate Email environment variables for password reset functionality
-if (!process.env.RESEND_API_KEY && (!process.env.EMAIL_USER || !process.env.EMAIL_PASS)) {
-  console.warn('WARNING: No email service configured!')
-  console.warn('Password reset functionality will not work without either:')
-  console.warn('Option 1 (Recommended for Railway): RESEND_API_KEY=your-resend-api-key')
-  console.warn('Option 2 (Local development): EMAIL_USER and EMAIL_PASS for SMTP')
-  console.warn('Get Resend API key from: https://resend.com')
-} else if (process.env.RESEND_API_KEY) {
-  console.log('✅ Resend API configured for email sending')
-} else {
-  console.log('✅ SMTP credentials configured for email sending')
 }
 
 // Passport config
