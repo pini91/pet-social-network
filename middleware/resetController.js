@@ -36,26 +36,25 @@ module.exports = {
     const { email } = req.body
     const user = await User.findOne({ email })
 
-    console.log(user)
+    console.log(`FROM FORGOT PASSWORD${user}`)
 
     if (!user) {
       req.flash('error', 'No account with that email found.')
       return res.redirect('/forgot-password')
     }
 
-    // Generate token using crypto
-    const token = crypto.randomBytes(20).toString('hex') // This is a method from Node.js's built-in crypto module. It generates 20 cryptographically strong pseudo-random bytes..toString("hex"): This converts the generated random bytes (which are in a Buffer object) into a hexadecimal string representation.
-    console.log('Generated token:', token)
-
-    // Set token and expiry on user
-    user.resetPasswordToken = token
-    user.resetPasswordExpires = Date.now() + 3600000 // 1 hour
-
-    await user.save()
-    console.log('User saved with token')
-
     // FUNCTION FOR THE EMAIL RESERVATION
     async function sendSimpleMessage () {
+    // Generate token using crypto
+      const token = crypto.randomBytes(20).toString('hex') // This is a method from Node.js's built-in crypto module. It generates 20 cryptographically strong pseudo-random bytes..toString("hex"): This converts the generated random bytes (which are in a Buffer object) into a hexadecimal string representation.
+      console.log('Generated token:', token)
+
+      // Set token and expiry on user
+      user.resetPasswordToken = token
+      user.resetPasswordExpires = Date.now() + 3600000 // 1 hour
+
+      await user.save()
+      console.log('User saved with token')
       // Determine the base URL for the reset link
       const baseUrl = process.env.NODE_ENV === 'production'
         ? (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : 'https://pet-social-app.up.railway.app')
