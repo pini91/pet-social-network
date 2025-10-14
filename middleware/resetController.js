@@ -31,9 +31,9 @@ module.exports = {
   forgotPassword: async (req, res) => {
     try {
       const { email } = req.body
+      console.log(`from forgotPassword${email}`)
       const user = await User.findOne({ email })
-
-      console.log(`FROM FORGOT PASSWORD${user}`)
+      console.log(`FROM FORGOT PASSWORD${user.email}`)
 
       if (!user) {
         req.flash('error', 'No account with that email found.')
@@ -76,8 +76,8 @@ module.exports = {
           key: process.env.API_KEY || 'API_KEY'
         })
         try {
-          const data = await mg.messages.create(process.env.MAILGUN_DOMAIN, {
-            from: `Mailgun Sandbox <postmaster@${process.env.MAILGUN_DOMAIN}`,
+          const data = await mg.messages.create('brenda-app.dev', {
+            from: 'Mailgun Sandbox <postmaster@brenda-app.dev',
             to: `${user.email}`,
             subject: 'Reset Pet Social Network Password',
             text: emailContent
