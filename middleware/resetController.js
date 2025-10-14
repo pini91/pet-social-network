@@ -77,7 +77,7 @@ module.exports = {
       })
       try {
         const data = await mg.messages.create('brenda-app.dev', {
-          from: 'Mailgun Sandbox <postmaster@brenda-app.dev',
+          from: 'Mailgun Sandbox <postmaster@brenda-app.dev>',
           to: `${user.email}`,
           subject: 'Reset Pet Social Network Password',
           text: emailContent
