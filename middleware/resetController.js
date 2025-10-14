@@ -31,9 +31,7 @@ module.exports = {
   forgotPassword: async (req, res) => {
     // try {
     const { email } = req.body
-    console.log(`from forgotPassword${email}`)
     const user = await User.findOne({ email })
-    console.log(`FROM FORGOT PASSWORD${user.email}`)
 
     if (!user) {
       req.flash('error', 'No account with that email found.')
