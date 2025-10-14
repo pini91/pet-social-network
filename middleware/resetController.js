@@ -32,77 +32,73 @@ module.exports = {
   },
 
   forgotPassword: async (req, res) => {
-    // try {
-    const { email } = req.body
-    const user = await User.findOne({ email })
+    try {
+      const { email } = req.body
+      const user = await User.findOne({ email })
 
-    console.log(`FROM FORGOT PASSWORD${user}`)
+      console.log(`FROM FORGOT PASSWORD${user}`)
 
-    if (!user) {
-      req.flash('error', 'No account with that email found.')
-      return res.redirect('/forgot-password')
-    }
-    // Generate token using crypto
-    const token = crypto.randomBytes(20).toString('hex') // This is a method from Node.js's built-in crypto module. It generates 20 cryptographically strong pseudo-random bytes..toString("hex"): This converts the generated random bytes (which are in a Buffer object) into a hexadecimal string representation.
-    console.log('Generated token:', token)
-
-    // Set token and expiry on user
-    user.resetPasswordToken = token
-    user.resetPasswordExpires = Date.now() + 3600000 // 1 hour
-
-    await user.save()
-    console.log('User saved with token')
-
-    // Determine the base URL for the reset link
-    const baseUrl = process.env.NODE_ENV === 'production'
-      ? (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : 'https://pet-social-app.up.railway.app')
-      : 'http://localhost:2121'
-
-    const resetLink = `${baseUrl}/reset-password/${token}`
-
-    const emailContent = `
-      You requested a password reset. Click the link below to reset your password:<br>
-      ${resetLink}<br>
-      If you did not request this, please ignore this email.`
-
-    // FUNCTION FOR THE EMAIL RESERVATION
-    async function sendSimpleMessage () {
-      console.log('=== MAILGUN DEBUG INFO ===')
-      console.log('API_KEY:', process.env.API_KEY ? 'Set' : 'NOT SET')
-      console.log('NODE_ENV:', process.env.NODE_ENV)
-      console.log('==========================')
-
-      if (!process.env.API_KEY) {
-        throw new Error('API_KEY is not set in environment variables')
+      if (!user) {
+        req.flash('error', 'No account with that email found.')
+        return res.redirect('/forgot-password')
       }
+      // Generate token using crypto
+      const token = crypto.randomBytes(20).toString('hex') // This is a method from Node.js's built-in crypto module. It generates 20 cryptographically strong pseudo-random bytes..toString("hex"): This converts the generated random bytes (which are in a Buffer object) into a hexadecimal string representation.
+      console.log('Generated token:', token)
 
-      const mailgun = new Mailgun(FormData)
-      const mg = mailgun.client({
-        username: 'api',
-        key: process.env.API_KEY || 'API_KEY'
-      })
+      // Set token and expiry on user
+      user.resetPasswordToken = token
+      user.resetPasswordExpires = Date.now() + 3600000 // 1 hour
 
-      try {
-        console.log('Attempting to send email via Mailgun...')
-        const data = await mg.messages.create(process.env.MAILGUN_DOMAIN, {
-          from: `Pet Social Network <noreply@${process.env.MAILGUN_DOMAIN}>`,
-          to: user.email,
-          subject: 'Reset Pet Social Network Password',
-          html: emailContent
+      await user.save()
+      console.log('User saved with token')
+
+      // Determine the base URL for the reset link
+      const baseUrl = process.env.NODE_ENV === 'production'
+        ? (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : 'https://pet-social-app.up.railway.app')
+        : 'http://localhost:2121'
+
+      const resetLink = `${baseUrl}/reset-password/${token}`
+
+      const emailContent = `
+        <h2>Password Reset Request</h2>
+        <p>You requested a password reset for your Pet Social Network account.</p>
+        <p>Click the link below to reset your password:</p>
+        <a href="${resetLink}" style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Reset Password</a>
+        <p>This link will expire in 1 hour.</p>
+        <p>If you did not request this, please ignore this email.</p>
+        <br>
+        <p>Or copy and paste this link: ${resetLink}</p>
+      `
+
+      // FUNCTION FOR THE EMAIL RESERVATION
+      async function sendSimpleMessage () {
+        const mailgun = new Mailgun(FormData)
+        const mg = mailgun.client({
+          username: 'api',
+          key: process.env.API_KEY || 'API_KEY'
         })
+        try {
+          const data = await mg.messages.create(process.env.MAILGUN_DOMAIN, {
+            from: `Mailgun Sandbox <postmaster@${process.env.MAILGUN_DOMAIN}`,
+            to: `${user.email}`,
+            subject: 'Reset Pet Social Network Password',
+            text: emailContent
+          })
 
-        console.log('Email sent successfully:', data)
-        return data
-      } catch (error) {
-        console.error('Mailgun error details:', error)
-        throw error
+          console.log(data)
+        } catch (error) {
+          console.log(error) // logs any error
+        }
       }
+
+      sendSimpleMessage()
+
+      req.flash('info', 'An email has been sent with further instructions.')
+      res.redirect('/forgot-password')
+    } catch (error) {
+      console.log(error) // logs any error
     }
-
-    sendSimpleMessage()
-
-    req.flash('info', 'An email has been sent with further instructions.')
-    res.redirect('/forgot-password')
   },
 
   postResetPassword: async (req, res) => {
