@@ -3,9 +3,6 @@ const Mailgun = require('mailgun.js') // mailgun.js v11.1.0
 
 const crypto = require('crypto') // to create the token
 const User = require('../models/User')
-
-// const bcrypt = require('bcrypt') // bcrypt methods are used via User model
-
 module.exports = {
 
   getForgotPassword: (req, res) => {
