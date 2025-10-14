@@ -29,35 +29,35 @@ module.exports = {
   },
 
   forgotPassword: async (req, res) => {
-    try {
-      const { email } = req.body
-      console.log(`from forgotPassword${email}`)
-      const user = await User.findOne({ email })
-      console.log(`FROM FORGOT PASSWORD${user.email}`)
+    // try {
+    const { email } = req.body
+    console.log(`from forgotPassword${email}`)
+    const user = await User.findOne({ email })
+    console.log(`FROM FORGOT PASSWORD${user.email}`)
 
-      if (!user) {
-        req.flash('error', 'No account with that email found.')
-        return res.redirect('/forgot-password')
-      }
-      // Generate token using crypto
-      const token = crypto.randomBytes(20).toString('hex') // This is a method from Node.js's built-in crypto module. It generates 20 cryptographically strong pseudo-random bytes..toString("hex"): This converts the generated random bytes (which are in a Buffer object) into a hexadecimal string representation.
-      console.log('Generated token:', token)
+    if (!user) {
+      req.flash('error', 'No account with that email found.')
+      return res.redirect('/forgot-password')
+    }
+    // Generate token using crypto
+    const token = crypto.randomBytes(20).toString('hex') // This is a method from Node.js's built-in crypto module. It generates 20 cryptographically strong pseudo-random bytes..toString("hex"): This converts the generated random bytes (which are in a Buffer object) into a hexadecimal string representation.
+    console.log('Generated token:', token)
 
-      // Set token and expiry on user
-      user.resetPasswordToken = token
-      user.resetPasswordExpires = Date.now() + 3600000 // 1 hour
+    // Set token and expiry on user
+    user.resetPasswordToken = token
+    user.resetPasswordExpires = Date.now() + 3600000 // 1 hour
 
-      await user.save()
-      console.log('User saved with token')
+    await user.save()
+    console.log('User saved with token')
 
-      // Determine the base URL for the reset link
-      const baseUrl = process.env.NODE_ENV === 'production'
-        ? (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : 'https://pet-social-app.up.railway.app')
-        : 'http://localhost:2121'
+    // Determine the base URL for the reset link
+    const baseUrl = process.env.NODE_ENV === 'production'
+      ? (process.env.RAILWAY_PUBLIC_DOMAIN ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}` : 'https://pet-social-app.up.railway.app')
+      : 'http://localhost:2121'
 
-      const resetLink = `${baseUrl}/reset-password/${token}`
+    const resetLink = `${baseUrl}/reset-password/${token}`
 
-      const emailContent = `
+    const emailContent = `
         <h2>Password Reset Request</h2>
         <p>You requested a password reset for your Pet Social Network account.</p>
         <p>Click the link below to reset your password:</p>
@@ -68,34 +68,34 @@ module.exports = {
         <p>Or copy and paste this link: ${resetLink}</p>
       `
 
-      // FUNCTION FOR THE EMAIL RESERVATION
-      async function sendSimpleMessage () {
-        const mailgun = new Mailgun(FormData)
-        const mg = mailgun.client({
-          username: 'api',
-          key: process.env.API_KEY || 'API_KEY'
+    // FUNCTION FOR THE EMAIL
+    async function sendSimpleMessage () {
+      const mailgun = new Mailgun(FormData)
+      const mg = mailgun.client({
+        username: 'api',
+        key: process.env.API_KEY || 'API_KEY'
+      })
+      try {
+        const data = await mg.messages.create('brenda-app.dev', {
+          from: 'Mailgun Sandbox <postmaster@brenda-app.dev',
+          to: `${user.email}`,
+          subject: 'Reset Pet Social Network Password',
+          text: emailContent
         })
-        try {
-          const data = await mg.messages.create('brenda-app.dev', {
-            from: 'Mailgun Sandbox <postmaster@brenda-app.dev',
-            to: `${user.email}`,
-            subject: 'Reset Pet Social Network Password',
-            text: emailContent
-          })
 
-          console.log(data)
-        } catch (error) {
-          console.log(error) // logs any error
-        }
+        console.log(data)
+      } catch (error) {
+        console.log(error) // logs any error
       }
-
-      sendSimpleMessage()
-
-      req.flash('info', 'An email has been sent with further instructions.')
-      res.redirect('/forgot-password')
-    } catch (error) {
-      console.log(error) // logs any error
     }
+
+    sendSimpleMessage()
+
+    req.flash('info', 'An email has been sent with further instructions.')
+    res.redirect('/forgot-password')
+    // } catch (error) {
+    //   console.log(error) // logs any error
+    // }
   },
 
   postResetPassword: async (req, res) => {
