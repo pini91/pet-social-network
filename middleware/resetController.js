@@ -58,14 +58,12 @@ module.exports = {
     const resetLink = `${baseUrl}/reset-password/${token}`
 
     const emailContent = `
-        <h2>Password Reset Request</h2>
-        <p>You requested a password reset for your Pet Social Network account.</p>
-        <p>Click the link below to reset your password:</p>
-        <a href="${resetLink}" style="background-color: #007bff; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Reset Password</a>
-        <p>This link will expire in 1 hour.</p>
-        <p>If you did not request this, please ignore this email.</p>
-        <br>
-        <p>Or copy and paste this link: ${resetLink}</p>
+        Password Reset Request
+        You requested a password reset for your Pet Social Network account.
+        Click the link below to reset your password:
+        ${resetLink}
+        This link will expire in 1 hour.
+        If you did not request this, please ignore this email.
       `
 
     // FUNCTION FOR THE EMAIL
