@@ -1,150 +1,107 @@
 # Pet Social Network
 
-A social network application for pet owners to connect, share posts, and find friends for their pets.
+A full-stack social networking application for pet owners, built with Node.js and Express. Users can create profiles for their pets, share posts with photos, follow other pet owners, and interact through likes and comments, all within a clean, responsive interface.
 
-## Features
+## Live Application
 
-- User authentication and authorization
-- Pet profile creation and management
-- Social posts with image uploads
-- Friend system for connecting with other pet owners
-- Comment system on posts
-- Search functionality
-- Password reset functionality
-- Responsive design
+**Main Site:** [pet-social-app.up.railway.app](https://pet-social-app.up.railway.app)
+
+## Screenshots
+
+| Desktop | 
+|![main](./public/imgs/screenshots/login.png) |
+|![profile](./public/imgs/screenshots/profile.png) |
+|![post](./public/imgs/screenshots/post.png) |
+|![feed](./public/imgs/screenshots/feed.png) |
+|![search](./public/imgs/screenshots/search.png) |
+|![friend-profile](./public/imgs/screenshots/friend-profile.png) |
+|![settings](./public/imgs/screenshots/settings.png) |
+
+| Mobile | 
+||![main-mobile](./public/imgs/screenshots/login-mobile.png)|
+|![profile-mobile](./public/imgs/screenshots/profile-mobile.png) |
+|![post-mobile](./public/imgs/screenshots//post-mobile.png) |
+|![search-mobile](./public/imgs/screenshots/search-mobile.png) |
+|![friend-profile-mobile](./public/imgs/screenshots/friend-profile-phone.png) |
+|![settings-phone](./public/imgs/screenshots/settings-mobile.png) |
+
+### Features
+
+- **Authentication:** Secure sign up, login, and logout with session persistence
+- **Pet Profiles:** Create and personalise your pet's profile with a custom profile picture
+- **Photo Posts:** Share moments by uploading images directly to your feed
+- **Social Feed:** Browse posts from all the pet owners you follow in one place
+- **Likes:** Like and unlike posts from other users
+- **Comments:** Leave comments on any post and delete your own
+- **Follow System:** Follow and unfollow other pet owners to curate your feed
+- **Search:** Find other users and posts across the platform
+- **Responsive Design:** Fully mobile-friendly interface across all devices
+
+### Account Management
+
+- **Settings:** Update your display name or delete your account entirely
+- **Forgot Password:** Request a password reset link sent to your email
+- **Reset via Email:** A secure time-limited token link lets you set a new password without logging in
+- **Change Password:** Update your password directly from within the app when logged in
+
+### Email Notifications
+
+Powered by Mailgun. When you request a password reset, you receive:
+
+- A secure, time-limited reset link (expires in 1 hour)
+- A branded email from the Pet Social Network
 
 ## Technology Stack
 
-- **Backend**: Node.js, Express.js
-- **Database**: MongoDB with Mongoose
-- **Authentication**: Passport.js with local strategy
-- **File Upload**: Multer with Cloudinary integration
-- **View Engine**: EJS
-- **Session Management**: Express-session with MongoDB store
-- **Testing**: Jest with Supertest
-- **Linting**: ESLint with Standard config
-- **Deployment**: Railway with Nixpacks
+| Layer | Technologies |
+|---|---|
+| Backend | Node.js, Express.js 4 |
+| View Engine | EJS |
+| Styling | CSS, vanilla JS |
+| Database | MongoDB, Mongoose |
+| Auth | Passport.js (local strategy), express-session, connect-mongo |
+| File Upload | Multer, Cloudinary |
+| Email | Mailgun.js |
+| Testing | Jest, Supertest |
+| Linting | ESLint (Standard config) |
+| Deployment | Railway (Nixpacks) |
+| CI/CD | GitHub Actions |
 
-## Installation
+## Key Features
 
-### Prerequisites
-- Node.js (v18 or higher)
-- MongoDB database
-- Cloudinary account (for image uploads)
+### Profile & Image Uploads
+Users can upload a profile picture and attach images to any post. Files are handled by Multer on the server and stored via Cloudinary, keeping the database lean and delivery fast.
 
-### Local Development
+### Follow System
+Each user has a list of people they follow. The social feed is scoped to those connections, so content stays relevant. Following and unfollowing updates in real time.
 
-1. Clone the repository:
-```bash
-git clone <repository-url>
-cd pet-social-network
-```
+### Password Reset Flow
+Forgot password triggers a Mailgun email containing a unique token link. The link opens a reset form pre-scoped to that token. Tokens expire after one hour for security. Logged-in users can also change their password directly through the settings flow.
 
-2. Install dependencies:
-```bash
-npm install
-```
+## CI/CD Pipeline
 
-3. Create environment file:
-```bash
-cp .env.example config/.env
-```
+- **CI:** ESLint and Jest test suite run on every push and pull request
+- **CD:** Automatic deploy to Railway on every merge to `main`
+- **Security:** GitLeaks secret scanning and `npm audit` run in the pipeline
 
-4. Configure environment variables in `config/.env`:
-```env
-# Database
-DB_STRING=mongodb+srv://username:password@cluster.mongodb.net/petnetwork
+## Pages & Navigation
 
-# Application
-PORT=3000
-NODE_ENV=development
-
-# Session
-SESSION_SECRET=your-super-secret-session-key-here
-
-# Cloudinary (for image uploads)
-CLOUDINARY_CLOUD_NAME=your-cloud-name
-CLOUDINARY_API_KEY=your-api-key
-CLOUDINARY_API_SECRET=your-api-secret
-
-# Email (for password reset)
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USER=your-email@gmail.com
-EMAIL_PASS=your-app-password
-```
-
-5. Run the application:
-```bash
-# Development mode with nodemon
-npm run dev
-
-# Production mode
-npm start
-```
-
-6. Visit `http://localhost:3000` in your browser
-
-## Testing
-
-Run the test suite:
-```bash
-# Run all tests
-npm test
-
-# Run tests in watch mode
-npm run test:watch
-
-# Run tests with coverage
-npm run test:coverage
-```
-
-## Code Quality
-
-```bash
-# Run linting
-npm run lint
-
-# Fix linting issues automatically
-npm run lint:fix
-```
-
-## Deployment
-
-### Railway Deployment
-
-This application is configured for deployment on Railway with automatic CI/CD:
-
-1. **Automatic Deployment**: 
-   - Push to `main` branch deploys to production
-   - Push to `develop` branch deploys to development environment
-
-2. **Environment Variables on Railway**:
-   Set these in your Railway project settings:
-   ```
-   DB_STRING=your-mongodb-connection-string
-   SESSION_SECRET=your-session-secret
-   CLOUDINARY_CLOUD_NAME=your-cloudinary-name
-   CLOUDINARY_API_KEY=your-cloudinary-key
-   CLOUDINARY_API_SECRET=your-cloudinary-secret
-   EMAIL_HOST=smtp.gmail.com
-   EMAIL_PORT=587
-   EMAIL_USER=your-email
-   EMAIL_PASS=your-email-password
-   NODE_ENV=production
-   ```
-
-   **Important**: The application will validate and require these Cloudinary variables at startup. 
-   Get your Cloudinary credentials from [https://cloudinary.com/console](https://cloudinary.com/console).
-
-3. **Railway MongoDB**: 
-   - Add MongoDB service in Railway
-   - Railway automatically provides `MONGO_URL` variable
-   - Application prefers `MONGO_URL` over `DB_STRING`
-
-4. **Health Check**: 
-   - Railway monitors `/health` endpoint
-   - Returns application status and uptime
+| Route | Page |
+|---|---|
+| `/` | Home — landing page |
+| `/signup` | Create a new account |
+| `/login` | Log in to your account |
+| `/feed` | Social feed (auth required) |
+| `/profile` | Your pet profile (auth required) |
+| `/settings` | Edit name or delete account (auth required) |
+| `/search` | Search posts and users (auth required) |
+| `/posts/:id` | View a single post (auth required) |
+| `/friends/:id` | View another user's profile (auth required) |
+| `/forgot-password` | Request a password reset email |
+| `/reset-password/:token` | Set a new password via email link |
+| `/changePassword` | Change password while logged in (auth required) |
+| `/newPassword` | Set updated password (auth required) |
+| `/health` | Health check endpoint |
 
 ## CI/CD Pipeline
 
@@ -212,15 +169,13 @@ The application includes comprehensive CI/CD with:
 ├── server.js              # Application entry point
 └── package.json           # Dependencies and scripts
 ```
+## Future Enhancements
 
-## Contributing
+- [ ] Migrate frontend from EJS server-side rendering to a React SPA (Vite + React Router), keeping the existing Express API as a backend
+- [ ] Direct messaging between users
+- [ ] Notifications for new likes, comments, and followers
+- [ ] Pet breed tags and filtering
+- [ ] Fix settings
+- [ ] Fix feed UI
 
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Run tests and linting
-5. Submit a pull request
 
-## License
-
-This project is licensed under the MIT License.
